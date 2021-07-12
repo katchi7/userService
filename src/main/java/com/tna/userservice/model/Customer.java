@@ -40,7 +40,7 @@ public class Customer {
     @ManyToOne(targetEntity = Language.class,fetch = FetchType.LAZY)
     @JoinColumn(name = "CUSTOMER_LANGUAGE_ISO_639_1")
     private Language language;
-    @OneToMany(targetEntity = Device.class,cascade = CascadeType.ALL,fetch = FetchType.EAGER,mappedBy = "customer",orphanRemoval = true)
+    @OneToMany(targetEntity = Device.class,cascade = CascadeType.ALL,fetch = FetchType.LAZY,mappedBy = "customer",orphanRemoval = true)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonBackReference
     private List<Device> devices;

@@ -16,4 +16,7 @@ public class DeviceDto {
     private int id;
     private String name;
     private boolean fingerprintActivated;
+    public Device asDevice(){
+        return new Device(id,name,fingerprintActivated,null);
+    }
 }

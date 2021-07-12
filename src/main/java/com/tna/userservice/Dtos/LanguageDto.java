@@ -15,4 +15,7 @@ public class LanguageDto {
     }
     private String languageIso639_1;
     private String languageNativeName;
+    public Language asLanguage(){
+        return new Language(languageIso639_1,languageNativeName);
+    }
 }
