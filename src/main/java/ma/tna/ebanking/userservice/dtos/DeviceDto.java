@@ -1,7 +1,7 @@
-package com.tna.userservice.Dtos;
+package ma.tna.ebanking.userservice.dtos;
 
 
-import com.tna.userservice.model.Device;
+import ma.tna.ebanking.userservice.model.Device;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

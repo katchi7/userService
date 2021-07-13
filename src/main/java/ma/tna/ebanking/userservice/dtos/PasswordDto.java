@@ -1,4 +1,4 @@
-package com.tna.userservice.Dtos;
+package ma.tna.ebanking.userservice.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

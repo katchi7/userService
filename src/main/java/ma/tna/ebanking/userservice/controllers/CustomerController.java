@@ -1,15 +1,13 @@
-package com.tna.userservice.Controllers;
+package ma.tna.ebanking.userservice.controllers;
 
-import com.tna.userservice.Dtos.CustomerDto;
-import com.tna.userservice.Dtos.DeviceDto;
-import com.tna.userservice.Dtos.LanguageDto;
-import com.tna.userservice.Dtos.PasswordDto;
-import com.tna.userservice.Services.CustomerService;
-import com.tna.userservice.model.Customer;;
-import com.tna.userservice.model.Device;
+import ma.tna.ebanking.userservice.dtos.CustomerDto;
+import ma.tna.ebanking.userservice.dtos.DeviceDto;
+import ma.tna.ebanking.userservice.dtos.PasswordDto;
+import ma.tna.ebanking.userservice.services.CustomerService;
+import ma.tna.ebanking.userservice.model.Customer;;
+import ma.tna.ebanking.userservice.model.Device;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ObjectError;
@@ -175,6 +173,21 @@ public class CustomerController {
                                                           @RequestParam("fingerprintActivated")Boolean fingerprintActivated){
         DeviceDto device = new DeviceDto(customerService.updateFingerprint(userId,deviceId,fingerprintActivated));
         return ResponseEntity.ok(device);
+    }
+
+    /**
+     * This function is responsible for listing all user's devices
+     * @param userId user's id
+     * @return HttpResponseEntity containing a list of devices
+     */
+    @GetMapping("/{user_id}/device")
+    public HttpEntity<List<DeviceDto>> getUserDevices(@PathVariable("user_id") int userId){
+        List<Device> devices = customerService.userDevices(userId);
+        List<DeviceDto> devices_ = new ArrayList<>();
+        for (Device device : devices) {
+            devices_.add(new DeviceDto(device));
+        }
+        return ResponseEntity.ok(devices_);
     }
 
     /**

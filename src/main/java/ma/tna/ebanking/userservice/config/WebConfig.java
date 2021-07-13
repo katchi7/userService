@@ -1,4 +1,4 @@
-package com.tna.userservice.Config;
+package ma.tna.ebanking.userservice.config;
 
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,7 +13,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 @Log4j2
 public class WebConfig implements WebMvcConfigurer {
-    @Value("${spring.application.name}")
+    @Value("${context-path}")
     private String contextPath;
     @Override
     public void configurePathMatch(PathMatchConfigurer configurer) {

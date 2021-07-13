@@ -1,4 +1,4 @@
-package com.tna.userservice.model;
+package ma.tna.ebanking.userservice.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;

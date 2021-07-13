@@ -1,6 +1,6 @@
-package com.tna.userservice.Repositories;
+package ma.tna.ebanking.userservice.repositories;
 
-import com.tna.userservice.model.Customer;
+import ma.tna.ebanking.userservice.model.Customer;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;

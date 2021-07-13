@@ -1,4 +1,4 @@
-package com.tna.userservice.model;
+package ma.tna.ebanking.userservice.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

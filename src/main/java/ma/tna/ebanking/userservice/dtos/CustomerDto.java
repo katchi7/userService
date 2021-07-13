@@ -1,12 +1,11 @@
-package com.tna.userservice.Dtos;
+package ma.tna.ebanking.userservice.dtos;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.tna.userservice.model.Customer;
-import com.tna.userservice.model.Device;
+import ma.tna.ebanking.userservice.model.Customer;
+import ma.tna.ebanking.userservice.model.Device;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;

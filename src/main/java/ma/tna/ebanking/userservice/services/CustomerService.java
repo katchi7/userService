@@ -1,11 +1,11 @@
-package com.tna.userservice.Services;
+package ma.tna.ebanking.userservice.services;
 
-import com.tna.userservice.Dtos.CustomerDto;
-import com.tna.userservice.Repositories.CustomerRepo;
-import com.tna.userservice.Repositories.DeviceRepo;
-import com.tna.userservice.model.Customer;
-import com.tna.userservice.model.Device;
-import com.tna.userservice.model.Language;
+import ma.tna.ebanking.userservice.dtos.CustomerDto;
+import ma.tna.ebanking.userservice.repositories.CustomerRepo;
+import ma.tna.ebanking.userservice.repositories.DeviceRepo;
+import ma.tna.ebanking.userservice.model.Customer;
+import ma.tna.ebanking.userservice.model.Device;
+import ma.tna.ebanking.userservice.model.Language;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -142,6 +142,23 @@ public class CustomerService {
         return device;
         }catch (NoSuchElementException e ){
             throw new NoSuchElementException("Cannot find user with id : "+userId);
+        }
+    }
+
+    /**
+     * this function receives a user's id and returns a list of the user's devices
+     * @param userId
+     * @return devices :  List of user's Devices
+     * @throws NoSuchElementException if the user does not exit
+     */
+    public List<Device> userDevices(int userId){
+        try {
+
+            Customer customer = customerRepo.findById(userId).get();
+            List<Device> devices = deviceRepo.getDeviceByCustomer(customer);
+            return devices;
+        }catch (NoSuchElementException e){
+            throw new NoSuchElementException("Could not find user with id = "+userId);
         }
     }
 

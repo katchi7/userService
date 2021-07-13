@@ -1,6 +1,6 @@
-package com.tna.userservice.Dtos;
+package ma.tna.ebanking.userservice.dtos;
 
-import com.tna.userservice.model.Language;
+import ma.tna.ebanking.userservice.model.Language;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
