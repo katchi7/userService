@@ -17,7 +17,7 @@ public class Language {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "LANGUAGE_ISO_639_1")
-    private String languageIso639_1;
+    private String languageIso;
     @JsonBackReference
     @Column(name = "LANGUAGE_NATIVE_NAME")
     private String languageNativeName;

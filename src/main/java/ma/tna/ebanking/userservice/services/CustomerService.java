@@ -16,6 +16,7 @@ import java.util.Optional;
 
 @Service
 public class CustomerService {
+    private static final String USER_NOT_FOUND = "User does not exist";
     private final CustomerRepo customerRepo;
     private final BCryptPasswordEncoder passwordEncoder;
     private final DeviceRepo deviceRepo;
@@ -77,7 +78,7 @@ public class CustomerService {
                 customer = customerRepo.save(customer);
                 return customer;
             }
-            throw new NoSuchElementException("User does not exist");
+            throw new NoSuchElementException(USER_NOT_FOUND);
 
     }
 
@@ -99,7 +100,7 @@ public class CustomerService {
                 }
                 throw new InvalidParameterException("Password is not matching");
             }
-            throw new NoSuchElementException("User does not exist");
+            throw new NoSuchElementException(USER_NOT_FOUND);
 
     }
 
@@ -124,7 +125,7 @@ public class CustomerService {
                 return device;
             }
             else {
-                throw new NoSuchElementException("User does not exist");
+                throw new NoSuchElementException(USER_NOT_FOUND);
             }
         }
         throw new InvalidParameterException("Device already existing");
@@ -151,7 +152,7 @@ public class CustomerService {
             return device;
         }
 
-        throw new NoSuchElementException("Cannot find user with id : "+userId);
+        throw new NoSuchElementException(USER_NOT_FOUND);
 
     }
 
@@ -167,7 +168,7 @@ public class CustomerService {
             Customer customer = customerOptional.get();
             return deviceRepo.getDeviceByCustomer(customer);
         }
-        throw new NoSuchElementException("Could not find user with id = "+userId);
+        throw new NoSuchElementException(USER_NOT_FOUND);
 
     }
 

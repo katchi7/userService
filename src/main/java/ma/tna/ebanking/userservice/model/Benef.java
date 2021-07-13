@@ -22,7 +22,7 @@ public class Benef {
     @Column(name = "BENEF_LAST_NAME")
     private String lastName;
     @Column(name = "BENEF_RIB")
-    private String RIB;
+    private String rib;
     @Column(name = "BENEF_PHONE")
     private String phone;
     @Column(name = "BENEF_EMAIL")

@@ -50,13 +50,13 @@ public class CustomerDto {
     private LanguageDto language;
     private List<DeviceDto> devices;
     public Customer asCustomer(){
-        ArrayList<Device> devices_ = null;
+        ArrayList<Device> devices1 = null;
         if(devices != null){
-            devices_ = new ArrayList<>();
+            devices1 = new ArrayList<>();
             for (DeviceDto device : devices) {
-                devices_.add(device.asDevice());
+                devices1.add(device.asDevice());
             }
         }
-        return new Customer(id,password,phone,email,active,disponibilityStart,disponibilityEnd,image,allowEmails,language.asLanguage(),devices_);
+        return new Customer(id,password,phone,email,active,disponibilityStart,disponibilityEnd,image,allowEmails,language.asLanguage(),devices1);
     }
 }
