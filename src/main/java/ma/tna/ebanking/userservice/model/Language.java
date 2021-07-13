@@ -15,7 +15,6 @@ import javax.persistence.*;
 @Table(name = "language")
 public class Language {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "LANGUAGE_ISO_639_1")
     private String languageIso;
     @JsonBackReference
