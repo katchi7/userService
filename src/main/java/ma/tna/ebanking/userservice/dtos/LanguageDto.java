@@ -11,11 +11,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class LanguageDto {
     public LanguageDto(Language language){
-        this(language.getLanguageIso639_1(),language.getLanguageNativeName());
+        this(language.getLanguageIso(),language.getLanguageNativeName());
     }
-    private String languageIso639_1;
+    private String languageIso;
     private String languageNativeName;
     public Language asLanguage(){
-        return new Language(languageIso639_1,languageNativeName);
+        return new Language(languageIso,languageNativeName);
     }
 }

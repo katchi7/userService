@@ -40,7 +40,7 @@ public class CustomerDto {
     @Pattern(regexp = "^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\\s\\./0-9]*$",message = "Rejected phone value")
     private String phone;
     @NotNull
-    @Pattern(regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$",message = "Rejected email value")
+    @Pattern(regexp = "(?!.*\\.\\.)(^[^\\.][^@\\s]+@[^@\\s]+\\.[^@\\s\\.]+$)",message = "Rejected email value")
     private String email;
     private boolean active = true;
     private String disponibilityStart = "08:00";
@@ -50,13 +50,13 @@ public class CustomerDto {
     private LanguageDto language;
     private List<DeviceDto> devices;
     public Customer asCustomer(){
-        ArrayList<Device> devices_ = null;
+        ArrayList<Device> devices1 = null;
         if(devices != null){
-            devices_ = new ArrayList<>();
+            devices1 = new ArrayList<>();
             for (DeviceDto device : devices) {
-                devices_.add(device.asDevice());
+                devices1.add(device.asDevice());
             }
         }
-        return new Customer(id,password,phone,email,active,disponibilityStart,disponibilityEnd,image,allowEmails,language.asLanguage(),devices_);
+        return new Customer(id,password,phone,email,active,disponibilityStart,disponibilityEnd,image,allowEmails,language.asLanguage(),devices1);
     }
 }
