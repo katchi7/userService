@@ -1,13 +1,15 @@
 package com.tna.userservice.Controllers;
 
 import com.tna.userservice.Dtos.CustomerDto;
+import com.tna.userservice.Dtos.DeviceDto;
 import com.tna.userservice.Dtos.LanguageDto;
 import com.tna.userservice.Dtos.PasswordDto;
 import com.tna.userservice.Services.CustomerService;
-import com.tna.userservice.model.Customer;
-import com.tna.userservice.model.Language;
+import com.tna.userservice.model.Customer;;
+import com.tna.userservice.model.Device;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ObjectError;
@@ -21,7 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-
 @RestController
 @RequestMapping("/customer")
 @Log4j2
@@ -31,6 +32,11 @@ public class CustomerController {
         this.customerService = customerService;
     }
 
+
+    /**
+     * This method send a Json List of all subscribed users
+     * @return ResponseEntity containing all the subscribed users
+     */
     @GetMapping("")
     public HttpEntity<List<CustomerDto>> getAllUsers(){
 
@@ -41,6 +47,12 @@ public class CustomerController {
         }
         return ResponseEntity.ok(customerDtos);
     }
+
+    /**
+     * @param id User's id
+     * @return ResponseEntity containing user's data
+     * @throws InvalidParameterException if th user doesn't exist
+     */
     @GetMapping("/{id}")
     public HttpEntity<CustomerDto> getUserById(@PathVariable(value = "id",required = true) int id ){
         CustomerDto dto = customerService.getCustomerById(id);
@@ -50,6 +62,15 @@ public class CustomerController {
         throw new InvalidParameterException("Cannot find customer with id "+ id);
     }
 
+    /**
+     * this method receives an http Post request containing new user's data in the JSON body
+     * validates the given data
+     * stores the user or throws an InvalidObjectException if the data is not valid
+     * @param customerDto object containing received data
+     * @param errors object containing bean validation errors
+     * @return
+     * @throws InvalidObjectException
+     */
     @PostMapping(value = "",consumes = {"application/json"})
     public HttpEntity<CustomerDto> createCustomer(@RequestBody @Valid CustomerDto customerDto, Errors errors) throws InvalidObjectException {
         log.info(errors);
@@ -69,6 +90,18 @@ public class CustomerController {
         return ResponseEntity.ok(customerDto);
     }
 
+    /**
+     * This methode receives an http Put request containing various parameters
+     * it updates the given data and sends the new user data back to the user
+     * @param customerId
+     * @param active
+     * @param disponibilityStart
+     * @param disponibilityEnd
+     * @param image
+     * @param allowEmails
+     * @param language
+     * @return HttpResponseEntity containing new Data
+     */
     @PutMapping("/{id}")
     public HttpEntity<CustomerDto> updateCustomer(@PathVariable(value = "id") int customerId,
                                                   @RequestParam(value = "active",required = false) Boolean active,
@@ -82,6 +115,14 @@ public class CustomerController {
 
     }
 
+    /**
+     * This methode receives a post http request containing user's id in path variables and user's old and new password in the body
+     * and returns a ResponseEntity with the status OK if the password was update, throws an InvalidParameter if the parameters are invalid
+     * @param user_id
+     * @param password
+     * @param errors
+     * @return an HttpResponseEntity with the OK status if the password was updated
+     */
     @PostMapping(value = "/{id}/password",consumes = {"application/json"})
     public HttpEntity<String> updatePassword(@PathVariable("id") int user_id,@RequestBody @Valid PasswordDto password,Errors errors){
         if(errors.hasErrors()){
@@ -97,24 +138,84 @@ public class CustomerController {
         return ResponseEntity.ok("Password Updated");
     }
 
+    /**
+     * this methode is responsible for the creation of user's devices
+     * receive a POST http request containing device data in a JSON body, and user's id as a path variable
+     * @param userId user's id
+     * @param errors bean validation errors
+     * @param device device data
+     * @return HttpResponseEntity containing new device data
+     * @throws InvalidParameterException if the data sent by the user is not valid or the device is already existing
+     */
+    @PostMapping(value = "/{id}/device",consumes = {"application/json"})
+    public HttpEntity<DeviceDto> createDevice(@PathVariable("id") int userId,@RequestBody @Valid DeviceDto device,Errors errors) {
+        if(errors.hasErrors()){
+            List<ObjectError> errorsobjs = errors.getAllErrors();
+            String message = "";
+            for (ObjectError errorsobj : errorsobjs) {
+                message += "\n "+errorsobj.getObjectName()+" : "+ errorsobj.getDefaultMessage();
 
+            }
+            throw  new InvalidParameterException("Invalid device data "+message);
+        }
+        log.info(device);
+        customerService.createDevice(userId,device.asDevice());
+        return ResponseEntity.ok(device);
+    }
 
+    /**
+     * this methode is responsible for updating device fingerprint status
+     * @param userId user's id
+     * @param deviceId device id
+     * @param fingerprintActivated device's fingerprint is activated
+     * @return HttpResponseEntity containing new device data
+     */
+    @PutMapping(value = "/{user_id}/device/{device_id}")
+    public  HttpEntity<DeviceDto> changeDeviceFingerprint(@PathVariable("user_id") int userId, @PathVariable("device_id") int deviceId,
+                                                          @RequestParam("fingerprintActivated")Boolean fingerprintActivated){
+        DeviceDto device = new DeviceDto(customerService.updateFingerprint(userId,deviceId,fingerprintActivated));
+        return ResponseEntity.ok(device);
+    }
+
+    /**
+     * This methode is responsible for handling InvalidParameterExceptions
+     * @param e thrown exception
+     * @return HttpResponseEntity containing exception message
+     */
     @ExceptionHandler(InvalidParameterException.class)
     public HttpEntity<String> InvalidParameterExceptionHandler(InvalidParameterException e){
         return ResponseEntity.badRequest().body(e.getMessage());
     }
 
+    /**
+     * This methode is responsible for handling InvalidObjectException
+     * @param e thrown exception
+     * @return HttpResponseEntity containing exception message
+     */
     @ExceptionHandler(InvalidObjectException.class)
     public HttpEntity<String> InvalidObjectExceptionHandler(InvalidObjectException e) {
         return ResponseEntity.badRequest().body(e.getMessage());
     }
+
+    /**
+     * This methode is responsible for handling NoSuchElementException
+     * @param e thrown exception
+     * @return HttpResponseEntity containing exception message
+     */
     @ExceptionHandler(NoSuchElementException.class)
     public HttpEntity<String>  NoSuchElementExceptionHandler(NoSuchElementException e){
         return ResponseEntity.badRequest().body(e.getMessage());
     }
+
+    /**
+     * This methode is responsible for handling MethodArgumentTypeMismatchException
+     * @param e thrown exception
+     * @return HttpResponseEntity containing exception message
+     */
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public HttpEntity<String> MethodArgumentTypeMismatchExceptionHandler(MethodArgumentTypeMismatchException e){
         return ResponseEntity.badRequest().body(e.getMessage());
     }
+
 
 }

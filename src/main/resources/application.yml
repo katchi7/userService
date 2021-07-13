@@ -8,3 +8,5 @@ spring:
     password: Passeword1
   application:
     name: user-service
+  jpa:
+    show-sql: true

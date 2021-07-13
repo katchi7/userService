@@ -12,9 +12,9 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 public class PasswordDto {
     @NotNull
-    @Size(min=5 )
+    @Size(min=5,message = "oldPassword must be >5")
     private String oldPassword;
     @NotNull
-    @Size(min=5 )
+    @Size(min=5,message = "newPassword must be >5")
     private String newPassword;
 }
