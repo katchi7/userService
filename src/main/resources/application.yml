@@ -4,7 +4,3 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: Passeword1
-  application:
-    name: user-service
-  jpa:
-    show-sql: true
