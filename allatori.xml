@@ -18,6 +18,11 @@
             <field template="*" />
             <method template="*(**)" />
         </class>
+        <class template="class *.model*">
+            <!-- Matches all fields -->
+            <field template="*" />
+            <method template="*(**)" />
+        </class>
         <class template="class *.controlers*">
             <!-- Matches all fields -->
             <field template="*" />
