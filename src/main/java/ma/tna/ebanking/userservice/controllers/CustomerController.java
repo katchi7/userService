@@ -157,7 +157,7 @@ public class CustomerController {
             throw  new InvalidParameterException("Invalid device data "+message);
         }
         log.info(device);
-        customerService.createDevice(userId,device.asDevice());
+        device = new DeviceDto(customerService.createDevice(userId,device.asDevice()));
         return ResponseEntity.ok(device);
     }
 

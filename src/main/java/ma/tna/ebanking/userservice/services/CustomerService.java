@@ -55,50 +55,52 @@ public class CustomerService {
 
     /**
      * This methode is responsible for customer update, it receives multiple parameters and updates the valid ones
-     * @param id
-     * @param active
-     * @param disponibilityStart
-     * @param disponibilityEnd
-     * @param image
-     * @param allowEmails
-     * @param lang
+     * @param id user's id
+     * @param active user activity status
+     * @param disponibilityStart user disponibility start time
+     * @param disponibilityEnd user disponibility end time
+     * @param image user image
+     * @param allowEmails describes if users allows us to send him emails
+     * @param lang user's language
      * @return Customer : new Customer data
      */
     public Customer updateCustomer(int id, Boolean active,String disponibilityStart, String disponibilityEnd,String image, Boolean allowEmails,String lang){
-        try {
-            Customer customer = customerRepo.findById(id).get();
-            customer.setActive((active==null)?customer.isActive():active);
-            customer.setDisponibilityStart(("".equals(disponibilityStart)?customer.getDisponibilityStart():disponibilityStart));
-            customer.setDisponibilityEnd(("".equals(disponibilityEnd)?customer.getDisponibilityEnd():disponibilityEnd));
-            customer.setImage("".equals(image)?customer.getImage():image);
-            customer.setAllowEmails(allowEmails==null?customer.isAllowEmails():allowEmails);
-            customer.setLanguage("".equals(lang)?customer.getLanguage():new Language(lang,null));
-            customer = customerRepo.save(customer);
-            return customer;
-        }catch (NoSuchElementException e){
+            Optional<Customer> customerOptional = customerRepo.findById(id);
+            if(customerOptional.isPresent()){
+                Customer customer = customerOptional.get();
+                customer.setActive((active==null)?customer.isActive():active);
+                customer.setDisponibilityStart(("".equals(disponibilityStart)?customer.getDisponibilityStart():disponibilityStart));
+                customer.setDisponibilityEnd(("".equals(disponibilityEnd)?customer.getDisponibilityEnd():disponibilityEnd));
+                customer.setImage("".equals(image)?customer.getImage():image);
+                customer.setAllowEmails(allowEmails==null?customer.isAllowEmails():allowEmails);
+                customer.setLanguage("".equals(lang)?customer.getLanguage():new Language(lang,null));
+                customer = customerRepo.save(customer);
+                return customer;
+            }
             throw new NoSuchElementException("User does not exist");
-        }
+
     }
 
     /**
      * This methode receives customer id, old password and new password, and updates customer's password if the old password is valid
-     * @param id
-     * @param oldPassword
-     * @param newPassword
+     * @param id user's id
+     * @param oldPassword user's old password
+     * @param newPassword user's new password
      */
     public void updatePassword(int id, String oldPassword,String newPassword) {
-        try {
 
-            Customer customer = customerRepo.findById(id).get();
-            if (passwordEncoder.matches(oldPassword, customer.getPassword())) {
-                customer.setPassword(passwordEncoder.encode(newPassword));
-                customerRepo.save(customer);
-                return;
+            Optional<Customer> customerOptional = customerRepo.findById(id);
+            if(customerOptional.isPresent()){
+                Customer customer = customerOptional.get();
+                if (passwordEncoder.matches(oldPassword, customer.getPassword())) {
+                    customer.setPassword(passwordEncoder.encode(newPassword));
+                    customerRepo.save(customer);
+                    return;
+                }
+                throw new InvalidParameterException("Password is not matching");
             }
-            throw new InvalidParameterException("Password is not matching");
-        }catch (NoSuchElementException e){
             throw new NoSuchElementException("User does not exist");
-        }
+
     }
 
     /**
@@ -106,8 +108,8 @@ public class CustomerService {
      * receives user id and device data
      * throws InvalidParameterException if device is already existing
      * returns device after creation data
-     * @param userId
-     * @param device
+     * @param userId user's id
+     * @param device device data
      * @return Device : device data after creation
      * @throws InvalidParameterException if the device is already existing
      */
@@ -115,9 +117,15 @@ public class CustomerService {
 
         List<Device> devices = deviceRepo.findDeviceByName(device.getName());
         if(devices.isEmpty()){
-            device.setCustomer(customerRepo.findById(userId).get());
-            device = deviceRepo.save(device);
-            return device;
+            Optional<Customer> customerOptional = customerRepo.findById(userId);
+            if(customerOptional.isPresent()){
+                device.setCustomer(customerOptional.get());
+                device = deviceRepo.save(device);
+                return device;
+            }
+            else {
+                throw new NoSuchElementException("User does not exist");
+            }
         }
         throw new InvalidParameterException("Device already existing");
 
@@ -126,40 +134,41 @@ public class CustomerService {
     /**
      * This methode is responsible for updating device fingerprint status
      * receives user'id, device id and fingerprint status
-     * @param userId
-     * @param deviceId
-     * @param fingerprintActivated
+     * @param userId user's id
+     * @param deviceId device id
+     * @param fingerprintActivated fingerprint status
      * @return Device : device data after updating
      * @throws InvalidParameterException if the device is not corresponding to he given user
      */
     public Device updateFingerprint(int userId, int deviceId, Boolean fingerprintActivated){
-        try{
-        Customer customer = customerRepo.findById(userId).get();
-        Device device = deviceRepo.findDeviceByIdAndAndCustomer(deviceId,customer);
-        if(device == null) throw new InvalidParameterException("Device id: "+deviceId+" is not corresponding to the given user: "+userId);
-        device.setFingerprintActivated(fingerprintActivated);
-        device = deviceRepo.save(device);
-        return device;
-        }catch (NoSuchElementException e ){
-            throw new NoSuchElementException("Cannot find user with id : "+userId);
+        Optional<Customer> customerOptional = customerRepo.findById(userId);
+        if(customerOptional.isPresent()){
+            Customer customer =customerOptional.get();
+            Device device = deviceRepo.findDeviceByIdAndAndCustomer(deviceId,customer);
+            if(device == null) throw new InvalidParameterException("Device id: "+deviceId+" is not corresponding to the given user: "+userId);
+            device.setFingerprintActivated(fingerprintActivated);
+            device = deviceRepo.save(device);
+            return device;
         }
+
+        throw new NoSuchElementException("Cannot find user with id : "+userId);
+
     }
 
     /**
      * this function receives a user's id and returns a list of the user's devices
-     * @param userId
+     * @param userId user's id
      * @return devices :  List of user's Devices
      * @throws NoSuchElementException if the user does not exit
      */
     public List<Device> userDevices(int userId){
-        try {
-
-            Customer customer = customerRepo.findById(userId).get();
-            List<Device> devices = deviceRepo.getDeviceByCustomer(customer);
-            return devices;
-        }catch (NoSuchElementException e){
-            throw new NoSuchElementException("Could not find user with id = "+userId);
+        Optional<Customer> customerOptional = customerRepo.findById(userId);
+        if(customerOptional.isPresent()){
+            Customer customer = customerOptional.get();
+            return deviceRepo.getDeviceByCustomer(customer);
         }
+        throw new NoSuchElementException("Could not find user with id = "+userId);
+
     }
 
 }
