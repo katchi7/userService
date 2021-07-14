@@ -3,6 +3,7 @@ package ma.tna.ebanking.userservice.controllers;
 import ma.tna.ebanking.userservice.dtos.CustomerDto;
 import ma.tna.ebanking.userservice.dtos.DeviceDto;
 import ma.tna.ebanking.userservice.dtos.PasswordDto;
+import ma.tna.ebanking.userservice.model.Image;
 import ma.tna.ebanking.userservice.services.CustomerService;
 import ma.tna.ebanking.userservice.model.Customer;
 import ma.tna.ebanking.userservice.model.Device;
@@ -17,10 +18,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import javax.validation.Valid;
 import java.io.InvalidObjectException;
 import java.security.InvalidParameterException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 @RestController
 @RequestMapping("/customer")
@@ -141,7 +139,12 @@ public class CustomerController {
     @PostMapping("/{id}/image")
     public HttpEntity<CustomerDto> updateUserImage(@PathVariable("id") Integer userId, @RequestBody Map<String,String> requestBody){
         String image = requestBody.get(IMAGE_FIELD);
-        return null;
+        return ResponseEntity.ok(new CustomerDto(customerService.updateUserImage(image,userId)));
+    }
+    @GetMapping("/{id}/image")
+    public HttpEntity<Image> getCustomerImage(@PathVariable("id") int userId){
+        HashMap<String,String> map = new HashMap<>();
+        return ResponseEntity.ok(customerService.getUserImage(userId));
     }
 
     /**

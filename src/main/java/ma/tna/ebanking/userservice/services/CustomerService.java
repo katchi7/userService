@@ -2,6 +2,7 @@ package ma.tna.ebanking.userservice.services;
 
 import lombok.extern.log4j.Log4j2;
 import ma.tna.ebanking.userservice.dtos.CustomerDto;
+import ma.tna.ebanking.userservice.model.Image;
 import ma.tna.ebanking.userservice.repositories.CustomerRepo;
 import ma.tna.ebanking.userservice.repositories.DeviceRepo;
 import ma.tna.ebanking.userservice.model.Customer;
@@ -75,7 +76,6 @@ public class CustomerService {
                 customer.setActive((active==null)?customer.isActive():active);
                 customer.setDisponibilityStart(("".equals(disponibilityStart)?customer.getDisponibilityStart():disponibilityStart));
                 customer.setDisponibilityEnd(("".equals(disponibilityEnd)?customer.getDisponibilityEnd():disponibilityEnd));
-                customer.setImage("".equals(image)?customer.getImage():image);
                 customer.setAllowEmails(allowEmails==null?customer.isAllowEmails():allowEmails);
                 customer.setLanguage("".equals(lang)?customer.getLanguage():new Language(lang,null));
                 customer = customerRepo.save(customer);
@@ -173,6 +173,19 @@ public class CustomerService {
         }
         throw new NoSuchElementException(USER_NOT_FOUND);
 
+    }
+
+    public Customer updateUserImage(String image,int userId) {
+        Optional<Customer> customerOptional = customerRepo.findById(userId);
+        if(customerOptional.isPresent()){
+            customerRepo.updateCustomerImage(image,userId);
+            return customerOptional.get();
+        }
+        throw new NoSuchElementException(USER_NOT_FOUND);
+
+    }
+    public Image getUserImage(int userId){
+        return customerRepo.findCustomerImage(userId);
     }
 
 }

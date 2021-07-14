@@ -19,7 +19,7 @@ import java.util.List;
 public class CustomerDto {
 
     public CustomerDto(Customer customer){
-        this(customer.getId(),customer.getPassword(),customer.getPhone(),customer.getEmail(),customer.isActive(),customer.getDisponibilityStart(),customer.getDisponibilityEnd(),customer.getImage(),customer.isAllowEmails(),new LanguageDto(customer.getLanguage()),null);
+        this(customer.getId(),customer.getPassword(),customer.getPhone(),customer.getEmail(),customer.isActive(),customer.getDisponibilityStart(),customer.getDisponibilityEnd(),customer.isAllowEmails(),new LanguageDto(customer.getLanguage()),null);
         if(customer.getDevices()!=null){
             List<DeviceDto> deviceDtos = new ArrayList<>();
             for (Device device : customer.getDevices()) {
@@ -45,7 +45,6 @@ public class CustomerDto {
     private boolean active = true;
     private String disponibilityStart = "08:00";
     private String  disponibilityEnd = "23:00";
-    private String image;
     private boolean allowEmails= true;
     private LanguageDto language;
     private List<DeviceDto> devices;
@@ -57,6 +56,6 @@ public class CustomerDto {
                 devices1.add(device.asDevice());
             }
         }
-        return new Customer(id,password,phone,email,active,disponibilityStart,disponibilityEnd,image,allowEmails,language.asLanguage(),devices1);
+        return new Customer(id,password,phone,email,active,disponibilityStart,disponibilityEnd,allowEmails,language.asLanguage(),devices1);
     }
 }

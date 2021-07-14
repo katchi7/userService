@@ -33,8 +33,6 @@ public class Customer {
     private String disponibilityStart;
     @Column(name = "CUSTOMER_DISPONIBILITY_END")
     private String  disponibilityEnd;
-    @Column(name = "CUSTOMER_IMAGE")
-    private String image;
     @Column(name = "CUSTOMER_ALLOW_EMAILS")
     private boolean allowEmails;
     @ManyToOne(targetEntity = Language.class,fetch = FetchType.LAZY)
