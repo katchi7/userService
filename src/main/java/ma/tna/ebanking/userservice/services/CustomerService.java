@@ -18,7 +18,7 @@ import java.util.Optional;
 @Log4j2
 @Service
 public class CustomerService {
-    private static final String USER_NOT_FOUND = "User does not exist";
+    public static final String USER_NOT_FOUND = "User does not exist";
     private final CustomerRepo customerRepo;
     private final BCryptPasswordEncoder passwordEncoder;
     private final DeviceRepo deviceRepo;

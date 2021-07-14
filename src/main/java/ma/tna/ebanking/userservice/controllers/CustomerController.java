@@ -4,7 +4,7 @@ import ma.tna.ebanking.userservice.dtos.CustomerDto;
 import ma.tna.ebanking.userservice.dtos.DeviceDto;
 import ma.tna.ebanking.userservice.dtos.PasswordDto;
 import ma.tna.ebanking.userservice.services.CustomerService;
-import ma.tna.ebanking.userservice.model.Customer;;
+import ma.tna.ebanking.userservice.model.Customer;
 import ma.tna.ebanking.userservice.model.Device;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpEntity;
@@ -19,6 +19,7 @@ import java.io.InvalidObjectException;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 @RestController
@@ -26,6 +27,7 @@ import java.util.NoSuchElementException;
 @Log4j2
 public class CustomerController {
     private final CustomerService customerService;
+    private static final String IMAGE_FIELD = "image";
     public CustomerController(CustomerService customerService) {
         this.customerService = customerService;
     }
@@ -52,7 +54,7 @@ public class CustomerController {
      * @throws InvalidParameterException if th user doesn't exist
      */
     @GetMapping("/{id}")
-    public HttpEntity<CustomerDto> getUserById(@PathVariable(value = "id",required = true) int id ){
+    public HttpEntity<CustomerDto> getUserById(@PathVariable(value = "id") int id ){
         CustomerDto dto = customerService.getCustomerById(id);
         if(dto !=null){
             return ResponseEntity.ok(dto);
@@ -66,8 +68,8 @@ public class CustomerController {
      * stores the user or throws an InvalidObjectException if the data is not valid
      * @param customerDto object containing received data
      * @param errors object containing bean validation errors
-     * @return
-     * @throws InvalidObjectException
+     * @return HttpResponseEntity that contains created customer data
+     * @throws InvalidObjectException if the request body is invalid
      */
     @PostMapping(value = "",consumes = {"application/json"})
     public HttpEntity<CustomerDto> createCustomer(@RequestBody @Valid CustomerDto customerDto, Errors errors) throws InvalidObjectException {
@@ -91,13 +93,13 @@ public class CustomerController {
     /**
      * This methode receives an http Put request containing various parameters
      * it updates the given data and sends the new user data back to the user
-     * @param customerId
-     * @param active
-     * @param disponibilityStart
-     * @param disponibilityEnd
-     * @param image
-     * @param allowEmails
-     * @param language
+     * @param customerId customer's id
+     * @param active customer's activity status
+     * @param disponibilityStart customer's disponibility start time
+     * @param disponibilityEnd customer's disponibility end time
+     * @param image customer's image
+     * @param allowEmails defines if customze allows us to send emials
+     * @param language customer's language
      * @return HttpResponseEntity containing new Data
      */
     @PutMapping("/{id}")
@@ -112,13 +114,12 @@ public class CustomerController {
         return ResponseEntity.ok(new CustomerDto(customerService.updateCustomer(customerId,active,disponibilityStart,disponibilityEnd,image,allowEmails,language)));
 
     }
-
     /**
      * This methode receives a post http request containing user's id in path variables and user's old and new password in the body
      * and returns a ResponseEntity with the status OK if the password was update, throws an InvalidParameter if the parameters are invalid
-     * @param user_id
-     * @param password
-     * @param errors
+     * @param user_id user's id
+     * @param password user password
+     * @param errors object that contains bean validation errors
      * @return an HttpResponseEntity with the OK status if the password was updated
      */
     @PostMapping(value = "/{id}/password",consumes = {"application/json"})
@@ -134,6 +135,13 @@ public class CustomerController {
         }
         customerService.updatePassword(user_id,password.getOldPassword(),password.getNewPassword());
         return ResponseEntity.ok("Password Updated");
+    }
+
+
+    @PostMapping("/{id}/image")
+    public HttpEntity<CustomerDto> updateUserImage(@PathVariable("id") Integer userId, @RequestBody Map<String,String> requestBody){
+        String image = requestBody.get(IMAGE_FIELD);
+        return null;
     }
 
     /**
@@ -189,6 +197,8 @@ public class CustomerController {
         }
         return ResponseEntity.ok(devices_);
     }
+
+
 
     /**
      * This methode is responsible for handling InvalidParameterExceptions
