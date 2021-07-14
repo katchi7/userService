@@ -32,7 +32,7 @@ pipeline {
                 dir("${deployPath}") {
                       sh "pwd"
                       sh "JENKINS_NODE_COOKIE=dontKillMe nohup ${javaHome}/jre/bin/java -jar -Xms128m -Xmx512m ${jarName} & "
-                      sh "timeout 10 tail -f logs/application-logger.log || exit 0"
+                      sh "timeout 15 tail -f logs/application-logger.log || exit 0"
                       sh "jps -l | grep ${jarName}"
                 }
             } 
