@@ -1,5 +1,6 @@
 package ma.tna.ebanking.userservice.services;
 
+import lombok.extern.log4j.Log4j2;
 import ma.tna.ebanking.userservice.dtos.CustomerDto;
 import ma.tna.ebanking.userservice.repositories.CustomerRepo;
 import ma.tna.ebanking.userservice.repositories.DeviceRepo;
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
+@Log4j2
 @Service
 public class CustomerService {
     private static final String USER_NOT_FOUND = "User does not exist";
@@ -50,6 +52,7 @@ public class CustomerService {
      */
     public Customer createCustomer(Customer customer){
         customer.setPassword(passwordEncoder.encode(customer.getPassword()));
+        log.info(customer.getLanguage());
         customer = customerRepo.save(customer);
         return customer;
     }
