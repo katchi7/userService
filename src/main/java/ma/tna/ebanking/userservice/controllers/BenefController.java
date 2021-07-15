@@ -58,7 +58,7 @@ public class BenefController {
      * @return HttpResponseEntity containing the error message
      */
     @ExceptionHandler(NoSuchElementException.class)
-    private HttpEntity<String> NoSuchElementExceptionHandler(NoSuchElementException e){
+    private HttpEntity<String> noSuchElementExceptionHandler(NoSuchElementException e){
         return ResponseEntity.badRequest().body(e.getMessage());
     }
 
@@ -68,7 +68,7 @@ public class BenefController {
      * @return HttpResponseEntity containing the error message
      */
     @ExceptionHandler(InvalidParameterException.class)
-    private HttpEntity<String> InvalidParameterExceptionHandler(InvalidParameterException e){
+    private HttpEntity<String> invalidParameterExceptionHandler(InvalidParameterException e){
         return ResponseEntity.badRequest().body(e.getMessage());
     }
 }

@@ -3,7 +3,6 @@ package ma.tna.ebanking.userservice.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import javax.persistence.*;
 

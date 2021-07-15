@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.InvalidParameterException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 @RestController
@@ -22,12 +24,14 @@ public class OtpController {
     /**
      * This methode is responsible for receiving request to generate otp
      * @param userId the user's id
-     * @return HttpResponseEntity containing otp data
+     * @return HttpResponseEntity containing a message
      */
     @PostMapping("/{user_id}/otp")
-    public HttpEntity<OtpDto> createOtp(@PathVariable("user_id") Integer userId){
-        Otp otp = otpService.createOtp(userId);
-        return ResponseEntity.ok(new OtpDto(otp));
+    public HttpEntity<Map<String,String>> createOtp(@PathVariable("user_id") Integer userId){
+        otpService.createOtp(userId);
+        HashMap<String,String> message = new HashMap<>();
+        message.put("message","Otp created");
+        return ResponseEntity.ok(message);
     }
 
     /**
@@ -48,12 +52,12 @@ public class OtpController {
     }
 
     @ExceptionHandler(InvalidParameterException.class)
-    public HttpEntity<String>InvalidParameterExceptionHandler(InvalidParameterException e){
+    public HttpEntity<String> invalidParameterExceptionHandler(InvalidParameterException e){
         return ResponseEntity.badRequest().body(e.getMessage());
     }
 
     @ExceptionHandler(NoSuchElementException.class)
-    public HttpEntity<String> NoSuchElementExceptionHandler(NoSuchElementException e){
+    public HttpEntity<String> noSuchElementExceptionHandler(NoSuchElementException e){
         return ResponseEntity.badRequest().body(e.getMessage());
     }
 }

@@ -11,7 +11,6 @@ import org.springframework.stereotype.Repository;
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
-
 @Repository
 public interface CustomerRepo extends CrudRepository<Customer,Integer> {
     @Override

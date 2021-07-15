@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Import;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import springfox.documentation.spring.data.rest.configuration.SpringDataRestConfiguration;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
-
 @SpringBootApplication
 @EnableWebMvc
 @EnableSwagger2

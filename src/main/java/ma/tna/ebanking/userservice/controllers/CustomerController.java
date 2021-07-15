@@ -75,9 +75,9 @@ public class CustomerController {
         log.info(customerDto);
         if(errors.hasErrors()){
             List<ObjectError> errorsobjs = errors.getAllErrors();
-            String message = "";
+            StringBuilder message = new StringBuilder();
             for (ObjectError errorsobj : errorsobjs) {
-                message += "\n "+errorsobj.getObjectName()+" : "+ errorsobj.getDefaultMessage();
+                message.append("\n ").append(errorsobj.getObjectName()).append(" : ").append(errorsobj.getDefaultMessage());
 
             }
             throw new InvalidObjectException("Invalid request body :"+message);
@@ -121,17 +121,17 @@ public class CustomerController {
      * @return an HttpResponseEntity with the OK status if the password was updated
      */
     @PostMapping(value = "/{id}/password",consumes = {"application/json"})
-    public HttpEntity<String> updatePassword(@PathVariable("id") int user_id,@RequestBody @Valid PasswordDto password,Errors errors){
+    public HttpEntity<String> updatePassword(@PathVariable("id") int userId,@RequestBody @Valid PasswordDto password,Errors errors){
         if(errors.hasErrors()){
             List<ObjectError> errorsobjs = errors.getAllErrors();
-            String message = "";
+            StringBuilder message = new StringBuilder();
             for (ObjectError errorsobj : errorsobjs) {
-                message += "\n "+errorsobj.getObjectName()+" : "+ errorsobj.getDefaultMessage();
+                message.append("\n ").append(errorsobj.getObjectName()).append(" : ").append(errorsobj.getDefaultMessage());
 
             }
             throw new InvalidParameterException("Request fields are not valid :  "+message);
         }
-        customerService.updatePassword(user_id,password.getOldPassword(),password.getNewPassword());
+        customerService.updatePassword(userId,password.getOldPassword(),password.getNewPassword());
         return ResponseEntity.ok("Password Updated");
     }
 
@@ -155,7 +155,6 @@ public class CustomerController {
      */
     @GetMapping("/{id}/image")
     public HttpEntity<Image> getCustomerImage(@PathVariable("id") int userId){
-        HashMap<String,String> map = new HashMap<>();
         return ResponseEntity.ok(customerService.getUserImage(userId));
     }
 
@@ -172,9 +171,9 @@ public class CustomerController {
     public HttpEntity<DeviceDto> createDevice(@PathVariable("id") int userId,@RequestBody @Valid DeviceDto device,Errors errors) {
         if(errors.hasErrors()){
             List<ObjectError> errorsobjs = errors.getAllErrors();
-            String message = "";
+            StringBuilder message = new StringBuilder();
             for (ObjectError errorsobj : errorsobjs) {
-                message += "\n "+errorsobj.getObjectName()+" : "+ errorsobj.getDefaultMessage();
+                message.append("\n ").append(errorsobj.getObjectName()).append(" : ").append(errorsobj.getDefaultMessage());
 
             }
             throw  new InvalidParameterException("Invalid device data "+message);
@@ -221,7 +220,7 @@ public class CustomerController {
      * @return HttpResponseEntity containing exception message
      */
     @ExceptionHandler(InvalidParameterException.class)
-    public HttpEntity<String> InvalidParameterExceptionHandler(InvalidParameterException e){
+    public HttpEntity<String> invalidParameterExceptionHandler(InvalidParameterException e){
         return ResponseEntity.badRequest().body(e.getMessage());
     }
 
@@ -231,7 +230,7 @@ public class CustomerController {
      * @return HttpResponseEntity containing exception message
      */
     @ExceptionHandler(InvalidObjectException.class)
-    public HttpEntity<String> InvalidObjectExceptionHandler(InvalidObjectException e) {
+    public HttpEntity<String> invalidObjectExceptionHandler(InvalidObjectException e) {
         return ResponseEntity.badRequest().body(e.getMessage());
     }
 
@@ -241,7 +240,7 @@ public class CustomerController {
      * @return HttpResponseEntity containing exception message
      */
     @ExceptionHandler(NoSuchElementException.class)
-    public HttpEntity<String>  NoSuchElementExceptionHandler(NoSuchElementException e){
+    public HttpEntity<String>  noSuchElementExceptionHandler(NoSuchElementException e){
         return ResponseEntity.badRequest().body(e.getMessage());
     }
 
