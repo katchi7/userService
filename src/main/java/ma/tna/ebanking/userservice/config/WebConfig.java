@@ -1,7 +1,6 @@
 package ma.tna.ebanking.userservice.config;
 
 import lombok.extern.log4j.Log4j2;
-import ma.tna.ebanking.userservice.annotations.CustomController;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

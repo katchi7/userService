@@ -1,6 +1,6 @@
 package ma.tna.ebanking.userservice.controllers;
 
-import ma.tna.ebanking.userservice.annotations.CustomController;
+
 import ma.tna.ebanking.userservice.dtos.OtpDto;
 import ma.tna.ebanking.userservice.services.OtpService;
 import org.springframework.http.HttpEntity;
@@ -13,7 +13,6 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 
 @RestController
-@CustomController
 @RequestMapping("/customer")
 public class OtpController {
     private final OtpService otpService;
