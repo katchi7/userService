@@ -53,7 +53,7 @@ public class BenefController {
         return ResponseEntity.ok(benefDto);
     }
 
-    @PostMapping("/{benef_id}")
+    @PutMapping("/{benef_id}")
     public HttpEntity<BenefDto> updateBenef(@PathVariable("benef_id") Integer benefId,
                                             @RequestBody @Valid BenefUpdateDto benefDto, Errors errors){
         benefDto.validate(errors);
