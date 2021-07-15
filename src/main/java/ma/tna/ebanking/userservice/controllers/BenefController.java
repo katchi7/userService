@@ -1,5 +1,6 @@
 package ma.tna.ebanking.userservice.controllers;
 
+import ma.tna.ebanking.userservice.annotations.CustomController;
 import ma.tna.ebanking.userservice.dtos.BenefDto;
 import ma.tna.ebanking.userservice.dtos.BenefUpdateDto;
 import ma.tna.ebanking.userservice.model.Benef;
@@ -16,6 +17,7 @@ import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @RestController
+@CustomController
 @RequestMapping("/benef")
 public class BenefController {
     private final BenefService benefService;

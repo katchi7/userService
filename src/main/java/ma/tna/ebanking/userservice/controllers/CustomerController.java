@@ -1,5 +1,6 @@
 package ma.tna.ebanking.userservice.controllers;
 
+import ma.tna.ebanking.userservice.annotations.CustomController;
 import ma.tna.ebanking.userservice.dtos.CustomerDto;
 import ma.tna.ebanking.userservice.dtos.DeviceDto;
 import ma.tna.ebanking.userservice.dtos.PasswordDto;
@@ -21,6 +22,7 @@ import java.security.InvalidParameterException;
 import java.util.*;
 
 @RestController
+@CustomController
 @RequestMapping("/customer")
 @Log4j2
 public class CustomerController {
