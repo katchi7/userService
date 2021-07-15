@@ -12,6 +12,7 @@ import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import java.security.SecureRandom;
 import java.util.Random;
 
 @Configuration
@@ -32,7 +33,7 @@ public class WebConfig implements WebMvcConfigurer {
     }
     @Bean
     public Random randomGenerator(){
-        return new Random();
+        return new SecureRandom();
     }
 
 }
