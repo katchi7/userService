@@ -175,6 +175,13 @@ public class CustomerService {
 
     }
 
+    /**
+     * this methode is responsible for updating a customer's image
+     * @param image User's image in a Base64 format
+     * @param userId User's id
+     * @return The modified customer
+     * @throws NoSuchElementException if the customer does not exist
+     */
     public Customer updateUserImage(String image,int userId) {
         Optional<Customer> customerOptional = customerRepo.findById(userId);
         if(customerOptional.isPresent()){
@@ -184,6 +191,12 @@ public class CustomerService {
         throw new NoSuchElementException(USER_NOT_FOUND);
 
     }
+
+    /**
+     * this methode is responsible for loading customer's image
+     * @param userId customer id
+     * @return customer image in a Base64 format
+     */
     public Image getUserImage(int userId){
         return customerRepo.findCustomerImage(userId);
     }

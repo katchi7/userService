@@ -136,11 +136,23 @@ public class CustomerController {
     }
 
 
+    /**
+     * This methode receives an image in a Base64 format from the user and passes it to customerService
+     * @param userId user's id
+     * @param requestBody JSon object containing the image in a Base64 format
+     * @return HttpResponseEntity containing customer data
+     */
     @PostMapping("/{id}/image")
     public HttpEntity<CustomerDto> updateUserImage(@PathVariable("id") Integer userId, @RequestBody Map<String,String> requestBody){
         String image = requestBody.get(IMAGE_FIELD);
         return ResponseEntity.ok(new CustomerDto(customerService.updateUserImage(image,userId)));
     }
+
+    /**
+     * this methode is responsible for gtting the user's image
+     * @param userId the user's id
+     * @return ResponseEntity containing the image in a Base64 format
+     */
     @GetMapping("/{id}/image")
     public HttpEntity<Image> getCustomerImage(@PathVariable("id") int userId){
         HashMap<String,String> map = new HashMap<>();
