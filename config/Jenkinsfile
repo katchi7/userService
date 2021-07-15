@@ -1,6 +1,6 @@
 def jarName     = "userservice-0.0.1-SNAPSHOT.jar"
 def jarPath     = "/home/aafif/upload/tools/repo/ma/tna/ebanking/userservice/0.0.1-SNAPSHOT/${jarName}"
-def deployPath  = "/home/aafif/upload/microService/ebanking/userservice/"
+def deployPath  = "/home/aafif/upload/microService/ebanking/userService/"
 
 pipeline { 
     agent any  
