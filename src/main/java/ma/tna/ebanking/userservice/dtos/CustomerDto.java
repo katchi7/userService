@@ -1,6 +1,7 @@
 package ma.tna.ebanking.userservice.dtos;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import ma.tna.ebanking.userservice.model.Customer;
 import ma.tna.ebanking.userservice.model.Device;
 import lombok.AllArgsConstructor;
@@ -35,6 +36,7 @@ public class CustomerDto {
     @NotNull(message = "Password should not be null")
     @Size(min = 5,message = "Password length should be > 5")
     @JsonBackReference
+    @JsonIgnore
     private String password;
     @NotNull
     @Pattern(regexp = "^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\\s\\./0-9]*$",message = "Rejected phone value")

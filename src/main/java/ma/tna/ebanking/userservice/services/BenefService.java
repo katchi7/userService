@@ -38,4 +38,17 @@ public class BenefService {
     public void deleteBenef(int benefId){
         benefRepo.deleteById(benefId);
     }
+    public Benef updateBenef(Benef benef){
+        Optional<Benef> benefOptional = benefRepo.findById(benef.getId());
+        if(benefOptional.isPresent()){
+            Benef benef1 = benefOptional.get();
+            benef1.setEmail("".equals(benef.getEmail())?benef1.getEmail():benef.getEmail());
+            benef1.setFirstName("".equals(benef.getFirstName())?benef1.getFirstName(): benef.getFirstName());
+            benef1.setRib("".equals(benef.getRib())?benef1.getRib():benef.getRib());
+            benef1.setLastName("".equals(benef.getLastName())?benef1.getLastName():benef.getLastName());
+            benef1.setPhone("".equals(benef.getPhone())?benef1.getPhone():benef.getPhone());
+            return benefRepo.save(benef1);
+        }
+        throw new NoSuchElementException("Benef deos not exist");
+    }
 }

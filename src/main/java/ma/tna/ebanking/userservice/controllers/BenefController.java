@@ -1,6 +1,7 @@
 package ma.tna.ebanking.userservice.controllers;
 
 import ma.tna.ebanking.userservice.dtos.BenefDto;
+import ma.tna.ebanking.userservice.dtos.BenefUpdateDto;
 import ma.tna.ebanking.userservice.model.Benef;
 import ma.tna.ebanking.userservice.services.BenefService;
 import org.springframework.http.HttpEntity;
@@ -50,6 +51,14 @@ public class BenefController {
         benefDto = new BenefDto(benefService.createBenef(benefDto.asBenef()));
 
         return ResponseEntity.ok(benefDto);
+    }
+
+    @PostMapping("/{benef_id}")
+    public HttpEntity<BenefDto> updateBenef(@PathVariable("benef_id") Integer benefId,
+                                            @RequestBody @Valid BenefUpdateDto benefDto, Errors errors){
+        benefDto.validate(errors);
+        benefDto.setId(benefId);
+        return ResponseEntity.ok(new BenefDto(benefService.updateBenef(benefDto.asBenef())));
     }
 
     @DeleteMapping("/{benef_id}")
