@@ -14,7 +14,7 @@
     <name>userService</name>
     <description>Demo project for Spring Boot</description>
     <properties>
-        <lombok.version>1.18.16</lombok.version>
+        <loSmbok.version>1.18.16</loSmbok.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
