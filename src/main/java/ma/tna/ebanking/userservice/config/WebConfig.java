@@ -12,6 +12,8 @@ import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import java.util.Random;
+
 @Configuration
 @Log4j2
 public class WebConfig implements WebMvcConfigurer {
@@ -27,6 +29,10 @@ public class WebConfig implements WebMvcConfigurer {
     @Bean
     public BCryptPasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
+    }
+    @Bean
+    public Random randomGenerator(){
+        return new Random();
     }
 
 }

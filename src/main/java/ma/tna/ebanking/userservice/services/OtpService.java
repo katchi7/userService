@@ -14,9 +14,10 @@ import java.util.Random;
 public class OtpService {
     private static final Integer OTP_EXPIRATION_TIME = 5;
     private final CustomerRepo customerRepo;
-
-    public OtpService(CustomerRepo customerRepo) {
+    private final Random random;
+    public OtpService(CustomerRepo customerRepo, Random random) {
         this.customerRepo = customerRepo;
+        this.random = random;
     }
 
     /**
@@ -26,7 +27,6 @@ public class OtpService {
      * @throws NoSuchElementException if the user does not exist
      */
     public Otp createOtp(int userId){
-        Random random = new Random();
         int otpInt = 100000 + random.nextInt(800000);
         LocalDateTime localDateTime = LocalDateTime.now().plusMinutes(OTP_EXPIRATION_TIME);
         Otp otp = new Otp(userId,""+otpInt,localDateTime);
