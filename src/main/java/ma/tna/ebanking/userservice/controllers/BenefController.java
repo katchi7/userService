@@ -52,6 +52,12 @@ public class BenefController {
         return ResponseEntity.ok(benefDto);
     }
 
+    @DeleteMapping("/{benef_id}")
+    public HttpEntity<String> deleteBenef(@PathVariable("benef_id") Integer benefId){
+        benefService.deleteBenef(benefId);
+        return ResponseEntity.ok("Benef deleted");
+    }
+
     /**
      * Handles NoSuchElementExceptions
      * @param e the thrown exception

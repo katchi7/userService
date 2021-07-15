@@ -33,7 +33,9 @@ public class BenefService {
             return benefRepo.save(benef);
         }
         throw new NoSuchElementException(CustomerService.USER_NOT_FOUND);
+    }
 
-
+    public void deleteBenef(int benefId){
+        benefRepo.deleteById(benefId);
     }
 }
