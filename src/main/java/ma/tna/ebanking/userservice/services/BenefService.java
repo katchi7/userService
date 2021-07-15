@@ -4,10 +4,7 @@ import ma.tna.ebanking.userservice.model.Benef;
 import ma.tna.ebanking.userservice.model.Customer;
 import ma.tna.ebanking.userservice.repositories.BenefRepo;
 import ma.tna.ebanking.userservice.repositories.CustomerRepo;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.util.List;
 import java.util.NoSuchElementException;
