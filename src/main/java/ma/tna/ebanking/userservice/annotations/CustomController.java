@@ -1,4 +1,5 @@
 package ma.tna.ebanking.userservice.annotations;
 
-public @interface CustomController {
+
+public @interface CustomController  {
 }

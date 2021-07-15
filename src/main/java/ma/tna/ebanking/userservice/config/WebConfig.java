@@ -22,7 +22,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void configurePathMatch(PathMatchConfigurer configurer) {
         log.info(contextPath);
-        configurer.addPathPrefix(contextPath, HandlerTypePredicate.forAnnotation(CustomController.class));
+        configurer.addPathPrefix(contextPath, HandlerTypePredicate.forAnnotation(RestController.class));
     }
 
     @Bean
