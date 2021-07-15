@@ -115,7 +115,7 @@ public class CustomerController {
     /**
      * This methode receives a post http request containing user's id in path variables and user's old and new password in the body
      * and returns a ResponseEntity with the status OK if the password was update, throws an InvalidParameter if the parameters are invalid
-     * @param user_id user's id
+     * @param userId user's id
      * @param password user password
      * @param errors object that contains bean validation errors
      * @return an HttpResponseEntity with the OK status if the password was updated
@@ -205,11 +205,11 @@ public class CustomerController {
     @GetMapping("/{user_id}/device")
     public HttpEntity<List<DeviceDto>> getUserDevices(@PathVariable("user_id") int userId){
         List<Device> devices = customerService.userDevices(userId);
-        List<DeviceDto> devices_ = new ArrayList<>();
+        List<DeviceDto> devices1 = new ArrayList<>();
         for (Device device : devices) {
-            devices_.add(new DeviceDto(device));
+            devices1.add(new DeviceDto(device));
         }
-        return ResponseEntity.ok(devices_);
+        return ResponseEntity.ok(devices1);
     }
 
 
@@ -250,7 +250,7 @@ public class CustomerController {
      * @return HttpResponseEntity containing exception message
      */
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
-    public HttpEntity<String> MethodArgumentTypeMismatchExceptionHandler(MethodArgumentTypeMismatchException e){
+    public HttpEntity<String> methodArgumentTypeMismatchExceptionHandler(MethodArgumentTypeMismatchException e){
         return ResponseEntity.badRequest().body(e.getMessage());
     }
 

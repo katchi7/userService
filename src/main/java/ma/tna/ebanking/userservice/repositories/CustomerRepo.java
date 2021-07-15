@@ -21,7 +21,7 @@ public interface CustomerRepo extends CrudRepository<Customer,Integer> {
 
     @Transactional
     @Modifying
-    @Query("UPDATE Image as i set i.image = ?1 where i.id = ?2")
+    @Query("UPDATE Image as i set i.imageBase64 = ?1 where i.id = ?2")
     void updateCustomerImage(String image,int id);
 
     @Query("SELECT image from Image as image where image.id = ?1")
@@ -32,6 +32,6 @@ public interface CustomerRepo extends CrudRepository<Customer,Integer> {
 
     @Transactional
     @Modifying
-    @Query("UPDATE Otp as o set o.otp = ?1, o.otpExp = ?2 WHERE o.id = ?3")
+    @Query("UPDATE Otp as o set o.otpStr = ?1, o.otpExp = ?2 WHERE o.id = ?3")
     int saveOtp( String otp, LocalDateTime dateTime,int id);
 }

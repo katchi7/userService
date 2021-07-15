@@ -19,7 +19,7 @@ public class Otp {
     private int id;
 
     @Column(name = "CUSTOMER_OTP")
-    private String otp;
+    private String otpStr;
     @Column(name = "CUSTOMER_OTP_EXP")
     private LocalDateTime otpExp;
 }

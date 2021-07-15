@@ -17,5 +17,5 @@ public class Image {
     @Column(name = "CUSTOMER_ID")
     private int id;
     @Column(name = "CUSTOMER_IMAGE")
-    private String image;
+    private String imageBase64;
 }

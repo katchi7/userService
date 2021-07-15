@@ -30,7 +30,7 @@ public class OtpService {
         int otpInt = 100000 + random.nextInt(800000);
         LocalDateTime localDateTime = LocalDateTime.now().plusMinutes(OTP_EXPIRATION_TIME);
         Otp otp = new Otp(userId,""+otpInt,localDateTime);
-        int updated = customerRepo.saveOtp(otp.getOtp(),otp.getOtpExp(),otp.getId());
+        int updated = customerRepo.saveOtp(otp.getOtpStr(),otp.getOtpExp(),otp.getId());
         if(updated > 0) return otp;
         throw new NoSuchElementException(CustomerService.USER_NOT_FOUND);
     }
@@ -60,7 +60,7 @@ public class OtpService {
     public Otp validateOtp(int id,String otpStr){
         Otp otp = customerRepo.findCustomerOtp(id);
         if(otp!=null){
-            if(otpStr.equals(otp.getOtp())){
+            if(otpStr.equals(otp.getOtpStr())){
                 return otp;
             }
             else

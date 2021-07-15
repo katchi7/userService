@@ -1,7 +1,6 @@
 package ma.tna.ebanking.userservice.controllers;
 
 import ma.tna.ebanking.userservice.dtos.OtpDto;
-import ma.tna.ebanking.userservice.model.Otp;
 import ma.tna.ebanking.userservice.services.OtpService;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
@@ -45,7 +44,6 @@ public class OtpController {
         return ResponseEntity.ok(new OtpDto(otpService.validateOtp(userId,otp)));
     }
 
-    //TODO remove this methode after implementing an sms sender service
     @GetMapping("/{user_id}/otp")
     public HttpEntity<OtpDto> getCustomerOtp(@PathVariable("user_id") int userId){
         return ResponseEntity.ok(new OtpDto(otpService.getUserOtp(userId)));

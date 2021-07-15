@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class OtpDto {
     public OtpDto(Otp otp){
-        this(otp.getId(),otp.getOtp(),otp.getOtpExp());
+        this(otp.getId(),otp.getOtpStr(),otp.getOtpExp());
     }
     private int id;
     private String otp;
