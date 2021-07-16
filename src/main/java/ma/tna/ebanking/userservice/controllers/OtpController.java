@@ -50,6 +50,7 @@ public class OtpController {
         return ResponseEntity.ok(new OtpDto(otpService.getUserOtp(userId)));
     }
 
+    /*
     @ExceptionHandler(InvalidParameterException.class)
     public HttpEntity<String> invalidParameterExceptionHandler(InvalidParameterException e){
         return ResponseEntity.badRequest().body(e.getMessage());
@@ -59,4 +60,6 @@ public class OtpController {
     public HttpEntity<String> noSuchElementExceptionHandler(NoSuchElementException e){
         return ResponseEntity.badRequest().body(e.getMessage());
     }
+
+     */
 }

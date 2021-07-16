@@ -212,47 +212,27 @@ public class CustomerController {
         return ResponseEntity.ok(devices1);
     }
 
-
-
-    /**
-     * This methode is responsible for handling InvalidParameterExceptions
-     * @param e thrown exception
-     * @return HttpResponseEntity containing exception message
-     */
+    /*
     @ExceptionHandler(InvalidParameterException.class)
     public HttpEntity<String> invalidParameterExceptionHandler(InvalidParameterException e){
         return ResponseEntity.badRequest().body(e.getMessage());
     }
 
-    /**
-     * This methode is responsible for handling InvalidObjectException
-     * @param e thrown exception
-     * @return HttpResponseEntity containing exception message
-     */
     @ExceptionHandler(InvalidObjectException.class)
     public HttpEntity<String> invalidObjectExceptionHandler(InvalidObjectException e) {
         return ResponseEntity.badRequest().body(e.getMessage());
     }
 
-    /**
-     * This methode is responsible for handling NoSuchElementException
-     * @param e thrown exception
-     * @return HttpResponseEntity containing exception message
-     */
     @ExceptionHandler(NoSuchElementException.class)
     public HttpEntity<String>  noSuchElementExceptionHandler(NoSuchElementException e){
         return ResponseEntity.badRequest().body(e.getMessage());
     }
 
-    /**
-     * This methode is responsible for handling MethodArgumentTypeMismatchException
-     * @param e thrown exception
-     * @return HttpResponseEntity containing exception message
-     */
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public HttpEntity<String> methodArgumentTypeMismatchExceptionHandler(MethodArgumentTypeMismatchException e){
         return ResponseEntity.badRequest().body(e.getMessage());
     }
 
+     */
 
 }

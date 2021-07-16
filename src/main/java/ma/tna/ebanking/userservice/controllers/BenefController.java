@@ -66,24 +66,16 @@ public class BenefController {
         benefService.deleteBenef(benefId);
         return ResponseEntity.ok("Benef deleted");
     }
-
-    /**
-     * Handles NoSuchElementExceptions
-     * @param e the thrown exception
-     * @return HttpResponseEntity containing the error message
-     */
+/*
     @ExceptionHandler(NoSuchElementException.class)
     private HttpEntity<String> noSuchElementExceptionHandler(NoSuchElementException e){
         return ResponseEntity.badRequest().body(e.getMessage());
     }
 
-    /**
-     * Handles InvalidParameterException
-     * @param e the thrown exception
-     * @return HttpResponseEntity containing the error message
-     */
     @ExceptionHandler(InvalidParameterException.class)
     private HttpEntity<String> invalidParameterExceptionHandler(InvalidParameterException e){
         return ResponseEntity.badRequest().body(e.getMessage());
     }
+
+ */
 }
