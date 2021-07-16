@@ -17,7 +17,7 @@ import java.util.NoSuchElementException;
 @EnableWebMvc
 public class ExceptionController {
     @ExceptionHandler(value = {NoSuchElementException.class, InvalidParameterException.class, InvalidObjectException.class})
-    public HttpEntity<ErrorResponse> ErrorHandler(Exception e, HttpServletRequest ServletRequest){
-        return ResponseEntity.badRequest().body(new ErrorResponse(HttpStatus.BAD_REQUEST.value(),e.getClass().getSimpleName(),e.getMessage(), ServletRequest.getServletPath()));
+    public HttpEntity<ErrorResponse> globalErrorHandler(Exception e, HttpServletRequest servletRequest){
+        return ResponseEntity.badRequest().body(new ErrorResponse(HttpStatus.BAD_REQUEST.value(),e.getClass().getSimpleName(),e.getMessage(), servletRequest.getServletPath()));
     }
 }
