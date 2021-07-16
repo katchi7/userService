@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.security.InvalidParameterException;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @RestController
@@ -44,7 +43,7 @@ public class BenefController {
     @PostMapping(value = "")
     public HttpEntity<BenefDto> createBenef(@RequestBody @Valid BenefDto benefDto, Errors errors){
         if(errors.hasErrors()){
-            List<String> errorsStr = errors.getAllErrors().stream().map(s -> "\n"+s.getObjectName()+" : " +s.getDefaultMessage()).collect(Collectors.toList());
+            List<String> errorsStr = errors.getAllErrors().stream().map(s -> ", "+s.getObjectName()+" : " +s.getDefaultMessage()).collect(Collectors.toList());
             String message = "Body is not valid "+errorsStr;
             throw new InvalidParameterException(message);
         }
@@ -66,16 +65,4 @@ public class BenefController {
         benefService.deleteBenef(benefId);
         return ResponseEntity.ok("Benef deleted");
     }
-/*
-    @ExceptionHandler(NoSuchElementException.class)
-    private HttpEntity<String> noSuchElementExceptionHandler(NoSuchElementException e){
-        return ResponseEntity.badRequest().body(e.getMessage());
-    }
-
-    @ExceptionHandler(InvalidParameterException.class)
-    private HttpEntity<String> invalidParameterExceptionHandler(InvalidParameterException e){
-        return ResponseEntity.badRequest().body(e.getMessage());
-    }
-
- */
 }

@@ -13,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import javax.validation.Valid;
 import java.io.InvalidObjectException;
@@ -77,7 +76,7 @@ public class CustomerController {
             List<ObjectError> errorsobjs = errors.getAllErrors();
             StringBuilder message = new StringBuilder();
             for (ObjectError errorsobj : errorsobjs) {
-                message.append("\n ").append(errorsobj.getObjectName()).append(" : ").append(errorsobj.getDefaultMessage());
+                message.append(", ").append(errorsobj.getObjectName()).append(" : ").append(errorsobj.getDefaultMessage());
 
             }
             throw new InvalidObjectException("Invalid request body :"+message);
@@ -126,7 +125,7 @@ public class CustomerController {
             List<ObjectError> errorsobjs = errors.getAllErrors();
             StringBuilder message = new StringBuilder();
             for (ObjectError errorsobj : errorsobjs) {
-                message.append("\n ").append(errorsobj.getObjectName()).append(" : ").append(errorsobj.getDefaultMessage());
+                message.append(", ").append(errorsobj.getObjectName()).append(" : ").append(errorsobj.getDefaultMessage());
 
             }
             throw new InvalidParameterException("Request fields are not valid :  "+message);
@@ -173,7 +172,7 @@ public class CustomerController {
             List<ObjectError> errorsobjs = errors.getAllErrors();
             StringBuilder message = new StringBuilder();
             for (ObjectError errorsobj : errorsobjs) {
-                message.append("\n ").append(errorsobj.getObjectName()).append(" : ").append(errorsobj.getDefaultMessage());
+                message.append(", ").append(errorsobj.getObjectName()).append(" : ").append(errorsobj.getDefaultMessage());
 
             }
             throw  new InvalidParameterException("Invalid device data "+message);
@@ -211,28 +210,4 @@ public class CustomerController {
         }
         return ResponseEntity.ok(devices1);
     }
-
-    /*
-    @ExceptionHandler(InvalidParameterException.class)
-    public HttpEntity<String> invalidParameterExceptionHandler(InvalidParameterException e){
-        return ResponseEntity.badRequest().body(e.getMessage());
-    }
-
-    @ExceptionHandler(InvalidObjectException.class)
-    public HttpEntity<String> invalidObjectExceptionHandler(InvalidObjectException e) {
-        return ResponseEntity.badRequest().body(e.getMessage());
-    }
-
-    @ExceptionHandler(NoSuchElementException.class)
-    public HttpEntity<String>  noSuchElementExceptionHandler(NoSuchElementException e){
-        return ResponseEntity.badRequest().body(e.getMessage());
-    }
-
-    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
-    public HttpEntity<String> methodArgumentTypeMismatchExceptionHandler(MethodArgumentTypeMismatchException e){
-        return ResponseEntity.badRequest().body(e.getMessage());
-    }
-
-     */
-
 }
