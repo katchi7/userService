@@ -1,4 +1,4 @@
-package ma.tna.ebanking.userservice.model;
+package ma.tna.ebanking.userservice.services;
 
 import java.util.Optional;
 import org.springframework.data.domain.AuditorAware;

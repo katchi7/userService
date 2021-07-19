@@ -18,7 +18,6 @@ import java.util.List;
 @Table(name = "customer")
 public class Customer {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "CUSTOMER_ID")
     private int id;
     @Column(name = "CUSTOMER_PASSWORD")
@@ -40,6 +39,19 @@ public class Customer {
     private Language language;
     @OneToMany(targetEntity = Device.class,cascade = CascadeType.ALL,fetch = FetchType.LAZY,mappedBy = "customer",orphanRemoval = true)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonBackReference
     private List<Device> devices;
+
+    @Transient
+    private String fullName;
+    @Transient
+    private String shortName;
+    @Transient
+    private String address;
+    @Transient
+    private String town;
+    @Transient
+    private String postCode;
+    @Transient
+    private String nationality;
+
 }

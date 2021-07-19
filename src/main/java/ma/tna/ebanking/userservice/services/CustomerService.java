@@ -1,7 +1,11 @@
 package ma.tna.ebanking.userservice.services;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import lombok.extern.log4j.Log4j2;
+import ma.tna.ebanking.userservice.api.CustomerInfo;
 import ma.tna.ebanking.userservice.dtos.CustomerDto;
+import ma.tna.ebanking.userservice.dtos.CustomerInfoDto;
 import ma.tna.ebanking.userservice.model.Image;
 import ma.tna.ebanking.userservice.repositories.CustomerRepo;
 import ma.tna.ebanking.userservice.repositories.DeviceRepo;
@@ -12,18 +16,19 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.security.InvalidParameterException;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.*;
 
 @Log4j2
 @Service
 public class CustomerService {
     public static final String USER_NOT_FOUND = "User does not exist";
+    public static final String CUSTOMER = "customer";
+    private final CustomerInfo customerInfo;
     private final CustomerRepo customerRepo;
     private final BCryptPasswordEncoder passwordEncoder;
     private final DeviceRepo deviceRepo;
-    public CustomerService(CustomerRepo customerRepo, BCryptPasswordEncoder passwordEncoder, DeviceRepo deviceRepo) {
+    public CustomerService(CustomerInfo customerInfo, CustomerRepo customerRepo, BCryptPasswordEncoder passwordEncoder, DeviceRepo deviceRepo) {
+        this.customerInfo = customerInfo;
         this.customerRepo = customerRepo;
         this.passwordEncoder = passwordEncoder;
         this.deviceRepo = deviceRepo;
@@ -43,7 +48,32 @@ public class CustomerService {
      */
     public CustomerDto getCustomerById(int id){
         Optional<Customer> customerOp = customerRepo.findById(id);
-        return customerOp.map(CustomerDto::new).orElse(null);
+        if(customerOp.isPresent()){
+            Customer customer = customerOp.get();
+            CustomerInfoDto customerInfoResponse =getCustomerInfo(customer.getId());
+            customer.setFullName(customerInfoResponse.getFullName());
+            customer.setShortName(customerInfoResponse.getShortName());
+            customer.setNationality(customerInfoResponse.getNationality());
+            customer.setAddress(customerInfoResponse.getAdress());
+            customer.setTown(customerInfoResponse.getTown());
+            customer.setPostCode(customerInfoResponse.getPostCode());
+            return new CustomerDto(customer);
+        }
+        throw new NoSuchElementException(USER_NOT_FOUND);
+    }
+
+    @HystrixCommand(fallbackMethod = "getdefaultCustomer", commandProperties = {
+            @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "1000")
+    })
+    public CustomerInfoDto getCustomerInfo(Integer id){
+        Map<String, CustomerInfoDto> customerMap = new HashMap<>();
+        customerMap.put(CUSTOMER,new CustomerInfoDto(id));
+        return  customerInfo.getCustomerInfo(customerMap).get(CUSTOMER);
+
+    }
+
+    public CustomerInfoDto getdefaultCustomer() {
+        return new CustomerInfoDto();
     }
 
     /**

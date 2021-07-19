@@ -1,11 +1,15 @@
 package ma.tna.ebanking.userservice.config;
 
+import feign.Feign;
 import lombok.extern.log4j.Log4j2;
+import ma.tna.ebanking.userservice.api.CustomerInfo;
 import ma.tna.ebanking.userservice.model.Benef;
 import ma.tna.ebanking.userservice.services.HistoryService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.codec.cbor.Jackson2CborDecoder;
+import org.springframework.http.codec.cbor.Jackson2CborEncoder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.method.HandlerTypePredicate;
 import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
