@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 import org.hibernate.envers.RelationTargetAuditMode;
 
 import javax.persistence.*;
@@ -39,10 +40,11 @@ public class Customer extends Auditable<Customer> {
     private boolean allowEmails;
     @ManyToOne(targetEntity = Language.class,fetch = FetchType.LAZY)
     @JoinColumn(name = "CUSTOMER_LANGUAGE_ISO_639_1")
-    @org.hibernate.envers.NotAudited()
+    @NotAudited
     private Language language;
     @OneToMany(targetEntity = Device.class,cascade = CascadeType.ALL,fetch = FetchType.LAZY,mappedBy = "customer",orphanRemoval = true)
     @OnDelete(action = OnDeleteAction.CASCADE)
+    @NotAudited
     private List<Device> devices;
 
     @Transient
