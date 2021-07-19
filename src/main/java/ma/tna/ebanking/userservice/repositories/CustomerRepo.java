@@ -6,13 +6,14 @@ import ma.tna.ebanking.userservice.model.Otp;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.history.RevisionRepository;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 @Repository
-public interface CustomerRepo extends CrudRepository<Customer,Integer> {
+public interface CustomerRepo extends CrudRepository<Customer,Integer>, RevisionRepository<Customer,Integer,Integer> {
     @Override
     List<Customer> findAll();
 

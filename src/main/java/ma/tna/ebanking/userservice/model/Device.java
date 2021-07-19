@@ -3,6 +3,8 @@ package ma.tna.ebanking.userservice.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 
 import javax.persistence.*;
 
@@ -11,8 +13,9 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Audited
 @Table(name = "device")
-public class Device {
+public class Device extends Auditable<Device> {
 
     @Id
     @Column(name = "DEVICE_ID")
@@ -24,5 +27,6 @@ public class Device {
     private boolean fingerprintActivated;
     @ManyToOne(targetEntity = Customer.class)
     @JoinColumn(name = "DEVICE_CUSTOMER_ID")
+    @NotAudited
     private Customer customer;
 }

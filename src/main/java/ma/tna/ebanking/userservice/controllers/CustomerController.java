@@ -1,9 +1,6 @@
 package ma.tna.ebanking.userservice.controllers;
 
-import ma.tna.ebanking.userservice.dtos.CustomerDto;
-import ma.tna.ebanking.userservice.dtos.DeviceDto;
-import ma.tna.ebanking.userservice.dtos.OperationResponse;
-import ma.tna.ebanking.userservice.dtos.PasswordDto;
+import ma.tna.ebanking.userservice.dtos.*;
 import ma.tna.ebanking.userservice.model.Image;
 import ma.tna.ebanking.userservice.services.CustomerService;
 import ma.tna.ebanking.userservice.model.Customer;
@@ -72,7 +69,7 @@ public class CustomerController {
      * @throws InvalidObjectException if the request body is invalid
      */
     @PostMapping(value = "",consumes = {"application/json"})
-    public HttpEntity<CustomerDto> createCustomer(@RequestBody @Valid CustomerDto customerDto, Errors errors) throws InvalidObjectException {
+    public HttpEntity<CustomerDto> createCustomer(@RequestBody @Valid CustomerCreationDto customerDto, Errors errors) throws InvalidObjectException {
         log.info(errors);
         log.info(customerDto);
         if(errors.hasErrors()){
@@ -85,9 +82,9 @@ public class CustomerController {
             throw new InvalidObjectException("Invalid request body :"+message);
         }
 
-        customerDto = new CustomerDto(customerService.createCustomer(customerDto.asCustomer()));
+        CustomerDto customerDto1 = new CustomerDto(customerService.createCustomer(customerDto.asCustomer()));
 
-        return ResponseEntity.ok(customerDto);
+        return ResponseEntity.ok(customerDto1);
     }
 
     /**

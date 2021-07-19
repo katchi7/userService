@@ -51,12 +51,15 @@ public class CustomerService {
         if(customerOp.isPresent()){
             Customer customer = customerOp.get();
             CustomerInfoDto customerInfoResponse =getCustomerInfo(customer.getId());
-            customer.setFullName(customerInfoResponse.getFullName());
-            customer.setShortName(customerInfoResponse.getShortName());
-            customer.setNationality(customerInfoResponse.getNationality());
-            customer.setAddress(customerInfoResponse.getAdress());
-            customer.setTown(customerInfoResponse.getTown());
-            customer.setPostCode(customerInfoResponse.getPostCode());
+            if(customerInfoResponse != null){
+                customer.setFullName(customerInfoResponse.getFullName());
+                customer.setShortName(customerInfoResponse.getShortName());
+                customer.setNationality(customerInfoResponse.getNationality());
+                customer.setAddress(customerInfoResponse.getAdress());
+                customer.setTown(customerInfoResponse.getTown());
+                customer.setPostCode(customerInfoResponse.getPostCode());
+            }
+
             return new CustomerDto(customer);
         }
         throw new NoSuchElementException(USER_NOT_FOUND);

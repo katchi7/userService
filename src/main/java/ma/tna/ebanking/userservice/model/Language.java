@@ -4,8 +4,12 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
+
+import static org.hibernate.envers.RelationTargetAuditMode.NOT_AUDITED;
+
 
 //Language entity : Stores system laguages
 @Data
@@ -13,7 +17,8 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 @Table(name = "language")
-public class Language {
+@Audited(targetAuditMode = NOT_AUDITED)
+public class Language{
     @Id
     @Column(name = "LANGUAGE_ISO_639_1")
     private String languageIso;
