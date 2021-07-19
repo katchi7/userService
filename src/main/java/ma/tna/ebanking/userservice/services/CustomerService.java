@@ -186,6 +186,7 @@ public class CustomerService {
         Optional<Customer> customerOptional = customerRepo.findById(userId);
         if(customerOptional.isPresent()){
             customerRepo.updateCustomerImage(image,userId);
+            System.gc();
             return customerOptional.get();
         }
         throw new NoSuchElementException(USER_NOT_FOUND);
@@ -199,6 +200,15 @@ public class CustomerService {
      */
     public Image getUserImage(int userId){
         return customerRepo.findCustomerImage(userId);
+    }
+
+    public void deleteDevice(int customerId,int deviceId){
+        Optional<Customer> customerOptional = customerRepo.findById(customerId);
+        if(customerOptional.isPresent()){
+            deviceRepo.deleteById(deviceId);
+            return;
+        }
+        throw new NoSuchElementException(USER_NOT_FOUND);
     }
 
 }

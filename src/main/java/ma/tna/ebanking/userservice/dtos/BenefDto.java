@@ -24,7 +24,7 @@ public class BenefDto {
     @Size(min = 4)
     private String lastName;
     @NotNull(message = "rib must not be null")
-    @Size(min = 25,max = 40)
+    @Size(min = 20,max = 40)
     private String rib;
     @NotNull(message = "phone must not be null")
     @Pattern(regexp = "^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\\s\\./0-9]*$",message = "Rejected phone value")

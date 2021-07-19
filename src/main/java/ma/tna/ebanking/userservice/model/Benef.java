@@ -3,6 +3,7 @@ package ma.tna.ebanking.userservice.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
 
@@ -10,9 +11,10 @@ import javax.persistence.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Audited
 @Entity
 @Table(name = "benef")
-public class Benef {
+public class Benef extends Auditable<Benef> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "BENEF_ID")
@@ -29,4 +31,5 @@ public class Benef {
     private String email;
     @Column(name = "BENEF_CUSTOMER_ID")
     private int customerId;
+
 }

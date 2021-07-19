@@ -1,6 +1,8 @@
 package ma.tna.ebanking.userservice.config;
 
 import lombok.extern.log4j.Log4j2;
+import ma.tna.ebanking.userservice.model.Benef;
+import ma.tna.ebanking.userservice.services.HistoryService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,7 +22,8 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void configurePathMatch(PathMatchConfigurer configurer) {
         log.info(contextPath);
-        configurer.addPathPrefix(contextPath, HandlerTypePredicate.forBasePackage("ma.tna.ebanking.userservice"));
+        String appBasePackage = ma.tna.ebanking.userservice.UserserviceApplication.class.getPackage().getName();
+        configurer.addPathPrefix(contextPath, HandlerTypePredicate.forBasePackage(appBasePackage));
     }
 
     @Bean
@@ -31,6 +34,11 @@ public class WebConfig implements WebMvcConfigurer {
     public Random randomGenerator(){
         return new SecureRandom();
     }
+    @Bean
+    public Benef benef(){
+        return new Benef();
+    }
+
 
 }
 

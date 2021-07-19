@@ -34,4 +34,5 @@ public interface CustomerRepo extends CrudRepository<Customer,Integer> {
     @Modifying
     @Query("UPDATE Otp as o set o.otpStr = ?1, o.otpExp = ?2 WHERE o.id = ?3")
     int saveOtp( String otp, LocalDateTime dateTime,int id);
+
 }

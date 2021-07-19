@@ -2,6 +2,7 @@ package ma.tna.ebanking.userservice.controllers;
 
 import ma.tna.ebanking.userservice.dtos.CustomerDto;
 import ma.tna.ebanking.userservice.dtos.DeviceDto;
+import ma.tna.ebanking.userservice.dtos.OperationResponse;
 import ma.tna.ebanking.userservice.dtos.PasswordDto;
 import ma.tna.ebanking.userservice.model.Image;
 import ma.tna.ebanking.userservice.services.CustomerService;
@@ -9,11 +10,14 @@ import ma.tna.ebanking.userservice.model.Customer;
 import ma.tna.ebanking.userservice.model.Device;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.InvalidObjectException;
 import java.security.InvalidParameterException;
@@ -36,7 +40,6 @@ public class CustomerController {
      */
     @GetMapping("")
     public HttpEntity<List<CustomerDto>> getAllUsers(){
-
         List<CustomerDto> customerDtos = new ArrayList<>();
         List<Customer> customers = customerService.getAllCustomers();
         for (Customer customer : customers) {
@@ -209,5 +212,18 @@ public class CustomerController {
             devices1.add(new DeviceDto(device));
         }
         return ResponseEntity.ok(devices1);
+    }
+
+    /**
+     * This function is resposible for deleting a user's device
+     * @param userId  user id
+     * @param deviceId device id
+     * @param httpServletRequest the sent request
+     * @return Operation Response contains operation status
+     */
+    @DeleteMapping("/{user_id}/device/{device_id}")
+    public HttpEntity<OperationResponse> deleteUserDevice(@PathVariable("user_id") Integer userId, @PathVariable("device_id") Integer deviceId, HttpServletRequest httpServletRequest){
+        customerService.deleteDevice(userId,deviceId);
+        return ResponseEntity.ok(new OperationResponse(HttpStatus.OK.value(), null,"device deleted",httpServletRequest.getServletPath()));
     }
 }
