@@ -1,8 +1,5 @@
 package ma.tna.ebanking.userservice.model;
 
-import com.fasterxml.jackson.annotation.JsonView;
-
-//@JsonView(HistoryProjection.class)
 public class ModifiedField {
 	
 	private String fieldName;

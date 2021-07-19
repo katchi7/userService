@@ -5,10 +5,13 @@ import lombok.extern.log4j.Log4j2;
 import ma.tna.ebanking.userservice.api.CustomerInfo;
 import ma.tna.ebanking.userservice.model.Benef;
 import ma.tna.ebanking.userservice.model.Customer;
+import ma.tna.ebanking.userservice.services.AuditorAwareImpl;
 import ma.tna.ebanking.userservice.services.HistoryService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
+import org.springframework.data.domain.AuditorAware;
 import org.springframework.http.codec.cbor.Jackson2CborDecoder;
 import org.springframework.http.codec.cbor.Jackson2CborEncoder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -47,6 +50,10 @@ public class WebConfig implements WebMvcConfigurer {
     @Bean
     public Customer customer(){return new Customer();}
 
-
+    @Bean
+    @Order(1)
+    public AuditorAware<String> auditorAware(){
+        return new AuditorAwareImpl();
+    }
 }
 

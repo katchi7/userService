@@ -25,6 +25,9 @@ import ma.tna.ebanking.userservice.tools.Constantes;
 import org.apache.commons.lang.ArrayUtils;
 import org.hibernate.LazyInitializationException;
 import org.hibernate.envers.Audited;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -44,7 +47,6 @@ public abstract class Auditable<T> implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @CreatedBy
-
     protected String createdBy;
     
     @CreatedDate
@@ -116,5 +118,7 @@ public abstract class Auditable<T> implements Serializable {
             auditable.setModifiedDate(this.modifiedDate);
     }
 
-
+    public String getModifiedDate() {
+        return DateTimeFormat.forPattern("dd/MM/yyyy:hh:mm:ss").print(new DateTime(modifiedDate));
+    }
 }
