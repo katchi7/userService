@@ -4,7 +4,6 @@ import ma.tna.ebanking.userservice.dtos.BenefDto;
 import ma.tna.ebanking.userservice.dtos.BenefUpdateDto;
 import ma.tna.ebanking.userservice.model.Benef;
 import ma.tna.ebanking.userservice.services.BenefService;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;

@@ -50,17 +50,8 @@ public class CustomerService {
         Optional<Customer> customerOp = customerRepo.findById(id);
         if(customerOp.isPresent()){
             Customer customer = customerOp.get();
-            CustomerInfoDto customerInfoResponse =getCustomerInfo(customer.getId());
-            if(customerInfoResponse != null){
-                customer.setFullName(customerInfoResponse.getFullName());
-                customer.setShortName(customerInfoResponse.getShortName());
-                customer.setNationality(customerInfoResponse.getNationality());
-                customer.setAddress(customerInfoResponse.getAdress());
-                customer.setTown(customerInfoResponse.getTown());
-                customer.setPostCode(customerInfoResponse.getPostCode());
-            }
 
-            return new CustomerDto(customer);
+            return new CustomerDto(getCustomerInfo(customer));
         }
         throw new NoSuchElementException(USER_NOT_FOUND);
     }
@@ -68,10 +59,19 @@ public class CustomerService {
     @HystrixCommand(fallbackMethod = "getdefaultCustomer", commandProperties = {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "1000")
     })
-    public CustomerInfoDto getCustomerInfo(Integer id){
+    public Customer getCustomerInfo(Customer customer){
         Map<String, CustomerInfoDto> customerMap = new HashMap<>();
-        customerMap.put(CUSTOMER,new CustomerInfoDto(id));
-        return  customerInfo.getCustomerInfo(customerMap).get(CUSTOMER);
+        customerMap.put(CUSTOMER,new CustomerInfoDto(customer.getId()));
+        CustomerInfoDto customerInfoResponse = customerInfo.getCustomerInfo(customerMap).get(CUSTOMER);
+        if(customerInfoResponse != null){
+            customer.setFullName(customerInfoResponse.getFullName());
+            customer.setShortName(customerInfoResponse.getShortName());
+            customer.setNationality(customerInfoResponse.getNationality());
+            customer.setAddress(customerInfoResponse.getAdress());
+            customer.setTown(customerInfoResponse.getTown());
+            customer.setPostCode(customerInfoResponse.getPostCode());
+        }
+        return customer;
 
     }
 
@@ -242,6 +242,16 @@ public class CustomerService {
             return;
         }
         throw new NoSuchElementException(USER_NOT_FOUND);
+    }
+
+    public Customer validateCustomer(Integer userName,String psw){
+        Customer customer = customerRepo.findById(userName).orElse(null);
+        if(customer == null) throw new NoSuchElementException(USER_NOT_FOUND);
+        if(passwordEncoder.matches(psw,customer.getPassword())) {
+
+            return getCustomerInfo(customer);
+        }
+        throw new InvalidParameterException("Password not matching");
     }
 
 }

@@ -1,6 +1,8 @@
 package ma.tna.ebanking.userservice.model;
 
-public class ModifiedField {
+import java.io.Serializable;
+
+public class ModifiedField implements Serializable {
 	
 	private String fieldName;
 	private String oldValue;

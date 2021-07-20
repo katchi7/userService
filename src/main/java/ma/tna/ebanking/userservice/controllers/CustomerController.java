@@ -222,4 +222,10 @@ public class CustomerController {
         customerService.deleteDevice(userId,deviceId);
         return ResponseEntity.ok(new OperationResponse(HttpStatus.OK.value(), null,"device deleted",httpServletRequest.getServletPath()));
     }
+
+    @PostMapping(value = "/login",consumes = {"application/json"})
+    public HttpEntity<CustomerDto> validateCustomer(@RequestBody @Valid LoginDto loginDto,Errors errors){
+        if(errors.hasErrors()) throw new InvalidParameterException("Invalid username and password");
+        return ResponseEntity.ok(new CustomerDto(customerService.validateCustomer(loginDto.getUserName(),loginDto.getPassword())));
+    }
 }
