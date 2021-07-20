@@ -37,7 +37,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Data @AllArgsConstructor @NoArgsConstructor 
 @Component("test")
 @Scope("prototype")
-public class HistoryService<T> {
+public class HistoryService<T extends Auditable<T>> {
 
     
     @Value("${history.deepness:50}")
@@ -50,8 +50,7 @@ public class HistoryService<T> {
     @Transactional(readOnly = true)
     public void findHistory(T selected,RevisionRepository<T, Integer, Integer> repo) {
         listRevisions = null;
-        historyList = new ArrayList();
-        List<T> historyListTemp = new ArrayList();
+        historyList = new ArrayList<>();
         
         try {
             listRevisions = repo.findRevisions((Integer) PropertyUtils.getProperty(selected, "id"));
@@ -61,27 +60,18 @@ public class HistoryService<T> {
         int i=0;
         List<ModifiedField> modifiedFieldList=null;
         for (Revision<Integer, T> revision : listRevisions) {
-        	Auditable audit=(Auditable) revision.getEntity();
+        	Auditable<T> audit=revision.getEntity();
         	audit.setRevisionNumber(revision.getRevisionNumber().orElse(0));
-        	modifiedFieldList=null;
         	if(i>0)
         	{
         		modifiedFieldList =	audit.getModifiedFields(historyList.get(i-1));
-//        		modifiedFieldList =	audit.getModifiedFields(historyListTemp.get(i-1));
         		audit.setModifiedFieldList(modifiedFieldList);
         	}
         	i++;
-//                if(modifiedFieldList !=null && modifiedFieldList.size()>0){
                     historyList.add(revision.getEntity());
-//                }
-//                    historyListTemp.add(revision.getEntity());
         	
         }
-        for (Iterator<T> iterator = historyList.iterator(); iterator.hasNext();) {
-            Auditable audit=(Auditable) iterator.next();
-            if(audit.getModifiedFieldList()==null || audit.getModifiedFieldList().isEmpty()) iterator.remove();
-            
-        }
+        historyList.removeIf(audit -> audit.getModifiedFieldList() == null || audit.getModifiedFieldList().isEmpty());
         
     }
 }
