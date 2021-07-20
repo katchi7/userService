@@ -70,6 +70,13 @@ public class CustomerService {
             customer.setAddress(customerInfoResponse.getAdress());
             customer.setTown(customerInfoResponse.getTown());
             customer.setPostCode(customerInfoResponse.getPostCode());
+            customer.setRestriction(customerInfoResponse.getRestriction());
+            customer.setResidence(customerInfoResponse.getResidence());
+            customer.setGender(customerInfoResponse.getGender());
+            customer.setTitle(customerInfoResponse.getTitle());
+            customer.setAgency(customerInfoResponse.getAgency());
+            customer.setRestrictionValue(customerInfoResponse.getRestrictionValue());
+
         }
         return customer;
 
@@ -152,7 +159,7 @@ public class CustomerService {
      */
     public Device createDevice(int userId,Device device) {
 
-        List<Device> devices = deviceRepo.findDeviceByName(device.getName());
+        List<Device> devices = deviceRepo.findDeviceByKey(device.getKey());
         if(devices.isEmpty()){
             Optional<Customer> customerOptional = customerRepo.findById(userId);
             if(customerOptional.isPresent()){
@@ -219,7 +226,6 @@ public class CustomerService {
         Optional<Customer> customerOptional = customerRepo.findById(userId);
         if(customerOptional.isPresent()){
             customerRepo.updateCustomerImage(image,userId);
-            System.gc();
             return customerOptional.get();
         }
         throw new NoSuchElementException(USER_NOT_FOUND);

@@ -10,7 +10,7 @@ import java.util.List;
 
 @Repository
 public interface DeviceRepo extends CrudRepository<Device, Integer>, RevisionRepository<Device,Integer,Integer> {
-    List<Device> findDeviceByName(String name);
+    List<Device> findDeviceByKey(String key);
     //@Query("SELECT d from Device as d where d.id = ?1 and d.customer = ?2")
     Device findDeviceByIdAndAndCustomer(int id, Customer customer);
 

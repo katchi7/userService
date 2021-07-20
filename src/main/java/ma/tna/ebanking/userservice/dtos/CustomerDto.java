@@ -20,7 +20,8 @@ public class CustomerDto {
         this(
                 customer.getId(),customer.getPhone(),customer.getEmail(),customer.isActive(),
                 customer.getDisponibilityStart(),customer.getDisponibilityEnd(),customer.isAllowEmails(),new LanguageDto(customer.getLanguage()),null,
-                customer.getFullName(),customer.getShortName(),customer.getAddress(),customer.getTown(),customer.getPostCode(),customer.getNationality()
+                customer.getFullName(),customer.getShortName(),customer.getAddress(),customer.getTown(),customer.getPostCode(),customer.getNationality(),
+                customer.getRestriction(),customer.getTitle(),customer.getGender(),customer.getAgency(),customer.getResidence(),customer.getRestrictionValue()
         );
         if(customer.getDevices()!=null){
             List<DeviceDto> deviceDtos = new ArrayList<>();
@@ -59,8 +60,13 @@ public class CustomerDto {
     private String town;
 
     private String postCode;
-
     private String nationality;
+    private String restriction;
+    private String title;
+    private String gender;
+    private String agency;
+    private String residence;
+    private String restrictionValue;
     public Customer asCustomer(){
         ArrayList<Device> devices1 = null;
         if(devices != null){
@@ -69,6 +75,7 @@ public class CustomerDto {
                 devices1.add(device.asDevice());
             }
         }
-        return new Customer(id,null,phone,email,active,disponibilityStart,disponibilityEnd,allowEmails,language.asLanguage(),devices1,fullName,shortName,address,town,postCode,nationality);
+        return new Customer(id,null,phone,email,active,disponibilityStart,disponibilityEnd,allowEmails,language.asLanguage(),devices1,fullName,shortName,address,town,postCode,nationality,restriction,title
+        ,gender,agency,residence,restrictionValue);
     }
 }

@@ -59,5 +59,17 @@ public class Customer extends Auditable<Customer> {
     private String postCode;
     @Transient
     private String nationality;
+    @Transient
+    private String restriction;
+    @Transient
+    private String title;
+    @Transient
+    private String gender;
+    @Transient
+    private String agency;
+    @Transient
+    private String residence;
+    @Transient
+    private String restrictionValue;
 
 }

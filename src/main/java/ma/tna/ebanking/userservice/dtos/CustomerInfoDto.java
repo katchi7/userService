@@ -17,9 +17,13 @@ public class CustomerInfoDto {
     private String shortName;
 
     private String adress;
-
     private String town;
-
     private String postCode;
     private String nationality;
+    private String restriction;
+    private String title;
+    private String gender;
+    private String agency;
+    private String residence;
+    private String restrictionValue;
 }
