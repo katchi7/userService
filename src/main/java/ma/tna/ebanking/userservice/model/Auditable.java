@@ -84,13 +84,23 @@ public abstract class Auditable<T> implements Serializable {
         for (Field field : fields) {
             try {
                 field.setAccessible(true);
-                String oldValue = field.get(oldObject) != null ? field.get(oldObject).toString() : "";
-                String newValue = field.get(this) != null ? field.get(this).toString() : "";
+                Object oldObj = field.get(oldObject);
+                Object newObj = field.get(this);
+                String oldValue = oldObj != null ? oldObj.toString() : "";
+                String newValue = newObj != null ? newObj.toString() : "";
                 if (!Constantes.EXCLUDED_FIELDS.contains(field.getName()) && !oldValue.equals(newValue)) {
-                    newValue =(field.get(this) instanceof Date)?simpleDateFormat.format((Date) field.get(this)):newValue;
-                    oldValue =(field.get(oldObject) instanceof Date)? simpleDateFormat.format((Date) field.get(oldObject)):oldValue;
-                    newValue = (field.get(this) instanceof Calendar)? simpleDateFormatCal.format(((Calendar) field.get(this)).getTime()):newValue;
-                    oldValue =(field.get(oldObject) instanceof Calendar)? simpleDateFormatCal.format(((Calendar) field.get(oldObject)).getTime()):oldValue;
+                    if ((newObj instanceof Date)) {
+                        newValue = simpleDateFormat.format((Date) newObj);
+                    }
+                    if ((oldObj instanceof Date)) {
+                        oldValue = simpleDateFormat.format((Date) oldObj);
+                    }
+                    if ((newObj instanceof Calendar)) {
+                        newValue = simpleDateFormatCal.format(((Calendar) newObj).getTime());
+                    }
+                    if ((oldObj instanceof Calendar)) {
+                        oldValue = simpleDateFormatCal.format(((Calendar) oldObj).getTime());
+                    }
                     try {
                         modifiedFieldsList.add(new ModifiedField(ResourceBundle.getBundle("bundle").getString("Create" + oldObject.getClass().getSimpleName() + "Label_" + field.getName()), oldValue, newValue));
                     } catch (Exception e1) {
