@@ -5,6 +5,8 @@
  */
 package ma.tna.ebanking.userservice.tools;
 
+import lombok.Getter;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -13,5 +15,7 @@ import java.util.List;
  * @author AnasAfif
  */
 public class Constantes {
-       public static final List<String> EXCLUDED_FIELDS = Arrays.asList("revisionNumber", "modifiedFieldList", "modifiedDate","modifiedBy");
+       private Constantes(){super();}
+       @Getter
+       protected static final List<String> EXCLUDED_FIELDS = Arrays.asList("revisionNumber", "modifiedFieldList", "modifiedDate","modifiedBy");
 }

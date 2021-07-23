@@ -1,6 +1,5 @@
 package ma.tna.ebanking.userservice.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,11 +7,9 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
-import org.hibernate.envers.RelationTargetAuditMode;
 
 import javax.persistence.*;
 import java.util.List;
-
 // Customer entity : Stores all costumer data
 @Data
 @AllArgsConstructor

@@ -1,6 +1,5 @@
 package ma.tna.ebanking.userservice.config;
 
-import feign.Feign;
 import lombok.extern.log4j.Log4j2;
 import ma.tna.ebanking.userservice.model.Benef;
 import ma.tna.ebanking.userservice.model.Customer;

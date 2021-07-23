@@ -7,11 +7,9 @@ package ma.tna.ebanking.userservice.services;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.persistence.Entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,7 +17,6 @@ import lombok.NoArgsConstructor;
 import ma.tna.ebanking.userservice.model.Auditable;
 import ma.tna.ebanking.userservice.model.ModifiedField;
 import org.apache.commons.beanutils.PropertyUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
@@ -41,7 +38,7 @@ public class HistoryService<T extends Auditable<T>> {
 
     
     @Value("${history.deepness:50}")
-    private Integer Historydeepness;
+    private Integer historyDeepness;
     private List<T> historyList ;
     private Revisions<Integer, T> listRevisions = null;
 

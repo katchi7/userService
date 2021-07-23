@@ -107,7 +107,7 @@ public abstract class Auditable<T> implements Serializable {
 
     private void registerModifiedFields(List<ModifiedField> modifiedFieldsList,Field field,String oldValue , String newValue,T oldObject){
 
-                if (!Constantes.EXCLUDED_FIELDS.contains(field.getName()) && !oldValue.equals(newValue)) {
+                if (!Constantes.getEXCLUDED_FIELDS().contains(field.getName()) && !oldValue.equals(newValue)) {
                     try {
                         modifiedFieldsList.add(new ModifiedField(ResourceBundle.getBundle("bundle").getString("Create" + oldObject.getClass().getSimpleName() + "Label_" + field.getName()), oldValue, newValue));
                     } catch (Exception e1) {
