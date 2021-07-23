@@ -74,10 +74,6 @@ public abstract class Auditable<T> implements Serializable {
         modifiedFieldsList = new ArrayList<>();
         Class<?> classe = oldObject.getClass();
         Field[] fields = (Field[]) ArrayUtils.addAll(classe.getDeclaredFields(), classe.getSuperclass().getDeclaredFields());
-        return registerModifiedFields(modifiedFieldsList,fields,oldObject);
-    }
-
-    private List<ModifiedField> registerModifiedFields(List<ModifiedField> modifiedFieldsList,Field[] fields,T oldObject){
         String pattern = "dd/MM/yyyy HH:mm:ss";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
         SimpleDateFormat simpleDateFormatCal = new SimpleDateFormat("HH:mm:ss");
@@ -89,18 +85,28 @@ public abstract class Auditable<T> implements Serializable {
                 String oldValue = oldObj != null ? oldObj.toString() : "";
                 String newValue = newObj != null ? newObj.toString() : "";
 
-                    if ((newObj instanceof Date)) {
-                        newValue = simpleDateFormat.format((Date) newObj);
-                    }
-                    if ((oldObj instanceof Date)) {
-                        oldValue = simpleDateFormat.format((Date) oldObj);
-                    }
-                    if ((newObj instanceof Calendar)) {
-                        newValue = simpleDateFormatCal.format(((Calendar) newObj).getTime());
-                    }
-                    if ((oldObj instanceof Calendar)) {
-                        oldValue = simpleDateFormatCal.format(((Calendar) oldObj).getTime());
-                    }
+                if ((newObj instanceof Date)) {
+                    newValue = simpleDateFormat.format((Date) newObj);
+                }
+                if ((oldObj instanceof Date)) {
+                    oldValue = simpleDateFormat.format((Date) oldObj);
+                }
+                if ((newObj instanceof Calendar)) {
+                    newValue = simpleDateFormatCal.format(((Calendar) newObj).getTime());
+                }
+                if ((oldObj instanceof Calendar)) {
+                    oldValue = simpleDateFormatCal.format(((Calendar) oldObj).getTime());
+                }
+                registerModifiedFields(modifiedFieldsList,field,oldValue,newValue,oldObject);
+            } catch (IllegalArgumentException | IllegalAccessException | LazyInitializationException ex) {
+                Logger.getLogger(Auditable.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return modifiedFieldsList;
+    }
+
+    private void registerModifiedFields(List<ModifiedField> modifiedFieldsList,Field field,String oldValue , String newValue,T oldObject){
+
                 if (!Constantes.EXCLUDED_FIELDS.contains(field.getName()) && !oldValue.equals(newValue)) {
                     try {
                         modifiedFieldsList.add(new ModifiedField(ResourceBundle.getBundle("bundle").getString("Create" + oldObject.getClass().getSimpleName() + "Label_" + field.getName()), oldValue, newValue));
@@ -108,11 +114,6 @@ public abstract class Auditable<T> implements Serializable {
                         modifiedFieldsList.add(new ModifiedField(field.getName(), oldValue, newValue));
                     }
                 }
-            } catch (IllegalArgumentException | IllegalAccessException | LazyInitializationException ex) {
-                Logger.getLogger(Auditable.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        return modifiedFieldsList;
     }
     public void clone(Auditable<T> auditable) {
             auditable.setCreatedBy(this.createdBy);
