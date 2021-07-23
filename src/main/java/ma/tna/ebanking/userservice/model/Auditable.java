@@ -74,7 +74,10 @@ public abstract class Auditable<T> implements Serializable {
         modifiedFieldsList = new ArrayList<>();
         Class<?> classe = oldObject.getClass();
         Field[] fields = (Field[]) ArrayUtils.addAll(classe.getDeclaredFields(), classe.getSuperclass().getDeclaredFields());
-        
+        return registerModifiedFields(modifiedFieldsList,fields,oldObject);
+    }
+
+    private List<ModifiedField> registerModifiedFields(List<ModifiedField> modifiedFieldsList,Field[] fields,T oldObject){
         String pattern = "dd/MM/yyyy HH:mm:ss";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
         SimpleDateFormat simpleDateFormatCal = new SimpleDateFormat("HH:mm:ss");
@@ -100,7 +103,7 @@ public abstract class Auditable<T> implements Serializable {
                         modifiedFieldsList.add(new ModifiedField(ResourceBundle.getBundle("bundle").getString("Create" + oldObject.getClass().getSimpleName() + "Label_" + field.getName()), oldValue, newValue));
                     } catch (Exception e1) {
                         modifiedFieldsList.add(new ModifiedField(field.getName(), oldValue, newValue));
-                    }    
+                    }
                 }
             } catch (IllegalArgumentException | IllegalAccessException | LazyInitializationException ex) {
                 Logger.getLogger(Auditable.class.getName()).log(Level.SEVERE, null, ex);
@@ -108,7 +111,6 @@ public abstract class Auditable<T> implements Serializable {
         }
         return modifiedFieldsList;
     }
-
     public void clone(Auditable<T> auditable) {
             auditable.setCreatedBy(this.createdBy);
             auditable.setCreatedDate(this.createdDate);
