@@ -87,18 +87,10 @@ public abstract class Auditable<T> implements Serializable {
                 String oldValue = field.get(oldObject) != null ? field.get(oldObject).toString() : "";
                 String newValue = field.get(this) != null ? field.get(this).toString() : "";
                 if (!Constantes.EXCLUDED_FIELDS.contains(field.getName()) && !oldValue.equals(newValue)) {
-                    if ((field.get(this) instanceof Date)) {
-                        newValue = simpleDateFormat.format((Date) field.get(this));
-                    }
-                    if ((field.get(oldObject) instanceof Date) && field.get(oldObject) != null) {
-                        oldValue = simpleDateFormat.format((Date) field.get(oldObject));
-                    }
-                    if ((field.get(this) instanceof Calendar)) {
-                        newValue = simpleDateFormatCal.format(((Calendar) field.get(this)).getTime());
-                    }
-                    if ((field.get(oldObject) instanceof Calendar)) {
-                        oldValue = simpleDateFormatCal.format(((Calendar) field.get(oldObject)).getTime());
-                    }
+                    newValue =(field.get(this) instanceof Date)?simpleDateFormat.format((Date) field.get(this)):newValue;
+                    oldValue =(field.get(oldObject) instanceof Date)? simpleDateFormat.format((Date) field.get(oldObject)):oldValue;
+                    newValue = (field.get(this) instanceof Calendar)? simpleDateFormatCal.format(((Calendar) field.get(this)).getTime()):newValue;
+                    oldValue =(field.get(oldObject) instanceof Calendar)? simpleDateFormatCal.format(((Calendar) field.get(oldObject)).getTime()):oldValue;
                     try {
                         modifiedFieldsList.add(new ModifiedField(ResourceBundle.getBundle("bundle").getString("Create" + oldObject.getClass().getSimpleName() + "Label_" + field.getName()), oldValue, newValue));
                     } catch (Exception e1) {
