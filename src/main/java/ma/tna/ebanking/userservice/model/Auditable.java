@@ -88,7 +88,7 @@ public abstract class Auditable<T> implements Serializable {
                 Object newObj = field.get(this);
                 String oldValue = oldObj != null ? oldObj.toString() : "";
                 String newValue = newObj != null ? newObj.toString() : "";
-                if (!Constantes.EXCLUDED_FIELDS.contains(field.getName()) && !oldValue.equals(newValue)) {
+
                     if ((newObj instanceof Date)) {
                         newValue = simpleDateFormat.format((Date) newObj);
                     }
@@ -101,6 +101,7 @@ public abstract class Auditable<T> implements Serializable {
                     if ((oldObj instanceof Calendar)) {
                         oldValue = simpleDateFormatCal.format(((Calendar) oldObj).getTime());
                     }
+                if (!Constantes.EXCLUDED_FIELDS.contains(field.getName()) && !oldValue.equals(newValue)) {
                     try {
                         modifiedFieldsList.add(new ModifiedField(ResourceBundle.getBundle("bundle").getString("Create" + oldObject.getClass().getSimpleName() + "Label_" + field.getName()), oldValue, newValue));
                     } catch (Exception e1) {
