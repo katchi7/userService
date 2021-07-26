@@ -24,7 +24,6 @@ public class WebConfig implements WebMvcConfigurer {
     private String contextPath;
     @Override
     public void configurePathMatch(PathMatchConfigurer configurer) {
-        log.info(contextPath);
         String appBasePackage = ma.tna.ebanking.userservice.UserserviceApplication.class.getPackage().getName();
         configurer.addPathPrefix(contextPath, HandlerTypePredicate.forBasePackage(appBasePackage));
     }
@@ -34,18 +33,11 @@ public class WebConfig implements WebMvcConfigurer {
         return new BCryptPasswordEncoder();
     }
     @Bean
-    public Random randomGenerator(){
+    public Random random(){
         return new SecureRandom();
     }
-    @Bean
-    public Benef benef(){
-        return new Benef();
-    }
-    @Bean
-    public Customer customer(){return new Customer();}
 
     @Bean
-    @Order(1)
     public AuditorAware<String> auditorAware(){
         return new AuditorAwareImpl();
     }

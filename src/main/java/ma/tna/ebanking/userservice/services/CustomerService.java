@@ -2,6 +2,7 @@ package ma.tna.ebanking.userservice.services;
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
+import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
 import ma.tna.ebanking.userservice.api.CustomerInfo;
 import ma.tna.ebanking.userservice.dtos.CustomerDto;
@@ -46,17 +47,24 @@ public class CustomerService {
      * @param id the requested customer's id
      * @return CustomerDto : an object containing user data
      */
+
+
     public CustomerDto getCustomerById(int id){
         Optional<Customer> customerOp = customerRepo.findById(id);
         if(customerOp.isPresent()){
             Customer customer = customerOp.get();
-
             return new CustomerDto(getCustomerInfo(customer));
         }
         throw new NoSuchElementException(USER_NOT_FOUND);
     }
 
-    @HystrixCommand(fallbackMethod = "getdefaultCustomer", commandProperties = {
+    /**
+     * this methode is responsible for loading user's extra information from the core banking service
+     * @param customer the suggested customer
+     * @return customer with extra data
+     */
+
+    @HystrixCommand(fallbackMethod = "defaultGetCustomer", commandProperties = {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "1000")
     })
     public Customer getCustomerInfo(Customer customer){
@@ -76,14 +84,16 @@ public class CustomerService {
             customer.setTitle(customerInfoResponse.getTitle());
             customer.setAgency(customerInfoResponse.getAgency());
             customer.setRestrictionValue(customerInfoResponse.getRestrictionValue());
-
         }
         return customer;
-
     }
 
-    public CustomerInfoDto getdefaultCustomer() {
-        return new CustomerInfoDto();
+    public CustomerDto defaultGetCustomer(int customerId,Throwable throwable) {
+        log.info(throwable.getMessage());
+        Customer customer = customerRepo.findById(customerId).orElse(null);
+        log.info(customer);
+        if(customer == null ) throw new NoSuchElementException(USER_NOT_FOUND);
+        return new CustomerDto(customer);
     }
 
     /**

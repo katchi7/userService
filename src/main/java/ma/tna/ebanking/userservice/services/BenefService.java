@@ -27,6 +27,12 @@ public class BenefService {
         throw new NoSuchElementException(CustomerService.USER_NOT_FOUND);
     }
 
+    /**
+     * This methode is responsible for creating a new Benef
+     * @param benef  benef data
+     * @return created benef data
+     * @throws NoSuchElementException if the customer does not exist
+     */
     public Benef createBenef(Benef benef){
         Optional<Customer> customerOptional = customerRepo.findById(benef.getCustomerId());
         if(customerOptional.isPresent()){
@@ -35,9 +41,20 @@ public class BenefService {
         throw new NoSuchElementException(CustomerService.USER_NOT_FOUND);
     }
 
+    /**
+     * deletes a benef by his id
+     * @param benefId  benef id
+     */
     public void deleteBenef(int benefId){
         benefRepo.deleteById(benefId);
     }
+
+    /**
+     * Uodates benef data
+     * @param benef the new benef data
+     * @return updated benef data
+     * @throws NoSuchElementException if the benef does not exist
+     */
     public Benef updateBenef(Benef benef){
         Optional<Benef> benefOptional = benefRepo.findById(benef.getId());
         if(benefOptional.isPresent()){
