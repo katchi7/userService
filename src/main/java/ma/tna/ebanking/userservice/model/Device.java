@@ -7,6 +7,7 @@ import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 //Device entity : Stores user's devices
 @Data
@@ -35,6 +36,8 @@ public class Device extends Auditable<Device> {
     private String os;
     @Column(name = "DEVICE_REF")
     private String ref;
+    @Column(name = "DEVICE_LAST_CONNECTION")
+    private LocalDateTime lastConnection;
     @ManyToOne(targetEntity = Customer.class)
     @JoinColumn(name = "DEVICE_CUSTOMER_ID")
     @NotAudited

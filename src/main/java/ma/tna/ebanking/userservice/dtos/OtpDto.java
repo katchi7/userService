@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import ma.tna.ebanking.userservice.model.Otp;
 
 import java.time.LocalDateTime;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

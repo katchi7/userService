@@ -5,14 +5,18 @@ import ma.tna.ebanking.userservice.model.Device;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.joda.time.format.DateTimeFormat;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class DeviceDto {
     public DeviceDto(Device device){
-        this(device.getId(),device.getKey(),device.getName(),device.getModel(),device.isFingerprintActivated(),device.getManufacturer(),device.getOs(),device.getRef());
+        this(device.getId(),device.getKey(),device.getName(),device.getModel(),device.isFingerprintActivated(),device.getManufacturer(),device.getOs(),device.getRef(),device.getLastConnection());
     }
     private int id;
     @NotNull
@@ -25,7 +29,14 @@ public class DeviceDto {
     private String manufacturer;
     private String os;
     private String ref;
+    private LocalDateTime lastConnection;
+
+    public String getLastConnection() {
+
+        return lastConnection != null ? lastConnection.toString():null;
+    }
+
     public Device asDevice(){
-        return new Device(id,key,name,model,fingerprintActivated,manufacturer,os,ref,null);
+        return new Device(id,key,name,model,fingerprintActivated,manufacturer,os,ref,lastConnection,null);
     }
 }

@@ -7,7 +7,6 @@ import ma.tna.ebanking.userservice.model.Customer;
 import ma.tna.ebanking.userservice.model.Device;
 import lombok.extern.log4j.Log4j2;
 import ma.tna.ebanking.userservice.tools.Constantes;
-import org.apache.tomcat.util.bcel.Const;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

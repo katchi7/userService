@@ -17,6 +17,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.security.InvalidParameterException;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Log4j2
@@ -165,21 +166,16 @@ public class CustomerService {
      * @throws InvalidParameterException if the device is already existing
      */
     public Device createDevice(int userId,Device device) {
-
-        List<Device> devices = deviceRepo.findDeviceByKey(device.getKey());
-        if(devices.isEmpty()){
-            Optional<Customer> customerOptional = customerRepo.findById(userId);
-            if(customerOptional.isPresent()){
-                device.setCustomer(customerOptional.get());
-                device = deviceRepo.save(device);
-                return device;
-            }
-            else {
-                throw new NoSuchElementException(Constantes.getUSER_NOT_FOUND());
-            }
-        }
-        throw new InvalidParameterException("Device already existing");
-
+        Device device1 = deviceRepo.findDeviceByKeyAndCustomerId(device.getKey(),userId);
+        device1.setManufacturer(device.getManufacturer());
+        device1.setModel(device.getModel());
+        device1.setName(device.getName());
+        device1.setRef(device.getRef());
+        device1.setFingerprintActivated(device.isFingerprintActivated());
+        device1.setOs(device.getOs());
+        device1.setLastConnection(LocalDateTime.now());
+        deviceRepo.save(device1);
+        return device1;
     }
 
     /**
