@@ -26,4 +26,6 @@ public class Constantes {
        protected static final String CUSTOMER = "customer";
        @Getter
        protected static final String KEY = "key";
+       @Getter
+       protected static final String ID = "id";
 }

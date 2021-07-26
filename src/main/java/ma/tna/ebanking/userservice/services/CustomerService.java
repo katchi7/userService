@@ -167,15 +167,22 @@ public class CustomerService {
      */
     public Device createDevice(int userId,Device device) {
         Device device1 = deviceRepo.findDeviceByKeyAndCustomerId(device.getKey(),userId);
-        device1.setManufacturer(device.getManufacturer());
-        device1.setModel(device.getModel());
-        device1.setName(device.getName());
-        device1.setRef(device.getRef());
-        device1.setFingerprintActivated(device.isFingerprintActivated());
-        device1.setOs(device.getOs());
-        device1.setLastConnection(LocalDateTime.now());
-        deviceRepo.save(device1);
-        return device1;
+        if(device1 != null){
+            log.info(device1);
+            device1.setManufacturer(device.getManufacturer());
+            device1.setModel(device.getModel());
+            device1.setName(device.getName());
+            device1.setRef(device.getRef());
+            device1.setFingerprintActivated(device.isFingerprintActivated());
+            device1.setOs(device.getOs());
+            device1.setLastConnection(LocalDateTime.now());
+            deviceRepo.save(device1);
+            return device1;
+        }
+        return  deviceRepo.save(device);
+
+
+
     }
 
     /**
@@ -238,13 +245,8 @@ public class CustomerService {
         return customerRepo.findCustomerImage(userId);
     }
 
-    public void deleteDevice(int customerId,int deviceId){
-        Optional<Customer> customerOptional = customerRepo.findById(customerId);
-        if(customerOptional.isPresent()){
-            deviceRepo.deleteById(deviceId);
-            return;
-        }
-        throw new NoSuchElementException(Constantes.getUSER_NOT_FOUND());
+    public void deleteDevice(int deviceId){
+        deviceRepo.deleteById(deviceId);
     }
 
     public Customer validateCustomer(Integer userName,String psw){

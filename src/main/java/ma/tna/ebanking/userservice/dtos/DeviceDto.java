@@ -5,8 +5,6 @@ import ma.tna.ebanking.userservice.model.Device;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.joda.time.format.DateTimeFormat;
-
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
@@ -39,4 +37,5 @@ public class DeviceDto {
     public Device asDevice(){
         return new Device(id,key,name,model,fingerprintActivated,manufacturer,os,ref,lastConnection,null);
     }
+
 }
