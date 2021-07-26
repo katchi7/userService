@@ -137,11 +137,13 @@ public class CustomerController {
      * @return HttpResponseEntity containing customer data
      */
     @PostMapping("/image")
-    public HttpEntity<CustomerDto> updateUserImage( @RequestBody Map<String,String> requestBody){
+    public HttpEntity<OperationResponse> updateUserImage( @RequestBody Map<String,String> requestBody,HttpServletRequest request){
         String image = requestBody.get(Constantes.getIMAGE_FIELD());
         try {
             int userId = Integer.parseInt(requestBody.get(Constantes.getID()));
-            return ResponseEntity.ok(new CustomerDto(customerService.updateUserImage(image,userId)));
+            customerService.updateUserImage(image,userId);
+            OperationResponse response = new OperationResponse(HttpStatus.OK.value(), null,"Image updated",request.getServletPath());
+            return ResponseEntity.ok(response);
         }catch (NumberFormatException e){
             throw new InvalidParameterException("customer id is not valid");
         }
