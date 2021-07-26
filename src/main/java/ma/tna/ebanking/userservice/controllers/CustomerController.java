@@ -169,6 +169,7 @@ public class CustomerController {
      */
     @PostMapping(value = "/device",consumes = {"application/json"})
     public HttpEntity<DeviceDto> createDevice(@RequestBody @Valid DeviceCreationDto device,Errors errors) {
+        log.info(device);
         if(errors.hasErrors()){
             List<ObjectError> errorsobjs = errors.getAllErrors();
             StringBuilder message = new StringBuilder();
