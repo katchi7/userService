@@ -114,12 +114,11 @@ public class CustomerService {
      * @param active user activity status
      * @param disponibilityStart user disponibility start time
      * @param disponibilityEnd user disponibility end time
-     * @param image user image
      * @param allowEmails describes if users allows us to send him emails
      * @param lang user's language
      * @return Customer : new Customer data
      */
-    public Customer updateCustomer(int id, Boolean active,String disponibilityStart, String disponibilityEnd,String image, Boolean allowEmails,String lang){
+    public Customer updateCustomer(int id, Boolean active,String disponibilityStart, String disponibilityEnd, Boolean allowEmails,String lang){
             Optional<Customer> customerOptional = customerRepo.findById(id);
             if(customerOptional.isPresent()){
                 Customer customer = customerOptional.get();

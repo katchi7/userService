@@ -93,7 +93,6 @@ public class CustomerController {
      * @param active customer's activity status
      * @param disponibilityStart customer's disponibility start time
      * @param disponibilityEnd customer's disponibility end time
-     * @param image customer's image
      * @param allowEmails defines if customze allows us to send emials
      * @param language customer's language
      * @return HttpResponseEntity containing new Data
@@ -103,11 +102,10 @@ public class CustomerController {
                                                   @RequestParam(value = "active",required = false) Boolean active,
                                                   @RequestParam(value = "disponibilityStart",required = false,defaultValue = "") String disponibilityStart,
                                                   @RequestParam(value = "disponibilityEnd",required = false,defaultValue = "") String disponibilityEnd,
-                                                  @RequestParam(value = "image",required = false,defaultValue = "") String image,
                                                   @RequestParam(value = "allowEmails",required = false) Boolean allowEmails,
                                                   @RequestParam(value = "language",required = false,defaultValue = "") String language){
 
-        return ResponseEntity.ok(new CustomerDto(customerService.updateCustomer(customerId,active,disponibilityStart,disponibilityEnd,image,allowEmails,language)));
+        return ResponseEntity.ok(new CustomerDto(customerService.updateCustomer(customerId,active,disponibilityStart,disponibilityEnd,allowEmails,language)));
 
     }
     /**
