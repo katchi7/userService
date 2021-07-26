@@ -42,4 +42,19 @@ public class Device extends Auditable<Device> {
     @JoinColumn(name = "DEVICE_CUSTOMER_ID")
     @NotAudited
     private Customer customer;
+
+    @Override
+    public String toString() {
+        return "Device{" +
+                "id=" + id +
+                ", key='" + key + '\'' +
+                ", name='" + name + '\'' +
+                ", model='" + model + '\'' +
+                ", fingerprintActivated=" + fingerprintActivated +
+                ", manufacturer='" + manufacturer + '\'' +
+                ", os='" + os + '\'' +
+                ", ref='" + ref + '\'' +
+                ", lastConnection=" + lastConnection +
+                '}';
+    }
 }

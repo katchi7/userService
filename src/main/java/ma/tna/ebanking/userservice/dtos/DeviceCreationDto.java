@@ -11,6 +11,9 @@ public class DeviceCreationDto extends DeviceDto {
     @NotNull
     private Integer customerId;
 
+    public DeviceCreationDto(){
+        super();
+    }
     @Override
     public Device asDevice() {
         Device device = super.asDevice();
