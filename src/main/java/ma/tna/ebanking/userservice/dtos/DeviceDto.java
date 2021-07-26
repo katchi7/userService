@@ -12,7 +12,7 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor
 public class DeviceDto {
     public DeviceDto(Device device){
-        this(device.getId(),device.getKey(),device.getName(),device.getModel(),device.isFingerprintActivated(),device.getManufacturer(),device.getOs());
+        this(device.getId(),device.getKey(),device.getName(),device.getModel(),device.isFingerprintActivated(),device.getManufacturer(),device.getOs(),device.getRef());
     }
     private int id;
     @NotNull
@@ -24,7 +24,8 @@ public class DeviceDto {
     private Boolean fingerprintActivated = false;
     private String manufacturer;
     private String os;
+    private String ref;
     public Device asDevice(){
-        return new Device(id,key,name,model,fingerprintActivated,manufacturer,os,null);
+        return new Device(id,key,name,model,fingerprintActivated,manufacturer,os,ref,null);
     }
 }

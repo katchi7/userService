@@ -4,6 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.cloud.netflix.hystrix.EnableHystrix;
+import org.springframework.cloud.netflix.hystrix.dashboard.EnableHystrixDashboard;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.envers.repository.support.EnversRevisionRepositoryFactoryBean;
@@ -21,6 +22,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableJpaAuditing(auditorAwareRef="auditorProvider")
 @EnableJpaRepositories(repositoryFactoryBeanClass = EnversRevisionRepositoryFactoryBean.class,
 		basePackages = {"ma.tna.ebanking.userservice.repositories"})
+@EnableHystrixDashboard
 public class UserserviceApplication extends SpringBootServletInitializer {
 	public static void main(String[] args) {
 		SpringApplication.run(UserserviceApplication.class, args);

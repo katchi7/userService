@@ -18,4 +18,12 @@ public class Constantes {
        private Constantes(){super();}
        @Getter
        protected static final List<String> EXCLUDED_FIELDS = Arrays.asList("revisionNumber", "modifiedFieldList", "modifiedDate","modifiedBy");
+       @Getter
+       protected static final String IMAGE_FIELD = "image";
+       @Getter
+       protected static final String USER_NOT_FOUND = "User does not exist";
+       @Getter
+       protected static final String CUSTOMER = "customer";
+       @Getter
+       protected static final String KEY = "key";
 }

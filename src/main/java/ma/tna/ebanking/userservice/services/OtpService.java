@@ -3,6 +3,7 @@ package ma.tna.ebanking.userservice.services;
 import lombok.extern.log4j.Log4j2;
 import ma.tna.ebanking.userservice.model.Otp;
 import ma.tna.ebanking.userservice.repositories.CustomerRepo;
+import ma.tna.ebanking.userservice.tools.Constantes;
 import org.springframework.stereotype.Service;
 
 import java.security.InvalidParameterException;
@@ -32,7 +33,7 @@ public class OtpService {
         Otp otp = new Otp(userId,""+otpInt,localDateTime);
         int updated = customerRepo.saveOtp(otp.getOtpStr(),otp.getOtpExp(),otp.getId());
         if(updated > 0) return otp;
-        throw new NoSuchElementException(CustomerService.USER_NOT_FOUND);
+        throw new NoSuchElementException(Constantes.getUSER_NOT_FOUND());
     }
 
     /**
@@ -44,7 +45,7 @@ public class OtpService {
     public Otp getUserOtp(int userId){
         Otp otp = customerRepo.findCustomerOtp(userId);
         if(otp!=null) return otp;
-        throw new NoSuchElementException(CustomerService.USER_NOT_FOUND);
+        throw new NoSuchElementException(Constantes.getUSER_NOT_FOUND());
     }
 
     /**
@@ -66,6 +67,6 @@ public class OtpService {
             else
                 throw new InvalidParameterException("Otp is not valid");
         }
-        throw new NoSuchElementException(CustomerService.USER_NOT_FOUND);
+        throw new NoSuchElementException(Constantes.getUSER_NOT_FOUND());
     }
 }

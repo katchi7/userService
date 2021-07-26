@@ -33,6 +33,8 @@ public class Device extends Auditable<Device> {
     private String manufacturer;
     @Column(name = "device_os")
     private String os;
+    @Column(name = "DEVICE_REF")
+    private String ref;
     @ManyToOne(targetEntity = Customer.class)
     @JoinColumn(name = "DEVICE_CUSTOMER_ID")
     @NotAudited

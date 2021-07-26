@@ -4,6 +4,7 @@ import ma.tna.ebanking.userservice.model.Benef;
 import ma.tna.ebanking.userservice.model.Customer;
 import ma.tna.ebanking.userservice.repositories.BenefRepo;
 import ma.tna.ebanking.userservice.repositories.CustomerRepo;
+import ma.tna.ebanking.userservice.tools.Constantes;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,7 +25,7 @@ public class BenefService {
         if(customerOptional.isPresent()){
             return benefRepo.findBenefByCustomerId(customerId);
         }
-        throw new NoSuchElementException(CustomerService.USER_NOT_FOUND);
+        throw new NoSuchElementException(Constantes.getUSER_NOT_FOUND());
     }
 
     /**
@@ -38,7 +39,7 @@ public class BenefService {
         if(customerOptional.isPresent()){
             return benefRepo.save(benef);
         }
-        throw new NoSuchElementException(CustomerService.USER_NOT_FOUND);
+        throw new NoSuchElementException(Constantes.getUSER_NOT_FOUND());
     }
 
     /**

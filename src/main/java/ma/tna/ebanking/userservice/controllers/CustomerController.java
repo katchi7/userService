@@ -6,6 +6,8 @@ import ma.tna.ebanking.userservice.services.CustomerService;
 import ma.tna.ebanking.userservice.model.Customer;
 import ma.tna.ebanking.userservice.model.Device;
 import lombok.extern.log4j.Log4j2;
+import ma.tna.ebanking.userservice.tools.Constantes;
+import org.apache.tomcat.util.bcel.Const;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +26,6 @@ import java.util.*;
 @Log4j2
 public class CustomerController {
     private final CustomerService customerService;
-    private static final String IMAGE_FIELD = "image";
     public CustomerController(CustomerService customerService) {
         this.customerService = customerService;
     }
@@ -140,7 +141,7 @@ public class CustomerController {
      */
     @PostMapping("/{id}/image")
     public HttpEntity<CustomerDto> updateUserImage(@PathVariable("id") Integer userId, @RequestBody Map<String,String> requestBody){
-        String image = requestBody.get(IMAGE_FIELD);
+        String image = requestBody.get(Constantes.getIMAGE_FIELD());
         return ResponseEntity.ok(new CustomerDto(customerService.updateUserImage(image,userId)));
     }
 
@@ -182,14 +183,13 @@ public class CustomerController {
     /**
      * this methode is responsible for updating device fingerprint status
      * @param userId user's id
-     * @param deviceId device id
-     * @param fingerprintActivated device's fingerprint is activated
+     * @param deviceDto device data
      * @return HttpResponseEntity containing new device data
      */
-    @PutMapping(value = "/{user_id}/device/{device_id}")
-    public  HttpEntity<DeviceDto> changeDeviceFingerprint(@PathVariable("user_id") int userId, @PathVariable("device_id") int deviceId,
-                                                          @RequestParam("fingerprintActivated")Boolean fingerprintActivated){
-        DeviceDto device = new DeviceDto(customerService.updateFingerprint(userId,deviceId,fingerprintActivated));
+    @PutMapping(value = "/{user_id}/device")
+    public  HttpEntity<DeviceDto> changeDeviceFingerprint(@PathVariable("user_id") int userId, @RequestBody @Valid DeviceDto deviceDto,Errors errors){
+        if(errors.hasFieldErrors(Constantes.getKEY())) throw new InvalidParameterException("Body is not valid : device key must be provided");
+        DeviceDto device = new DeviceDto(customerService.updateFingerprint(userId,deviceDto.getKey(),deviceDto.getFingerprintActivated()));
         return ResponseEntity.ok(device);
     }
 

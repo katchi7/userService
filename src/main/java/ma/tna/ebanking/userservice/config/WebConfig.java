@@ -1,13 +1,10 @@
 package ma.tna.ebanking.userservice.config;
 
 import lombok.extern.log4j.Log4j2;
-import ma.tna.ebanking.userservice.model.Benef;
-import ma.tna.ebanking.userservice.model.Customer;
 import ma.tna.ebanking.userservice.services.AuditorAwareImpl;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.method.HandlerTypePredicate;
