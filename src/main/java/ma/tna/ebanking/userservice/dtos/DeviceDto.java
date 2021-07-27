@@ -18,9 +18,8 @@ public class DeviceDto {
     }
     private int id;
     @NotNull
+    @Size(min = 4,message = "Key size must be bigger than 4")
     private String key;
-    @NotNull(message = "name should not be null")
-    @Size(min = 4,message = "name size must be bigger than 4")
     private String name;
     private String model;
     private Boolean fingerprintActivated = false;
@@ -30,7 +29,6 @@ public class DeviceDto {
     private LocalDateTime lastConnection;
 
     public String getLastConnection() {
-
         return lastConnection != null ? lastConnection.toString():null;
     }
 

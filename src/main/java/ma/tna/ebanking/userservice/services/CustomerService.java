@@ -6,7 +6,6 @@ import lombok.extern.log4j.Log4j2;
 import ma.tna.ebanking.userservice.api.CustomerInfo;
 import ma.tna.ebanking.userservice.dtos.CustomerDto;
 import ma.tna.ebanking.userservice.dtos.CustomerInfoDto;
-import ma.tna.ebanking.userservice.dtos.DeviceLoginDto;
 import ma.tna.ebanking.userservice.model.Image;
 import ma.tna.ebanking.userservice.repositories.CustomerRepo;
 import ma.tna.ebanking.userservice.repositories.DeviceRepo;

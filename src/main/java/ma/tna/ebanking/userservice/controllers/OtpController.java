@@ -1,12 +1,20 @@
 package ma.tna.ebanking.userservice.controllers;
 
 
+import ma.tna.ebanking.userservice.dtos.OperationResponse;
 import ma.tna.ebanking.userservice.dtos.OtpDto;
+import ma.tna.ebanking.userservice.model.Otp;
 import ma.tna.ebanking.userservice.services.OtpService;
+import ma.tna.ebanking.userservice.tools.Constantes;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import java.security.InvalidParameterException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,30 +29,31 @@ public class OtpController {
 
     /**
      * This methode is responsible for receiving request to generate otp
-     * @param userId the user's id
+     * @param otpDto request Body Containing user id
+     * @param request http servlet request
      * @return HttpResponseEntity containing a message
      */
-    @PostMapping("/{user_id}/otp")
-    public HttpEntity<Map<String,String>> createOtp(@PathVariable("user_id") Integer userId){
+    @PostMapping("/otp")
+    public HttpEntity<OperationResponse> createOtp(@RequestBody @Valid OtpDto otpDto, Errors errors,HttpServletRequest request) {
+        if(errors.hasFieldErrors("id")) throw new InvalidParameterException("Id is not valid");
+        int userId = otpDto.getId();
         otpService.createOtp(userId);
-        HashMap<String,String> message = new HashMap<>();
-        message.put("message","Otp created");
-        return ResponseEntity.ok(message);
+        return ResponseEntity.ok(new OperationResponse(HttpStatus.OK.value(), null, "Otp created", request.getServletPath()));
+
+
     }
 
     /**
      * This methode receives request to validate otp
-     * @param userId user's id
-     * @param otp the otp in a string format
      * @return HttpResponseEntity containing otp data
      */
-    @PutMapping("/{user_id}/otp")
-    public HttpEntity<OtpDto> validateOtp(@PathVariable("user_id") Integer userId,@RequestParam("otp") String otp){
-        return ResponseEntity.ok(new OtpDto(otpService.validateOtp(userId,otp)));
+    @PutMapping("/otp")
+    public HttpEntity<OtpDto> validateOtp(@RequestBody @Valid OtpDto otpDto,Errors errors){
+        if(errors.hasFieldErrors("id")||errors.hasFieldErrors("otp")) throw new InvalidParameterException("Id or otp are not valid");
+        return ResponseEntity.ok(new OtpDto(otpService.validateOtp(otpDto.getId(),otpDto.getOtp())));
     }
-
-    @GetMapping("/{user_id}/otp")
-    public HttpEntity<OtpDto> getCustomerOtp(@PathVariable("user_id") int userId){
+    @GetMapping("/otp")
+    public HttpEntity<OtpDto> getCustomerOtp(@RequestParam("user_id") int userId){
         return ResponseEntity.ok(new OtpDto(otpService.getUserOtp(userId)));
     }
 

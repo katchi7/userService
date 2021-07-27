@@ -13,7 +13,7 @@ import java.util.Random;
 @Log4j2
 @Service
 public class OtpService {
-    private static final Integer OTP_EXPIRATION_TIME = 5;
+
     private final CustomerRepo customerRepo;
     private final Random random;
     public OtpService(CustomerRepo customerRepo, Random random) {
@@ -29,7 +29,7 @@ public class OtpService {
      */
     public Otp createOtp(int userId){
         int otpInt = 100000 + random.nextInt(800000);
-        LocalDateTime localDateTime = LocalDateTime.now().plusMinutes(OTP_EXPIRATION_TIME);
+        LocalDateTime localDateTime = LocalDateTime.now().plusMinutes(Constantes.getOTP_EXPIRATION_TIME());
         Otp otp = new Otp(userId,""+otpInt,localDateTime);
         int updated = customerRepo.saveOtp(otp.getOtpStr(),otp.getOtpExp(),otp.getId());
         if(updated > 0) return otp;

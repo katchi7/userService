@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ma.tna.ebanking.userservice.model.Otp;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
@@ -13,7 +15,10 @@ public class OtpDto {
     public OtpDto(Otp otp){
         this(otp.getId(),otp.getOtpStr(),otp.getOtpExp());
     }
-    private int id;
+    @NotNull
+    private Integer id;
+    @NotNull
+    @Size(min = 6,max = 6)
     private String otp;
     private LocalDateTime otpExp;
 

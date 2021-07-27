@@ -28,4 +28,6 @@ public class Constantes {
        protected static final String KEY = "key";
        @Getter
        protected static final String ID = "customerId";
+       @Getter
+       protected static final Integer OTP_EXPIRATION_TIME = 5;
 }
