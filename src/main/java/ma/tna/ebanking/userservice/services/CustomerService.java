@@ -6,6 +6,7 @@ import lombok.extern.log4j.Log4j2;
 import ma.tna.ebanking.userservice.api.CustomerInfo;
 import ma.tna.ebanking.userservice.dtos.CustomerDto;
 import ma.tna.ebanking.userservice.dtos.CustomerInfoDto;
+import ma.tna.ebanking.userservice.dtos.DeviceLoginDto;
 import ma.tna.ebanking.userservice.model.Image;
 import ma.tna.ebanking.userservice.repositories.CustomerRepo;
 import ma.tna.ebanking.userservice.repositories.DeviceRepo;
@@ -179,10 +180,8 @@ public class CustomerService {
             deviceRepo.save(device1);
             return device1;
         }
+        device.setLastConnection(LocalDateTime.now());
         return  deviceRepo.save(device);
-
-
-
     }
 
     /**
@@ -257,6 +256,12 @@ public class CustomerService {
             return getCustomerInfo(customer);
         }
         throw new InvalidParameterException("Password not matching");
+    }
+
+    public Customer validateCustomerWithDevice(Integer username,String psw,Device device){
+        Customer customer = validateCustomer(username,psw);
+        createDevice(customer.getId(),device);
+        return customer;
     }
 
 }

@@ -227,4 +227,11 @@ public class CustomerController {
         if(errors.hasErrors()) throw new InvalidParameterException("Invalid username and password");
         return ResponseEntity.ok(new CustomerDto(customerService.validateCustomer(loginDto.getUserName(),loginDto.getPassword())));
     }
+    @PostMapping(value = "/deviceLogin",consumes = {"application/json"})
+    public HttpEntity<CustomerDto> validateCustomerWithDevice(@RequestBody @Valid DeviceLoginDto loginDto,Errors errors){
+        if(errors.hasErrors()) throw new InvalidParameterException("Invalid username and password");
+        return ResponseEntity.ok(new CustomerDto(customerService.validateCustomerWithDevice(loginDto.getUserName(),loginDto.getPassword(),loginDto.getDevice().asDevice())));
+    }
+
+
 }

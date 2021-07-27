@@ -14,6 +14,8 @@ public class DeviceCreationDto extends DeviceDto {
     public DeviceCreationDto(){
         super();
     }
+
+
     @Override
     public Device asDevice() {
         Device device = super.asDevice();
@@ -22,4 +24,12 @@ public class DeviceCreationDto extends DeviceDto {
         device.setCustomer(customer);
         return device;
     }
+
+    @Override
+    public String toString() {
+        return "DeviceCreationDto{" +
+                "customerId=" + customerId +
+                "} " + super.toString();
+    }
+
 }
