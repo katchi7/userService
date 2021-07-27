@@ -90,7 +90,7 @@ public class CustomerService {
             customer.setAgency(customerInfoResponse.getAgency());
             customer.setRestrictionValue(customerInfoResponse.getRestrictionValue());
         }
-        else throw new HystrixBadRequestException("Cannot get Customer Info returned object : "+ retour);
+        else throw new HystrixBadRequestException("Cannot get Customer Info! Code Retour :'"+ (retour!=null?retour.getCodeRetour():"NULL") +"' Message: '" +(retour!=null?retour.getMsgRetour():"NULL")+"'");
         long timeMillis = DateTime.now().getMillis() - dateTime.getMillis();
         log.info("Time to extract infos  time in millis : "+timeMillis);
         return customer;
