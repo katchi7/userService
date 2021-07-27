@@ -218,7 +218,6 @@ public class CustomerService {
             return deviceRepo.getDeviceByCustomer(customer);
         }
         throw new NoSuchElementException(Constantes.getUSER_NOT_FOUND());
-
     }
 
     /**
@@ -231,7 +230,7 @@ public class CustomerService {
         try {
             customerRepo.updateCustomerImage(image,userId);
         }catch (Exception e){
-            e.printStackTrace();
+            log.debug(e.getStackTrace());
             throw new NoSuchElementException(Constantes.getUSER_NOT_FOUND());
         }
     }
