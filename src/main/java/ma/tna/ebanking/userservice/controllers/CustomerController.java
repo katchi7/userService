@@ -229,7 +229,7 @@ public class CustomerController {
     }
     @PostMapping(value = "/deviceLogin",consumes = {"application/json"})
     public HttpEntity<CustomerDto> validateCustomerWithDevice(@RequestBody @Valid DeviceLoginDto loginDto,Errors errors){
-        if(errors.hasErrors()) throw new InvalidParameterException("Invalid username and password");
+        if(errors.hasErrors()) throw new InvalidParameterException("Invalid data");
         return ResponseEntity.ok(new CustomerDto(customerService.validateCustomerWithDevice(loginDto.getUserName(),loginDto.getPassword(),loginDto.getDevice().asDevice())));
     }
 

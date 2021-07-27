@@ -260,6 +260,7 @@ public class CustomerService {
 
     public Customer validateCustomerWithDevice(Integer username,String psw,Device device){
         Customer customer = validateCustomer(username,psw);
+        device.setCustomer(customer);
         createDevice(customer.getId(),device);
         return customer;
     }
