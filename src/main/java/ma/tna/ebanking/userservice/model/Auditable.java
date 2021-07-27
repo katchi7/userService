@@ -8,7 +8,6 @@ package ma.tna.ebanking.userservice.model;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -22,6 +21,7 @@ import javax.persistence.Temporal;
 import static javax.persistence.TemporalType.TIMESTAMP;
 import javax.persistence.Transient;
 import lombok.Data;
+import ma.tna.ebanking.userservice.dtos.ModifiedField;
 import ma.tna.ebanking.userservice.tools.Constantes;
 import org.apache.commons.lang.ArrayUtils;
 import org.hibernate.LazyInitializationException;
@@ -89,8 +89,6 @@ public abstract class Auditable<T> implements Serializable {
                 if ((newObj instanceof Date)) {
                     newValue = simpleDateFormat.format((Date) newObj);
                 }
-                if(newObj instanceof LocalDateTime) newValue = newObj.toString();
-                if(oldObj instanceof LocalDateTime) newValue = oldObj.toString();
                 if ((oldObj instanceof Date)) {
                     oldValue = simpleDateFormat.format((Date) oldObj);
                 }

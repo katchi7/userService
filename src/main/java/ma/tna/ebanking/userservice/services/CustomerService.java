@@ -4,7 +4,6 @@ import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import lombok.extern.log4j.Log4j2;
 import ma.tna.ebanking.userservice.api.CustomerInfo;
-import ma.tna.ebanking.userservice.dtos.CustomerDto;
 import ma.tna.ebanking.userservice.dtos.CustomerInfoDto;
 import ma.tna.ebanking.userservice.model.Image;
 import ma.tna.ebanking.userservice.repositories.CustomerRepo;
@@ -13,6 +12,7 @@ import ma.tna.ebanking.userservice.model.Customer;
 import ma.tna.ebanking.userservice.model.Device;
 import ma.tna.ebanking.userservice.model.Language;
 import ma.tna.ebanking.userservice.tools.Constantes;
+import org.joda.time.DateTime;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -48,11 +48,10 @@ public class CustomerService {
      */
 
 
-    public CustomerDto getCustomerById(int id){
+    public Customer getCustomerById(int id){
         Optional<Customer> customerOp = customerRepo.findById(id);
         if(customerOp.isPresent()){
-            Customer customer = customerOp.get();
-            return new CustomerDto(getCustomerInfo(customer));
+            return customerOp.get();
         }
         throw new NoSuchElementException(Constantes.getUSER_NOT_FOUND());
     }
@@ -64,9 +63,10 @@ public class CustomerService {
      */
 
     @HystrixCommand(fallbackMethod = "defaultGetCustomer", commandProperties = {
-            @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "1000")
+            @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = Constantes.CUSTOMER_INFO_HYSTRIX_TIMEOUT)
     })
     public Customer getCustomerInfo(Customer customer){
+        DateTime dateTime = DateTime.now();
         Map<String, CustomerInfoDto> customerMap = new HashMap<>();
         customerMap.put(Constantes.getCUSTOMER(),new CustomerInfoDto(customer.getId()));
         CustomerInfoDto customerInfoResponse = customerInfo.getCustomerInfo(customerMap).get(Constantes.getCUSTOMER());
@@ -84,15 +84,15 @@ public class CustomerService {
             customer.setAgency(customerInfoResponse.getAgency());
             customer.setRestrictionValue(customerInfoResponse.getRestrictionValue());
         }
+        long timeMillis = DateTime.now().getMillis() - dateTime.getMillis();
+        log.info("Time to extract infos  time in millis : "+timeMillis);
         return customer;
     }
 
-    public CustomerDto defaultGetCustomer(int customerId,Throwable throwable) {
+    public Customer defaultGetCustomer(Customer customer,Throwable throwable) {
         log.info(throwable.getMessage());
-        Customer customer = customerRepo.findById(customerId).orElse(null);
-        log.info(customer);
-        if(customer == null ) throw new NoSuchElementException(Constantes.getUSER_NOT_FOUND());
-        return new CustomerDto(customer);
+        log.info("cannot load extra info for user : " + customer);
+        return customer;
     }
 
     /**
@@ -142,6 +142,7 @@ public class CustomerService {
     public void updatePassword(int id, String oldPassword,String newPassword) {
 
             Optional<Customer> customerOptional = customerRepo.findById(id);
+
             if(customerOptional.isPresent()){
                 Customer customer = customerOptional.get();
                 if (passwordEncoder.matches(oldPassword, customer.getPassword())) {
@@ -192,12 +193,15 @@ public class CustomerService {
      * @return Device : device data after updating
      * @throws InvalidParameterException if the device is not corresponding to he given user
      */
-    public Device updateFingerprint(int userId, String deviceKey, Boolean fingerprintActivated){
+    public void updateFingerprint(int userId, String deviceKey, Boolean fingerprintActivated){
+        /*
         Device device = deviceRepo.findDeviceByKeyAndCustomerId(deviceKey,userId);
         if(device != null){
             device.setFingerprintActivated(fingerprintActivated);
             return deviceRepo.save(device);
-        }
+        }*/
+        int rows = deviceRepo.updateDeviceFingerprint(fingerprintActivated,deviceKey,userId);
+        if(rows>0) return;
         throw new NoSuchElementException(Constantes.getUSER_NOT_FOUND());
     }
 
@@ -221,17 +225,15 @@ public class CustomerService {
      * this methode is responsible for updating a customer's image
      * @param image User's image in a Base64 format
      * @param userId User's id
-     * @return The modified customer
      * @throws NoSuchElementException if the customer does not exist
      */
-    public Customer updateUserImage(String image,int userId) {
-        Optional<Customer> customerOptional = customerRepo.findById(userId);
-        if(customerOptional.isPresent()){
+    public void updateUserImage(String image, int userId) {
+        try {
             customerRepo.updateCustomerImage(image,userId);
-            return customerOptional.get();
+        }catch (Exception e){
+            e.printStackTrace();
+            throw new NoSuchElementException(Constantes.getUSER_NOT_FOUND());
         }
-        throw new NoSuchElementException(Constantes.getUSER_NOT_FOUND());
-
     }
 
     /**
@@ -252,7 +254,7 @@ public class CustomerService {
         if(customer == null) throw new NoSuchElementException(Constantes.getUSER_NOT_FOUND());
         if(passwordEncoder.matches(psw,customer.getPassword())) {
 
-            return getCustomerInfo(customer);
+            return customer;
         }
         throw new InvalidParameterException("Password not matching");
     }

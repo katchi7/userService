@@ -15,7 +15,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ma.tna.ebanking.userservice.model.Auditable;
-import ma.tna.ebanking.userservice.model.ModifiedField;
+import ma.tna.ebanking.userservice.dtos.ModifiedField;
 import org.apache.commons.beanutils.PropertyUtils;
 
 import org.springframework.beans.factory.annotation.Value;

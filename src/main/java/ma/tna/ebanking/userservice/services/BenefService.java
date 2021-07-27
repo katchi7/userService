@@ -35,11 +35,11 @@ public class BenefService {
      * @throws NoSuchElementException if the customer does not exist
      */
     public Benef createBenef(Benef benef){
-        Optional<Customer> customerOptional = customerRepo.findById(benef.getCustomerId());
-        if(customerOptional.isPresent()){
+        try {
             return benefRepo.save(benef);
+        }catch (Exception e ){
+            throw new NoSuchElementException(Constantes.getUSER_NOT_FOUND());
         }
-        throw new NoSuchElementException(Constantes.getUSER_NOT_FOUND());
     }
 
     /**
@@ -67,6 +67,6 @@ public class BenefService {
             benef1.setPhone("".equals(benef.getPhone())?benef1.getPhone():benef.getPhone());
             return benefRepo.save(benef1);
         }
-        throw new NoSuchElementException("Benef deos not exist");
+        throw new NoSuchElementException("Benef does not exist");
     }
 }

@@ -1,22 +1,16 @@
 package ma.tna.ebanking.userservice.controllers;
 
-
 import ma.tna.ebanking.userservice.dtos.OperationResponse;
 import ma.tna.ebanking.userservice.dtos.OtpDto;
-import ma.tna.ebanking.userservice.model.Otp;
 import ma.tna.ebanking.userservice.services.OtpService;
-import ma.tna.ebanking.userservice.tools.Constantes;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.security.InvalidParameterException;
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/customer")
@@ -26,7 +20,6 @@ public class OtpController {
     public OtpController(OtpService otpService) {
         this.otpService = otpService;
     }
-
     /**
      * This methode is responsible for receiving request to generate otp
      * @param otpDto request Body Containing user id
@@ -39,10 +32,7 @@ public class OtpController {
         int userId = otpDto.getId();
         otpService.createOtp(userId);
         return ResponseEntity.ok(new OperationResponse(HttpStatus.OK.value(), null, "Otp created", request.getServletPath()));
-
-
     }
-
     /**
      * This methode receives request to validate otp
      * @return HttpResponseEntity containing otp data

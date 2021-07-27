@@ -19,6 +19,7 @@ import javax.validation.Valid;
 import java.io.InvalidObjectException;
 import java.security.InvalidParameterException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/customer")
@@ -35,13 +36,9 @@ public class CustomerController {
      * @return ResponseEntity containing all the subscribed users
      */
     @GetMapping("")
-    public HttpEntity<List<CustomerDto>> getAllUsers(){
-        List<CustomerDto> customerDtos = new ArrayList<>();
+    public HttpEntity<List<CustomerMinifiedDto>> getAllUsers(){
         List<Customer> customers = customerService.getAllCustomers();
-        for (Customer customer : customers) {
-            customerDtos.add(new CustomerDto(customer));
-        }
-        return ResponseEntity.ok(customerDtos);
+        return ResponseEntity.ok(customers.stream().map(CustomerMinifiedDto::new).collect(Collectors.toList()));
     }
 
     /**
@@ -51,11 +48,9 @@ public class CustomerController {
      */
     @GetMapping("/{id}")
     public HttpEntity<CustomerDto> getUserById(@PathVariable(value = "id") int id ){
-        CustomerDto dto = customerService.getCustomerById(id);
-        if(dto !=null){
-            return ResponseEntity.ok(dto);
-        }
-        throw new InvalidParameterException("Cannot find customer with id "+ id);
+        Customer customer = customerService.getCustomerById(id);
+        CustomerDto dto = new CustomerDto(customerService.getCustomerInfo(customer));
+        return ResponseEntity.ok(dto);
     }
 
     /**
@@ -189,10 +184,10 @@ public class CustomerController {
      * @return HttpResponseEntity containing new device data
      */
     @PutMapping(value = "/device")
-    public  HttpEntity<DeviceDto> changeDeviceFingerprint( @RequestBody @Valid DeviceCreationDto deviceDto,Errors errors){
+    public  HttpEntity<OperationResponse> changeDeviceFingerprint( @RequestBody @Valid DeviceCreationDto deviceDto,Errors errors,HttpServletRequest request){
         if(errors.hasFieldErrors(Constantes.getKEY())) throw new InvalidParameterException("Body is not valid : device key must be provided");
-        DeviceDto device = new DeviceDto(customerService.updateFingerprint(deviceDto.getCustomerId(),deviceDto.getKey(),deviceDto.getFingerprintActivated()));
-        return ResponseEntity.ok(device);
+        customerService.updateFingerprint(deviceDto.getCustomerId(),deviceDto.getKey(),deviceDto.getFingerprintActivated());
+        return ResponseEntity.ok(new OperationResponse(HttpStatus.OK.value(), null,"fingerprint updated to "+deviceDto.getFingerprintActivated(),request.getServletPath()));
     }
 
     /**
@@ -203,11 +198,8 @@ public class CustomerController {
     @GetMapping("/device")
     public HttpEntity<List<DeviceDto>> getUserDevices(@RequestParam("customerId") int userId){
         List<Device> devices = customerService.userDevices(userId);
-        List<DeviceDto> devices1 = new ArrayList<>();
-        for (Device device : devices) {
-            devices1.add(new DeviceDto(device));
-        }
-        return ResponseEntity.ok(devices1);
+
+        return ResponseEntity.ok(devices.stream().map(DeviceDto::new).collect(Collectors.toList()));
     }
 
     /**
@@ -225,12 +217,12 @@ public class CustomerController {
     @PostMapping(value = "/login",consumes = {"application/json"})
     public HttpEntity<CustomerDto> validateCustomer(@RequestBody @Valid LoginDto loginDto,Errors errors){
         if(errors.hasErrors()) throw new InvalidParameterException("Invalid username and password");
-        return ResponseEntity.ok(new CustomerDto(customerService.validateCustomer(loginDto.getUserName(),loginDto.getPassword())));
+        return ResponseEntity.ok(new CustomerDto(customerService.getCustomerInfo(customerService.validateCustomer(loginDto.getUserName(),loginDto.getPassword()))));
     }
     @PostMapping(value = "/deviceLogin",consumes = {"application/json"})
     public HttpEntity<CustomerDto> validateCustomerWithDevice(@RequestBody @Valid DeviceLoginDto loginDto,Errors errors){
         if(errors.hasErrors()) throw new InvalidParameterException("Invalid data");
-        return ResponseEntity.ok(new CustomerDto(customerService.validateCustomerWithDevice(loginDto.getUserName(),loginDto.getPassword(),loginDto.getDevice().asDevice())));
+        return ResponseEntity.ok(new CustomerDto(customerService.getCustomerInfo(customerService.validateCustomerWithDevice(loginDto.getUserName(),loginDto.getPassword(),loginDto.getDevice().asDevice()))));
     }
 
 

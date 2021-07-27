@@ -1,4 +1,4 @@
-package ma.tna.ebanking.userservice.model;
+package ma.tna.ebanking.userservice.dtos;
 
 import java.io.Serializable;
 

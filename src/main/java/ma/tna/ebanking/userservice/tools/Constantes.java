@@ -30,4 +30,6 @@ public class Constantes {
        protected static final String ID = "customerId";
        @Getter
        protected static final Integer OTP_EXPIRATION_TIME = 5;
+       @Getter
+       public static final String CUSTOMER_INFO_HYSTRIX_TIMEOUT = "6000";
 }
