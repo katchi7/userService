@@ -6,6 +6,7 @@
 package ma.tna.ebanking.userservice.tools;
 
 import lombok.Getter;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.util.Arrays;
 import java.util.List;
@@ -31,5 +32,9 @@ public class Constantes {
        @Getter
        protected static final Integer OTP_EXPIRATION_TIME = 5;
        @Getter
-       public static final String CUSTOMER_INFO_HYSTRIX_TIMEOUT = "6000";
+       public static final String CUSTOMER_INFO_HYSTRIX_TIMEOUT="6000";
+       @Getter
+       protected static final String T24_RETOUR_ATTR="Retour";
+       @Getter
+       protected static final String T24_SUCCESS_CODE="000";
 }

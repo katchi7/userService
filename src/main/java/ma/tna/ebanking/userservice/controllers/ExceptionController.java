@@ -1,5 +1,6 @@
 package ma.tna.ebanking.userservice.controllers;
 
+import com.netflix.hystrix.exception.HystrixBadRequestException;
 import ma.tna.ebanking.userservice.dtos.OperationResponse;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
@@ -16,7 +17,7 @@ import java.util.NoSuchElementException;
 @RestControllerAdvice
 @EnableWebMvc
 public class ExceptionController {
-    @ExceptionHandler(value = {NoSuchElementException.class, InvalidParameterException.class, InvalidObjectException.class})
+    @ExceptionHandler(value = {NoSuchElementException.class, InvalidParameterException.class, InvalidObjectException.class, HystrixBadRequestException.class})
     public HttpEntity<OperationResponse> globalErrorHandler(Exception e, HttpServletRequest servletRequest){
         return ResponseEntity.badRequest().body(new OperationResponse(HttpStatus.BAD_REQUEST.value(),e.getClass().getSimpleName(),e.getMessage(), servletRequest.getServletPath()));
     }

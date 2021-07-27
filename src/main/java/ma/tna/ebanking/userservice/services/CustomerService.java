@@ -2,9 +2,12 @@ package ma.tna.ebanking.userservice.services;
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
+import com.netflix.hystrix.exception.HystrixBadRequestException;
 import lombok.extern.log4j.Log4j2;
 import ma.tna.ebanking.userservice.api.CustomerInfo;
 import ma.tna.ebanking.userservice.dtos.CustomerInfoDto;
+import ma.tna.ebanking.userservice.dtos.Retour;
+import ma.tna.ebanking.userservice.dtos.T24CustomerResponse;
 import ma.tna.ebanking.userservice.model.Image;
 import ma.tna.ebanking.userservice.repositories.CustomerRepo;
 import ma.tna.ebanking.userservice.repositories.DeviceRepo;
@@ -62,15 +65,18 @@ public class CustomerService {
      * @return customer with extra data
      */
 
-    @HystrixCommand(fallbackMethod = "defaultGetCustomer", commandProperties = {
-            @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = Constantes.CUSTOMER_INFO_HYSTRIX_TIMEOUT)
+    @HystrixCommand(ignoreExceptions = { HystrixBadRequestException.class },fallbackMethod = "defaultGetCustomer", commandProperties = {
+            @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds",value = Constantes.CUSTOMER_INFO_HYSTRIX_TIMEOUT)
     })
     public Customer getCustomerInfo(Customer customer){
+        log.info("Customer Info Hystrix Timeout : " + Constantes.CUSTOMER_INFO_HYSTRIX_TIMEOUT);
         DateTime dateTime = DateTime.now();
         Map<String, CustomerInfoDto> customerMap = new HashMap<>();
         customerMap.put(Constantes.getCUSTOMER(),new CustomerInfoDto(customer.getId()));
-        CustomerInfoDto customerInfoResponse = customerInfo.getCustomerInfo(customerMap).get(Constantes.getCUSTOMER());
-        if(customerInfoResponse != null){
+        T24CustomerResponse response = customerInfo.getCustomerInfo(customerMap);
+        CustomerInfoDto customerInfoResponse = response.getCustomer();
+        Retour retour = response.getData().get(Constantes.getT24_RETOUR_ATTR());
+        if(retour!=null && Constantes.getT24_SUCCESS_CODE().equals(retour.getCodeRetour()) && customerInfoResponse != null){
             customer.setFullName(customerInfoResponse.getFullName());
             customer.setShortName(customerInfoResponse.getShortName());
             customer.setNationality(customerInfoResponse.getNationality());
@@ -84,6 +90,7 @@ public class CustomerService {
             customer.setAgency(customerInfoResponse.getAgency());
             customer.setRestrictionValue(customerInfoResponse.getRestrictionValue());
         }
+        else throw new HystrixBadRequestException("Cannot get Customer Info returned object : "+ retour);
         long timeMillis = DateTime.now().getMillis() - dateTime.getMillis();
         log.info("Time to extract infos  time in millis : "+timeMillis);
         return customer;
@@ -92,7 +99,7 @@ public class CustomerService {
     public Customer defaultGetCustomer(Customer customer,Throwable throwable) {
         log.info(throwable.getMessage());
         log.info("cannot load extra info for user : " + customer);
-        return customer;
+        throw new InvalidParameterException("cannot load extra info for user : "+customer.getId());
     }
 
     /**
@@ -190,16 +197,9 @@ public class CustomerService {
      * @param userId user's id
      * @param deviceKey device key
      * @param fingerprintActivated fingerprint status
-     * @return Device : device data after updating
      * @throws InvalidParameterException if the device is not corresponding to he given user
      */
     public void updateFingerprint(int userId, String deviceKey, Boolean fingerprintActivated){
-        /*
-        Device device = deviceRepo.findDeviceByKeyAndCustomerId(deviceKey,userId);
-        if(device != null){
-            device.setFingerprintActivated(fingerprintActivated);
-            return deviceRepo.save(device);
-        }*/
         int rows = deviceRepo.updateDeviceFingerprint(fingerprintActivated,deviceKey,userId);
         if(rows>0) return;
         throw new NoSuchElementException(Constantes.getUSER_NOT_FOUND());

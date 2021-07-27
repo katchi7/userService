@@ -11,6 +11,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -68,13 +70,7 @@ public class CustomerDto {
     private String residence;
     private String restrictionValue;
     public Customer asCustomer(){
-        ArrayList<Device> devices1 = null;
-        if(devices != null){
-            devices1 = new ArrayList<>();
-            for (DeviceDto device : devices) {
-                devices1.add(device.asDevice());
-            }
-        }
+        List<Device> devices1 = (devices!=null)?(devices.stream().map(DeviceDto::asDevice).collect(Collectors.toList())):null;
         return new Customer(id,null,phone,email,active,disponibilityStart,disponibilityEnd,allowEmails,language.asLanguage(),devices1,fullName,shortName,address,town,postCode,nationality,restriction,title
         ,gender,agency,residence,restrictionValue);
     }
