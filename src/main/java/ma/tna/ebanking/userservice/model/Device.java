@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import model.Auditable;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
 
