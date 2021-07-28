@@ -62,6 +62,6 @@ public class Device extends Auditable<Device> {
 
     @JsonGetter(value = "lastConnection")
     public  String lastConnectionJsonGetter(){
-        return lastConnection.toString();
+        return lastConnection!=null?lastConnection.toString():null;
     }
 }
