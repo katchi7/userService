@@ -8,6 +8,7 @@ import ma.tna.ebanking.userservice.api.CustomerInfo;
 import ma.tna.ebanking.userservice.dtos.CustomerInfoDto;
 import ma.tna.ebanking.userservice.dtos.Retour;
 import ma.tna.ebanking.userservice.dtos.T24CustomerResponse;
+import ma.tna.ebanking.userservice.dtos.T24ProfileDto;
 import ma.tna.ebanking.userservice.model.Image;
 import ma.tna.ebanking.userservice.repositories.CustomerRepo;
 import ma.tna.ebanking.userservice.repositories.DeviceRepo;
@@ -22,6 +23,7 @@ import org.springframework.stereotype.Service;
 import java.security.InvalidParameterException;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Log4j2
 @Service
@@ -89,6 +91,7 @@ public class CustomerService {
             customer.setTitle(customerInfoResponse.getTitle());
             customer.setAgency(customerInfoResponse.getAgency());
             customer.setRestrictionValue(customerInfoResponse.getRestrictionValue());
+            customer.setProfiles(customerInfoResponse.getProfils().stream().map(T24ProfileDto::asProfile).collect(Collectors.toList()));
         }
         else throw new HystrixBadRequestException("Cannot get Customer Info! Code Retour :'"+ (retour!=null?retour.getCodeRetour():"NULL") +"' Message: '" +(retour!=null?retour.getMsgRetour():"NULL")+"'");
         long timeMillis = DateTime.now().getMillis() - dateTime.getMillis();

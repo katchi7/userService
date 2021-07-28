@@ -5,6 +5,7 @@ import ma.tna.ebanking.userservice.model.Device;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ma.tna.ebanking.userservice.model.Profile;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -23,7 +24,7 @@ public class CustomerDto {
                 customer.getId(),customer.getPhone(),customer.getEmail(),customer.isActive(),
                 customer.getDisponibilityStart(),customer.getDisponibilityEnd(),customer.isAllowEmails(),new LanguageDto(customer.getLanguage()),null,
                 customer.getFullName(),customer.getShortName(),customer.getAddress(),customer.getTown(),customer.getPostCode(),customer.getNationality(),
-                customer.getRestriction(),customer.getTitle(),customer.getGender(),customer.getAgency(),customer.getResidence(),customer.getRestrictionValue()
+                customer.getRestriction(),customer.getTitle(),customer.getGender(),customer.getAgency(),customer.getResidence(),customer.getRestrictionValue(),customer.getProfiles()
         );
         if(customer.getDevices()!=null){
             List<DeviceDto> deviceDtos = new ArrayList<>();
@@ -69,9 +70,10 @@ public class CustomerDto {
     private String agency;
     private String residence;
     private String restrictionValue;
+    private List<Profile> profiles;
     public Customer asCustomer(){
         List<Device> devices1 = (devices!=null)?(devices.stream().map(DeviceDto::asDevice).collect(Collectors.toList())):null;
         return new Customer(id,null,phone,email,active,disponibilityStart,disponibilityEnd,allowEmails,language.asLanguage(),devices1,fullName,shortName,address,town,postCode,nationality,restriction,title
-        ,gender,agency,residence,restrictionValue);
+        ,gender,agency,residence,restrictionValue,profiles);
     }
 }

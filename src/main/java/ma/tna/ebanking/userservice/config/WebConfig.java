@@ -2,9 +2,12 @@ package ma.tna.ebanking.userservice.config;
 
 import lombok.extern.log4j.Log4j2;
 import ma.tna.ebanking.userservice.services.AuditorAwareImpl;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.method.HandlerTypePredicate;
@@ -16,6 +19,7 @@ import java.util.Random;
 
 @Configuration
 @Log4j2
+
 public class WebConfig implements WebMvcConfigurer {
     @Value("${context-path}")
     private String contextPath;
@@ -23,6 +27,7 @@ public class WebConfig implements WebMvcConfigurer {
     public void configurePathMatch(PathMatchConfigurer configurer) {
         String appBasePackage = ma.tna.ebanking.userservice.UserserviceApplication.class.getPackage().getName();
         configurer.addPathPrefix(contextPath, HandlerTypePredicate.forBasePackage(appBasePackage));
+        LoggerFactory.getLogger(getClass().getName()).info("App Started");
     }
 
     @Bean
