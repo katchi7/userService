@@ -7,7 +7,6 @@ package ma.tna.ebanking.userservice.model;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.logging.Level;

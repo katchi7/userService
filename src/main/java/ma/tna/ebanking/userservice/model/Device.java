@@ -1,5 +1,7 @@
 package ma.tna.ebanking.userservice.model;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,7 +10,6 @@ import org.hibernate.envers.NotAudited;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-
 //Device entity : Stores user's devices
 @Data
 @AllArgsConstructor
@@ -37,6 +38,7 @@ public class Device extends Auditable<Device> {
     @Column(name = "DEVICE_REF")
     private String ref;
     @Column(name = "DEVICE_LAST_CONNECTION")
+    @JsonIgnore
     private LocalDateTime lastConnection;
     @ManyToOne(targetEntity = Customer.class)
     @JoinColumn(name = "DEVICE_CUSTOMER_ID")
@@ -56,5 +58,10 @@ public class Device extends Auditable<Device> {
                 ", ref='" + ref + '\'' +
                 ", lastConnection=" + lastConnection +
                 '}';
+    }
+
+    @JsonGetter(value = "lastConnection")
+    public  String lastConnectionJsonGetter(){
+        return lastConnection.toString();
     }
 }
