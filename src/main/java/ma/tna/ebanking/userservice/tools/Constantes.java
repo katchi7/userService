@@ -7,13 +7,8 @@ package ma.tna.ebanking.userservice.tools;
 
 import lombok.Getter;
 
-import java.util.Arrays;
-import java.util.List;
-
 public class Constantes {
        private Constantes(){super();}
-       @Getter
-       protected static final List<String> EXCLUDED_FIELDS = Arrays.asList("revisionNumber", "modifiedFieldList", "modifiedDate","modifiedBy");
        @Getter
        protected static final String IMAGE_FIELD = "image";
        @Getter

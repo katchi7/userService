@@ -5,5 +5,5 @@ import org.springframework.stereotype.Service;
 import service.HistoryService;
 
 @Service
-public class UserServiceHistoryService<T extends Auditable<T>> extends HistoryService<T> {
+public class BasicHistoryService<T extends Auditable<T>> extends HistoryService<T> {
 }
