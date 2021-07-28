@@ -91,7 +91,11 @@ public class CustomerService {
             customer.setTitle(customerInfoResponse.getTitle());
             customer.setAgency(customerInfoResponse.getAgency());
             customer.setRestrictionValue(customerInfoResponse.getRestrictionValue());
-            customer.setProfiles(customerInfoResponse.getProfils().stream().map(T24ProfileDto::asProfile).collect(Collectors.toList()));
+            customer.setProfiles(
+                    customerInfoResponse.getProfils()!=null?
+                    customerInfoResponse.getProfils().stream()
+                            .map(T24ProfileDto::asProfile).collect(Collectors.toList())
+                    :null);
         }
         else throw new HystrixBadRequestException("Cannot get Customer Info! Code Retour :'"+ (retour!=null?retour.getCodeRetour():"NULL") +"' Message: '" +(retour!=null?retour.getMsgRetour():"NULL")+"'");
         long timeMillis = DateTime.now().getMillis() - dateTime.getMillis();
@@ -99,8 +103,7 @@ public class CustomerService {
         return customer;
     }
 
-    public Customer defaultGetCustomer(Customer customer,Throwable throwable) {
-        log.info(throwable.getMessage());
+    public Customer defaultGetCustomer(Customer customer) {
         log.info("cannot load extra info for user : " + customer);
         throw new InvalidParameterException("cannot load extra info for user : "+customer.getId());
     }
