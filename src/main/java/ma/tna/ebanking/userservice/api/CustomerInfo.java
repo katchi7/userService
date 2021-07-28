@@ -13,6 +13,5 @@ import java.util.Map;
 public interface CustomerInfo {
     @PostMapping(value = "/RestEndPoint/ebanking/customer/getCustomerInfo",produces = "application/json")
     @Headers("Content-Type : application/json")
-    @ResponseBody
-    T24CustomerResponse getCustomerInfo(@RequestBody Map<String, CustomerInfoDto> body);
+    @ResponseBody T24CustomerResponse getCustomerInfo(@RequestBody Map<String, CustomerInfoDto> body);
 }

@@ -7,12 +7,9 @@ package ma.tna.ebanking.userservice.model;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityListeners;
@@ -24,6 +21,7 @@ import lombok.Data;
 import ma.tna.ebanking.userservice.dtos.ModifiedField;
 import ma.tna.ebanking.userservice.tools.Constantes;
 import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.reflect.FieldUtils;
 import org.hibernate.LazyInitializationException;
 import org.hibernate.envers.Audited;
 import org.joda.time.DateTime;
@@ -67,10 +65,7 @@ public abstract class Auditable<T> implements Serializable {
     @Transient
     private Integer revisionNumber;
 
-    
-   
     public List<ModifiedField> getModifiedFields(T oldObject) {
-
         List<ModifiedField> modifiedFieldsList;
         modifiedFieldsList = new ArrayList<>();
         Class<?> classe = oldObject.getClass();
@@ -80,9 +75,8 @@ public abstract class Auditable<T> implements Serializable {
         SimpleDateFormat simpleDateFormatCal = new SimpleDateFormat("HH:mm:ss");
         for (Field field : fields) {
             try {
-                field.setAccessible(true);
-                Object oldObj = field.get(oldObject);
-                Object newObj = field.get(this);
+                Object oldObj = FieldUtils.readField(field,oldObject,true);
+                Object newObj = FieldUtils.readField(field,this,true);
                 String oldValue = oldObj != null ? oldObj.toString() : "";
                 String newValue = newObj != null ? newObj.toString() : "";
 
@@ -99,14 +93,17 @@ public abstract class Auditable<T> implements Serializable {
                     oldValue = simpleDateFormatCal.format(((Calendar) oldObj).getTime());
                 }
                 registerModifiedFields(modifiedFieldsList,field,oldValue,newValue,oldObject);
-            } catch (IllegalArgumentException | IllegalAccessException | LazyInitializationException ex) {
+
+            }  catch (IllegalArgumentException | IllegalAccessException | LazyInitializationException ex) {
                 Logger.getLogger(Auditable.class.getName()).log(Level.SEVERE, null, ex);
             }
+
+
         }
         return modifiedFieldsList;
     }
 
-    private void registerModifiedFields(List<ModifiedField> modifiedFieldsList,Field field,String oldValue , String newValue,T oldObject){
+    private void registerModifiedFields(List<ModifiedField> modifiedFieldsList, Field field, String oldValue , String newValue, T oldObject){
 
                 if (!Constantes.getEXCLUDED_FIELDS().contains(field.getName()) && !oldValue.equals(newValue)) {
                     try {

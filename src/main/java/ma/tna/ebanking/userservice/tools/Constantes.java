@@ -6,15 +6,10 @@
 package ma.tna.ebanking.userservice.tools;
 
 import lombok.Getter;
-import org.springframework.beans.factory.annotation.Value;
 
 import java.util.Arrays;
 import java.util.List;
 
-/**
- *
- * @author AnasAfif
- */
 public class Constantes {
        private Constantes(){super();}
        @Getter
