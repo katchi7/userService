@@ -14,8 +14,9 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 public class BenefDto {
     public BenefDto(Benef benef){
-        this(benef.getId(),benef.getFirstName(),benef.getLastName(),benef.getRib(),benef.getPhone(),benef.getEmail(),benef.getCustomerId());
+        this(benef.getId(),benef.getFirstName(),benef.getLastName(),benef.getRib(),benef.getPhone(),benef.getEmail(),benef.getProfileId(),benef.getCustomerId());
     }
+    
     private int id;
     @NotNull(message = "firstName must not be null")
     @Size(min = 4)
@@ -32,10 +33,12 @@ public class BenefDto {
     @NotNull(message = "email must not be null")
     @Pattern(regexp = "(?!.*\\.\\.)(^[^\\.][^@\\s]+@[^@\\s]+\\.[^@\\s\\.]+$)",message = "Rejected email value")
     private String email;
+    @NotNull
+    private Integer profileId;
     @NotNull(message = "customerId must not be null")
     private Integer customerId;
 
     public Benef asBenef(){
-        return new Benef(id,firstName,lastName,rib,phone,email,customerId);
+        return new Benef(id,firstName,lastName,rib,phone,email,profileId,customerId);
     }
 }

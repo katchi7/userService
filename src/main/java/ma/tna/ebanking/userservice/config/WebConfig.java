@@ -1,7 +1,6 @@
 package ma.tna.ebanking.userservice.config;
 
 import lombok.extern.log4j.Log4j2;
-import ma.tna.ebanking.userservice.model.Benef;
 import ma.tna.ebanking.userservice.services.AuditorAwareImpl;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,8 +14,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.security.SecureRandom;
 import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 @Configuration
 @Log4j2

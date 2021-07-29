@@ -30,6 +30,8 @@ public class Benef extends Auditable<Benef> {
     private String phone;
     @Column(name = "BENEF_EMAIL")
     private String email;
+    @Column(name = "BENEF_PROFILE_ID")
+    private int profileId;
     @Column(name = "BENEF_CUSTOMER_ID")
     private int customerId;
 
