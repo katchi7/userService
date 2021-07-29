@@ -16,7 +16,7 @@ public class BenefDto {
     public BenefDto(Benef benef){
         this(benef.getId(),benef.getFirstName(),benef.getLastName(),benef.getRib(),benef.getPhone(),benef.getEmail(),benef.getProfileId(),benef.getCustomerId());
     }
-    
+
     private int id;
     @NotNull(message = "firstName must not be null")
     @Size(min = 4)
@@ -34,7 +34,7 @@ public class BenefDto {
     @Pattern(regexp = "(?!.*\\.\\.)(^[^\\.][^@\\s]+@[^@\\s]+\\.[^@\\s\\.]+$)",message = "Rejected email value")
     private String email;
     @NotNull
-    private Integer profileId;
+    private String profileId;
     @NotNull(message = "customerId must not be null")
     private Integer customerId;
 

@@ -20,11 +20,9 @@ public class BenefService {
         this.customerRepo = customerRepo;
         this.benefRepo = benefRepo;
     }
-    public List<Benef> getCustomerBenef(int customerId){
-        Optional<Customer> customerOptional = customerRepo.findById(customerId);
-        if(customerOptional.isPresent()){
-            return benefRepo.findBenefByCustomerId(customerId);
-        }
+    public List<Benef> getCustomerBenef(int customerId,String profileId){
+        List<Benef> benefs = (profileId==null||"".equals(profileId))?benefRepo.findBenefByCustomerId(customerId):benefRepo.findByCustomerIdAndProfileId(customerId,profileId);
+        if(benefs!=null) return benefs;
         throw new NoSuchElementException(Constantes.getUSER_NOT_FOUND());
     }
 

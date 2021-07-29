@@ -31,7 +31,7 @@ public class Benef extends Auditable<Benef> {
     @Column(name = "BENEF_EMAIL")
     private String email;
     @Column(name = "BENEF_PROFILE_ID")
-    private int profileId;
+    private String profileId;
     @Column(name = "BENEF_CUSTOMER_ID")
     private int customerId;
 

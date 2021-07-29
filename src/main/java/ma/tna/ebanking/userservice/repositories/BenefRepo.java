@@ -12,4 +12,5 @@ import java.util.List;
 @RepositoryRestResource(path = "benef")
 public interface BenefRepo extends CrudRepository<Benef,Integer>, RevisionRepository<Benef,Integer,Integer> {
     List<Benef> findBenefByCustomerId(int customerId);
+    List<Benef> findByCustomerIdAndProfileId(int customerId,String profileId);
 }

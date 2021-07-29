@@ -1,5 +1,6 @@
 package ma.tna.ebanking.userservice.controllers;
 
+import lombok.extern.log4j.Log4j2;
 import ma.tna.ebanking.userservice.dtos.BenefDto;
 import ma.tna.ebanking.userservice.dtos.BenefUpdateDto;
 import ma.tna.ebanking.userservice.model.Benef;
@@ -16,6 +17,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/benef")
+@Log4j2
 public class BenefController {
     private final BenefService benefService;
 
@@ -29,8 +31,9 @@ public class BenefController {
      * @return HttpResponseEntity containing benef data
      */
     @GetMapping(value = "")
-    public HttpEntity<List<BenefDto>> getCustomerBenef(@RequestParam("customerId") Integer customerId){
-        List<Benef> benefs = benefService.getCustomerBenef(customerId);
+    public HttpEntity<List<BenefDto>> getCustomerBenef(@RequestParam("customerId") Integer customerId,@RequestParam(value = "profileId",defaultValue = "") String profileId){
+        log.info(profileId);
+        List<Benef> benefs = benefService.getCustomerBenef(customerId,profileId);
         return ResponseEntity.ok(benefs.stream().map(BenefDto::new).collect(Collectors.toList()));
     }
 
