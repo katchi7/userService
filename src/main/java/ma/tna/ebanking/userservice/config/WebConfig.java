@@ -28,8 +28,6 @@ public class WebConfig implements WebMvcConfigurer {
 
         String appBasePackage = ma.tna.ebanking.userservice.UserserviceApplication.class.getPackage().getName();
         configurer.addPathPrefix(contextPath, HandlerTypePredicate.forBasePackage(appBasePackage));
-        Logger logger = Logger.getLogger("com.microsoft.sqlserver.jdbc");
-        logger.setLevel(Level.SEVERE);
         LoggerFactory.getLogger(getClass().getName()).info("App Started");
     }
 
