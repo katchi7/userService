@@ -6,6 +6,7 @@
 package ma.tna.ebanking.userservice.tools;
 
 import lombok.Getter;
+import org.springframework.http.HttpStatus;
 
 public class Constantes {
        private Constantes(){super();}
@@ -27,4 +28,15 @@ public class Constantes {
        protected static final String T24_RETOUR_ATTR="Retour";
        @Getter
        protected static final String T24_SUCCESS_CODE="000";
+       @Getter
+       protected static final HttpStatus USER_NOT_FOUND_STATUS = HttpStatus.NOT_FOUND;//404
+       @Getter
+       protected static final HttpStatus USER_PASSWORD_DOES_NOT_MATCH = HttpStatus.NOT_ACCEPTABLE;//406
+       @Getter
+       protected static final HttpStatus USER_NEW_MATCH_OLD = HttpStatus.BAD_REQUEST;//400
+       @Getter
+       protected static final HttpStatus USER_PASSWORD_VALIDATION_STATUS = HttpStatus.UNAUTHORIZED;//401
+
+
+
 }

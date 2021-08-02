@@ -19,6 +19,6 @@ import java.util.NoSuchElementException;
 public class ExceptionController {
     @ExceptionHandler(value = {NoSuchElementException.class, InvalidParameterException.class, InvalidObjectException.class, HystrixBadRequestException.class})
     public HttpEntity<OperationResponse> globalErrorHandler(Exception e, HttpServletRequest servletRequest){
-        return ResponseEntity.status(HttpStatus.MULTI_STATUS).body(new OperationResponse(HttpStatus.BAD_REQUEST.value(),e.getClass().getSimpleName(),e.getMessage(), servletRequest.getServletPath()));
+        return ResponseEntity.badRequest().body(new OperationResponse(HttpStatus.BAD_REQUEST.value(),e.getClass().getSimpleName(),e.getMessage(), servletRequest.getServletPath()));
     }
 }

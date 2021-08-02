@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import javax.validation.ValidationException;
 import java.io.InvalidObjectException;
 import java.security.InvalidParameterException;
 import java.util.*;
@@ -119,9 +120,25 @@ public class CustomerController {
     }
     @PostMapping(value = "/validatePassword")
     public HttpEntity<OperationResponse> validatePassword(@RequestBody @Valid PasswordDto passwordDto,Errors errors,HttpServletRequest request){
-        throwErrors(errors);
-        customerService.validatePassword(passwordDto.getId(),passwordDto.getOldPassword(),passwordDto.getNewPassword());
-        return ResponseEntity.ok(new OperationResponse(HttpStatus.OK.value(), null,"Password is valid",request.getServletPath()));
+
+        try {
+            throwErrors(errors);
+            customerService.validatePassword(passwordDto.getId(),passwordDto.getOldPassword(),passwordDto.getNewPassword());
+            return ResponseEntity.ok(new OperationResponse(HttpStatus.OK.value(), null,"Password is valid",request.getServletPath()));
+        }catch (NoSuchElementException e){
+            return ResponseEntity.status(Constantes.getUSER_NOT_FOUND_STATUS()).body(new OperationResponse(Constantes.getUSER_NOT_FOUND_STATUS().value(),e.getClass().getSimpleName(),e.getMessage(),request.getServletPath()));
+        }
+        catch (InvalidParameterException e){
+            return ResponseEntity.status(Constantes.getUSER_PASSWORD_DOES_NOT_MATCH()).body(new OperationResponse(Constantes.getUSER_PASSWORD_DOES_NOT_MATCH().value(),e.getClass().getSimpleName(),e.getMessage(),request.getServletPath()));
+        }
+        catch (InvalidObjectException e){
+            return ResponseEntity.status(Constantes.getUSER_NEW_MATCH_OLD()).body(new OperationResponse(Constantes.getUSER_NEW_MATCH_OLD().value(),e.getClass().getSimpleName(),e.getMessage(),request.getServletPath()));
+        }
+        catch (ValidationException e){
+            return ResponseEntity.status(Constantes.getUSER_PASSWORD_VALIDATION_STATUS()).body(new OperationResponse(Constantes.getUSER_PASSWORD_VALIDATION_STATUS().value(),e.getClass().getSimpleName(),e.getMessage(),request.getServletPath()));
+        }
+
+
     }
 
     private void throwErrors(Errors errors) {
@@ -131,7 +148,7 @@ public class CustomerController {
             for (ObjectError errorsobj : errorsobjs) {
                 message.append(", ").append(errorsobj.getObjectName()).append(" : ").append(errorsobj.getDefaultMessage());
             }
-            throw new InvalidParameterException("Request fields are not valid :  "+message);
+            throw new ValidationException("Request fields are not valid :  "+message);
         }
     }
 

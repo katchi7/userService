@@ -20,6 +20,7 @@ import org.joda.time.DateTime;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.io.InvalidObjectException;
 import java.security.InvalidParameterException;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -172,13 +173,13 @@ public class CustomerService {
 
     }
 
-    public void validatePassword(int id, String oldPassword, String newPassword){
+    public void validatePassword(int id, String oldPassword, String newPassword) throws InvalidObjectException {
         Optional<Customer> customerOptional = customerRepo.findById(id);
 
         if(customerOptional.isPresent()) {
             if (passwordEncoder.matches(oldPassword, customerOptional.get().getPassword())) {
                 if (oldPassword.equals(newPassword)) {
-                    throw new InvalidParameterException("old and new passwords are the same");
+                    throw new InvalidObjectException("old and new passwords are the same");
                 }
                 return;
             }
