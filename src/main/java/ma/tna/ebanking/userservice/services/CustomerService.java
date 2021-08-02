@@ -172,6 +172,22 @@ public class CustomerService {
 
     }
 
+    public void validatePassword(int id, String oldPassword, String newPassword){
+        Optional<Customer> customerOptional = customerRepo.findById(id);
+
+        if(customerOptional.isPresent()) {
+            if (passwordEncoder.matches(oldPassword, customerOptional.get().getPassword())) {
+                if (oldPassword.equals(newPassword)) {
+                    throw new InvalidParameterException("old and new passwords are the same");
+                }
+                return;
+            }
+            throw new InvalidParameterException("Password is not valid");
+        }
+        throw new NoSuchElementException(Constantes.getUSER_NOT_FOUND());
+
+    }
+
     /**
      * This function is responsible for device creation
      * receives user id and device data

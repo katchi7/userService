@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ma.tna.ebanking.userservice.model.Agency;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 @Data
@@ -13,18 +14,17 @@ import javax.validation.constraints.NotNull;
 public class AgencyDto {
     public AgencyDto(Agency agency) {
         this(
-                agency.getId(),agency.getLatitude(),
-                agency.getLongitude(),agency.getType(),agency.getName(),
+                agency.getId(),new Position(agency.getLatitude(),
+                agency.getLongitude()),agency.getType(),agency.getName(),
                 agency.getDescription(),agency.getAddress(),agency.getAgencyCode(),
-                agency.getPhone(),agency.getEmail(),agency.getDays(),agency.getHours()
+                agency.getPhone(),agency.getEmail(),new Schedule(agency.getDays(),agency.getHours())
         );
     }
     @NotNull
     private String id;
     @NotNull
-    private String latitude;
-    @NotNull
-    private String longitude;
+    @Valid
+    private Position position;
     private String type;
     private String name;
     private String description;
@@ -32,10 +32,10 @@ public class AgencyDto {
     private String agencyCode;
     private String phone;
     private String email;
-    private String days;
-    private String hours;
+    private Schedule schedule;
+
 
     public Agency asAgency(){
-        return new Agency(id,latitude,longitude,type,name,description,address,agencyCode,phone,email,days,hours);
+        return new Agency(id,position.getLatitude(),position.getLongitude(),type,name,description,address,agencyCode,phone,email,schedule==null?null:schedule.getDays(),schedule==null?null:schedule.getHours());
     }
 }

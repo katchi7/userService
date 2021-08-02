@@ -113,6 +113,18 @@ public class CustomerController {
      */
     @PostMapping(value = "/password",consumes = {"application/json"})
     public HttpEntity<String> updatePassword(@RequestBody @Valid PasswordDto password,Errors errors){
+        throwErrors(errors);
+        customerService.updatePassword(password.getId(),password.getOldPassword(),password.getNewPassword());
+        return ResponseEntity.ok("Password Updated");
+    }
+    @PostMapping(value = "/validatePassword")
+    public HttpEntity<OperationResponse> validatePassword(@RequestBody @Valid PasswordDto passwordDto,Errors errors,HttpServletRequest request){
+        throwErrors(errors);
+        customerService.validatePassword(passwordDto.getId(),passwordDto.getOldPassword(),passwordDto.getNewPassword());
+        return ResponseEntity.ok(new OperationResponse(HttpStatus.OK.value(), null,"Password is valid",request.getServletPath()));
+    }
+
+    private void throwErrors(Errors errors) {
         if(errors.hasErrors()){
             List<ObjectError> errorsobjs = errors.getAllErrors();
             StringBuilder message = new StringBuilder();
@@ -121,8 +133,6 @@ public class CustomerController {
             }
             throw new InvalidParameterException("Request fields are not valid :  "+message);
         }
-        customerService.updatePassword(password.getId(),password.getOldPassword(),password.getNewPassword());
-        return ResponseEntity.ok("Password Updated");
     }
 
 
