@@ -258,7 +258,6 @@ public class CustomerService {
         Customer customer = customerRepo.findById(userName).orElse(null);
         if(customer == null) throw new NoSuchElementException(Constantes.getUSER_NOT_FOUND());
         if(passwordEncoder.matches(psw,customer.getPassword())) {
-
             return customer;
         }
         throw new InvalidParameterException("Password not matching");

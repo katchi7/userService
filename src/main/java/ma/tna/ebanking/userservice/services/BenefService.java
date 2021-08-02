@@ -1,9 +1,7 @@
 package ma.tna.ebanking.userservice.services;
 
 import ma.tna.ebanking.userservice.model.Benef;
-import ma.tna.ebanking.userservice.model.Customer;
 import ma.tna.ebanking.userservice.repositories.BenefRepo;
-import ma.tna.ebanking.userservice.repositories.CustomerRepo;
 import ma.tna.ebanking.userservice.tools.Constantes;
 import org.springframework.stereotype.Service;
 
@@ -13,15 +11,15 @@ import java.util.Optional;
 
 @Service
 public class BenefService {
-    private final CustomerRepo customerRepo;
     private final BenefRepo benefRepo;
 
-    public BenefService(CustomerRepo customerRepo, BenefRepo benefRepo) {
-        this.customerRepo = customerRepo;
+    public BenefService(BenefRepo benefRepo) {
         this.benefRepo = benefRepo;
     }
     public List<Benef> getCustomerBenef(int customerId,String profileId){
-        List<Benef> benefs = (profileId==null||"".equals(profileId))?benefRepo.findBenefByCustomerId(customerId):benefRepo.findByCustomerIdAndProfileId(customerId,profileId);
+        List<Benef> benefs = (profileId==null||"".equals(profileId))?
+                benefRepo.findBenefByCustomerId(customerId):
+                benefRepo.findByCustomerIdAndProfileId(customerId,profileId);
         if(benefs!=null) return benefs;
         throw new NoSuchElementException(Constantes.getUSER_NOT_FOUND());
     }

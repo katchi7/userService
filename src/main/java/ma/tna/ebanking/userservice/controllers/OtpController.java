@@ -43,7 +43,7 @@ public class OtpController {
         return ResponseEntity.ok(new OtpDto(otpService.validateOtp(otpDto.getId(),otpDto.getOtp())));
     }
     @GetMapping("/otp")
-    public HttpEntity<OtpDto> getCustomerOtp(@RequestParam("user_id") int userId){
+    public HttpEntity<OtpDto> getCustomerOtp(@RequestParam("customerId") int userId){
         return ResponseEntity.ok(new OtpDto(otpService.getUserOtp(userId)));
     }
 
