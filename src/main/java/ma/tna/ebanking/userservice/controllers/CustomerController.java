@@ -1,6 +1,7 @@
 package ma.tna.ebanking.userservice.controllers;
 
 import ma.tna.ebanking.userservice.dtos.*;
+import ma.tna.ebanking.userservice.exceptions.UserServiceException;
 import ma.tna.ebanking.userservice.model.Image;
 import ma.tna.ebanking.userservice.services.CustomerService;
 import ma.tna.ebanking.userservice.model.Customer;
@@ -16,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import javax.validation.ValidationException;
 import java.io.InvalidObjectException;
 import java.security.InvalidParameterException;
 import java.util.*;
@@ -113,42 +113,26 @@ public class CustomerController {
      * @return an HttpResponseEntity with the OK status if the password was updated
      */
     @PostMapping(value = "/password",consumes = {"application/json"})
-    public HttpEntity<String> updatePassword(@RequestBody @Valid PasswordDto password,Errors errors){
+    public HttpEntity<String> updatePassword(@RequestBody @Valid PasswordDto password,Errors errors) throws UserServiceException {
         throwErrors(errors);
         customerService.updatePassword(password.getId(),password.getOldPassword(),password.getNewPassword());
         return ResponseEntity.ok("Password Updated");
     }
     @PostMapping(value = "/validatePassword")
-    public HttpEntity<OperationResponse> validatePassword(@RequestBody @Valid PasswordDto passwordDto,Errors errors,HttpServletRequest request){
-
-        try {
-            throwErrors(errors);
-            customerService.validatePassword(passwordDto.getId(),passwordDto.getOldPassword(),passwordDto.getNewPassword());
-            return ResponseEntity.ok(new OperationResponse(HttpStatus.OK.value(), null,"Password is valid",request.getServletPath()));
-        }catch (NoSuchElementException e){
-            return ResponseEntity.status(Constantes.getUSER_NOT_FOUND_STATUS()).body(new OperationResponse(Constantes.getUSER_NOT_FOUND_STATUS().value(),e.getClass().getSimpleName(),e.getMessage(),request.getServletPath()));
-        }
-        catch (InvalidParameterException e){
-            return ResponseEntity.status(Constantes.getUSER_PASSWORD_DOES_NOT_MATCH()).body(new OperationResponse(Constantes.getUSER_PASSWORD_DOES_NOT_MATCH().value(),e.getClass().getSimpleName(),e.getMessage(),request.getServletPath()));
-        }
-        catch (InvalidObjectException e){
-            return ResponseEntity.status(Constantes.getUSER_NEW_MATCH_OLD()).body(new OperationResponse(Constantes.getUSER_NEW_MATCH_OLD().value(),e.getClass().getSimpleName(),e.getMessage(),request.getServletPath()));
-        }
-        catch (ValidationException e){
-            return ResponseEntity.status(Constantes.getUSER_PASSWORD_VALIDATION_STATUS()).body(new OperationResponse(Constantes.getUSER_PASSWORD_VALIDATION_STATUS().value(),e.getClass().getSimpleName(),e.getMessage(),request.getServletPath()));
-        }
-
-
+    public HttpEntity<OperationResponse> validatePassword(@RequestBody @Valid PasswordDto passwordDto,Errors errors,HttpServletRequest request) throws UserServiceException {
+        throwErrors(errors);
+        customerService.validatePassword(passwordDto.getId(),passwordDto.getOldPassword(),passwordDto.getNewPassword());
+        return ResponseEntity.ok(new OperationResponse(HttpStatus.OK.value(), null,"Password is valid",request.getServletPath()));
     }
 
-    private void throwErrors(Errors errors) {
+    private void throwErrors(Errors errors) throws UserServiceException {
         if(errors.hasErrors()){
             List<ObjectError> errorsobjs = errors.getAllErrors();
             StringBuilder message = new StringBuilder();
             for (ObjectError errorsobj : errorsobjs) {
                 message.append(", ").append(errorsobj.getObjectName()).append(" : ").append(errorsobj.getDefaultMessage());
             }
-            throw new ValidationException("Request fields are not valid :  "+message);
+            throw new UserServiceException("Request fields are not valid :  "+message,Constantes.getUSER_PASSWORD_VALIDATION_STATUS().value());
         }
     }
 

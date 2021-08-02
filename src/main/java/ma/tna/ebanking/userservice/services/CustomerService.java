@@ -9,6 +9,7 @@ import ma.tna.ebanking.userservice.dtos.CustomerInfoDto;
 import ma.tna.ebanking.userservice.dtos.Retour;
 import ma.tna.ebanking.userservice.dtos.T24CustomerResponse;
 import ma.tna.ebanking.userservice.dtos.T24ProfileDto;
+import ma.tna.ebanking.userservice.exceptions.UserServiceException;
 import ma.tna.ebanking.userservice.model.Image;
 import ma.tna.ebanking.userservice.repositories.CustomerRepo;
 import ma.tna.ebanking.userservice.repositories.DeviceRepo;
@@ -16,11 +17,11 @@ import ma.tna.ebanking.userservice.model.Customer;
 import ma.tna.ebanking.userservice.model.Device;
 import ma.tna.ebanking.userservice.model.Language;
 import ma.tna.ebanking.userservice.tools.Constantes;
+import org.apache.catalina.User;
 import org.joda.time.DateTime;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.io.InvalidObjectException;
 import java.security.InvalidParameterException;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -173,19 +174,19 @@ public class CustomerService {
 
     }
 
-    public void validatePassword(int id, String oldPassword, String newPassword) throws InvalidObjectException {
+    public void validatePassword(int id, String oldPassword, String newPassword) throws UserServiceException {
         Optional<Customer> customerOptional = customerRepo.findById(id);
 
         if(customerOptional.isPresent()) {
             if (passwordEncoder.matches(oldPassword, customerOptional.get().getPassword())) {
                 if (oldPassword.equals(newPassword)) {
-                    throw new InvalidObjectException("old and new passwords are the same");
+                    throw new UserServiceException("old and new passwords are the same",Constantes.getUSER_NEW_MATCH_OLD().value());
                 }
                 return;
             }
-            throw new InvalidParameterException("Password is not valid");
+            throw new UserServiceException("Password is not valid",Constantes.getUSER_PASSWORD_DOES_NOT_MATCH().value());
         }
-        throw new NoSuchElementException(Constantes.getUSER_NOT_FOUND());
+        throw new UserServiceException(Constantes.getUSER_NOT_FOUND(),Constantes.getUSER_NOT_FOUND_STATUS().value());
 
     }
 
