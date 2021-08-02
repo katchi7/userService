@@ -159,6 +159,9 @@ public class CustomerService {
             if(customerOptional.isPresent()){
                 Customer customer = customerOptional.get();
                 if (passwordEncoder.matches(oldPassword, customer.getPassword())) {
+                    if(oldPassword.equals(newPassword)){
+                        throw new InvalidParameterException("old and new passwords are the same");
+                    }
                     customer.setPassword(passwordEncoder.encode(newPassword));
                     customerRepo.save(customer);
                     return;
