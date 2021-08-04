@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 @Data
 public class DeviceCreationDto extends DeviceDto {
     @NotNull
-    private Integer customerId;
+    private String customerId;
 
     public DeviceCreationDto(){
         super();

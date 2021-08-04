@@ -39,7 +39,7 @@ public class CustomerDto {
 
     @NotNull
     @Min(1)
-    private Integer id;
+    private String id;
 
     @NotNull
     @Pattern(regexp = "^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\\s\\./0-9]*$",message = "Rejected phone value")

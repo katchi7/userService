@@ -16,7 +16,7 @@ public class BenefService {
     public BenefService(BenefRepo benefRepo) {
         this.benefRepo = benefRepo;
     }
-    public List<Benef> getCustomerBenef(int customerId,String profileId){
+    public List<Benef> getCustomerBenef(String customerId,String profileId){
         List<Benef> benefs = (profileId==null||"".equals(profileId))?
                 benefRepo.findBenefByCustomerId(customerId):
                 benefRepo.findByCustomerIdAndProfileId(customerId,profileId);
@@ -42,7 +42,7 @@ public class BenefService {
      * deletes a benef by his id
      * @param benefId  benef id
      */
-    public void deleteBenef(int benefId){
+    public void deleteBenef(Long benefId){
         benefRepo.deleteById(benefId);
     }
 

@@ -23,7 +23,7 @@ public class Device extends Auditable<Device> {
     @Id
     @Column(name = "DEVICE_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
     @Column(name = "device_key")
     private String key;
     @Column(name = "DEVICE_NAME")

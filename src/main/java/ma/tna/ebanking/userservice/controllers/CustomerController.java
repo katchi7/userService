@@ -48,7 +48,7 @@ public class CustomerController {
      * @throws InvalidParameterException if th user doesn't exist
      */
     @GetMapping("/{id}")
-    public HttpEntity<CustomerDto> getUserById(@PathVariable(value = "id") int id ){
+    public HttpEntity<CustomerDto> getUserById(@PathVariable(value = "id") String id ){
         Customer customer = customerService.getCustomerById(id);
         CustomerDto dto = new CustomerDto(customerService.getCustomerInfo(customer));
         return ResponseEntity.ok(dto);
@@ -94,7 +94,7 @@ public class CustomerController {
      * @return HttpResponseEntity containing new Data
      */
     @PutMapping("/{id}")
-    public HttpEntity<CustomerDto> updateCustomer(@PathVariable(value = "id") int customerId,
+    public HttpEntity<CustomerDto> updateCustomer(@PathVariable(value = "id") String customerId,
                                                   @RequestParam(value = "active",required = false) Boolean active,
                                                   @RequestParam(value = "disponibilityStart",required = false,defaultValue = "") String disponibilityStart,
                                                   @RequestParam(value = "disponibilityEnd",required = false,defaultValue = "") String disponibilityEnd,
@@ -146,7 +146,7 @@ public class CustomerController {
     public HttpEntity<OperationResponse> updateUserImage( @RequestBody Map<String,String> requestBody,HttpServletRequest request){
         String image = requestBody.get(Constantes.getIMAGE_FIELD());
         try {
-            int userId = Integer.parseInt(requestBody.get(Constantes.getID()));
+            String userId = requestBody.get(Constantes.getID());
             customerService.updateUserImage(image,userId);
             OperationResponse response = new OperationResponse(HttpStatus.OK.value(), null,"Image updated",request.getServletPath());
             return ResponseEntity.ok(response);
@@ -161,7 +161,7 @@ public class CustomerController {
      * @return ResponseEntity containing the image in a Base64 format
      */
     @GetMapping("/image")
-    public HttpEntity<Image> getCustomerImage(@RequestParam("customerId") int userId){
+    public HttpEntity<Image> getCustomerImage(@RequestParam("customerId") String userId){
         return ResponseEntity.ok(customerService.getUserImage(userId));
     }
 
@@ -207,7 +207,7 @@ public class CustomerController {
      * @return HttpResponseEntity containing a list of devices
      */
     @GetMapping("/device")
-    public HttpEntity<List<DeviceDto>> getUserDevices(@RequestParam("customerId") int userId){
+    public HttpEntity<List<DeviceDto>> getUserDevices(@RequestParam("customerId") String userId){
         List<Device> devices = customerService.userDevices(userId);
 
         return ResponseEntity.ok(devices.stream().map(DeviceDto::new).collect(Collectors.toList()));
@@ -220,7 +220,7 @@ public class CustomerController {
      * @return Operation Response contains operation status
      */
     @DeleteMapping("/device/{device_id}")
-    public HttpEntity<OperationResponse> deleteUserDevice( @PathVariable("device_id") Integer deviceId, HttpServletRequest httpServletRequest){
+    public HttpEntity<OperationResponse> deleteUserDevice( @PathVariable("device_id") Long deviceId, HttpServletRequest httpServletRequest){
         customerService.deleteDevice(deviceId);
         return ResponseEntity.ok(new OperationResponse(HttpStatus.OK.value(), null,"device deleted",httpServletRequest.getServletPath()));
     }

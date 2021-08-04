@@ -4,7 +4,7 @@ import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import com.netflix.hystrix.exception.HystrixBadRequestException;
 import lombok.extern.log4j.Log4j2;
-import ma.tna.ebanking.userservice.api.CustomerInfo;
+import ma.tna.ebanking.userservice.api.TRestApi;
 import ma.tna.ebanking.userservice.dtos.CustomerInfoDto;
 import ma.tna.ebanking.userservice.dtos.Retour;
 import ma.tna.ebanking.userservice.dtos.T24CustomerResponse;
@@ -17,7 +17,6 @@ import ma.tna.ebanking.userservice.model.Customer;
 import ma.tna.ebanking.userservice.model.Device;
 import ma.tna.ebanking.userservice.model.Language;
 import ma.tna.ebanking.userservice.tools.Constantes;
-import org.apache.catalina.User;
 import org.joda.time.DateTime;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -30,11 +29,11 @@ import java.util.stream.Collectors;
 @Log4j2
 @Service
 public class CustomerService {
-    private final CustomerInfo customerInfo;
+    private final TRestApi customerInfo;
     private final CustomerRepo customerRepo;
     private final BCryptPasswordEncoder passwordEncoder;
     private final DeviceRepo deviceRepo;
-    public CustomerService(CustomerInfo customerInfo, CustomerRepo customerRepo, BCryptPasswordEncoder passwordEncoder, DeviceRepo deviceRepo) {
+    public CustomerService(TRestApi customerInfo, CustomerRepo customerRepo, BCryptPasswordEncoder passwordEncoder, DeviceRepo deviceRepo) {
         this.customerInfo = customerInfo;
         this.customerRepo = customerRepo;
         this.passwordEncoder = passwordEncoder;
@@ -55,7 +54,7 @@ public class CustomerService {
      */
 
 
-    public Customer getCustomerById(int id){
+    public Customer getCustomerById(String id){
         Optional<Customer> customerOp = customerRepo.findById(id);
         if(customerOp.isPresent()){
             return customerOp.get();
@@ -132,7 +131,7 @@ public class CustomerService {
      * @param lang user's language
      * @return Customer : new Customer data
      */
-    public Customer updateCustomer(int id, Boolean active,String disponibilityStart, String disponibilityEnd, Boolean allowEmails,String lang){
+    public Customer updateCustomer(String id, Boolean active,String disponibilityStart, String disponibilityEnd, Boolean allowEmails,String lang){
             Optional<Customer> customerOptional = customerRepo.findById(id);
             if(customerOptional.isPresent()){
                 Customer customer = customerOptional.get();
@@ -154,7 +153,7 @@ public class CustomerService {
      * @param oldPassword user's old password
      * @param newPassword user's new password
      */
-    public void updatePassword(int id, String oldPassword,String newPassword) {
+    public void updatePassword(String id, String oldPassword,String newPassword) {
 
             Optional<Customer> customerOptional = customerRepo.findById(id);
 
@@ -174,7 +173,7 @@ public class CustomerService {
 
     }
 
-    public void validatePassword(int id, String oldPassword, String newPassword) throws UserServiceException {
+    public void validatePassword(String id, String oldPassword, String newPassword) throws UserServiceException {
         Optional<Customer> customerOptional = customerRepo.findById(id);
 
         if(customerOptional.isPresent()) {
@@ -200,7 +199,7 @@ public class CustomerService {
      * @return Device : device data after creation
      * @throws InvalidParameterException if the device is already existing
      */
-    public Device createDevice(int userId,Device device) {
+    public Device createDevice(String userId,Device device) {
         Device device1 = deviceRepo.findDeviceByKeyAndCustomerId(device.getKey(),userId);
         if(device1 != null){
             log.info(device1);
@@ -226,7 +225,7 @@ public class CustomerService {
      * @param fingerprintActivated fingerprint status
      * @throws InvalidParameterException if the device is not corresponding to he given user
      */
-    public void updateFingerprint(int userId, String deviceKey, Boolean fingerprintActivated){
+    public void updateFingerprint(String userId, String deviceKey, Boolean fingerprintActivated){
         int rows = deviceRepo.updateDeviceFingerprint(fingerprintActivated,deviceKey,userId);
         if(rows>0) return;
         throw new NoSuchElementException(Constantes.getUSER_NOT_FOUND());
@@ -238,7 +237,7 @@ public class CustomerService {
      * @return devices :  List of user's Devices
      * @throws NoSuchElementException if the user does not exit
      */
-    public List<Device> userDevices(int userId){
+    public List<Device> userDevices(String userId){
         Optional<Customer> customerOptional = customerRepo.findById(userId);
         if(customerOptional.isPresent()){
             Customer customer = customerOptional.get();
@@ -253,7 +252,7 @@ public class CustomerService {
      * @param userId User's id
      * @throws NoSuchElementException if the customer does not exist
      */
-    public void updateUserImage(String image, int userId) {
+    public void updateUserImage(String image, String userId) {
         try {
             customerRepo.updateCustomerImage(image,userId);
         }catch (Exception e){
@@ -267,15 +266,15 @@ public class CustomerService {
      * @param userId customer id
      * @return customer image in a Base64 format
      */
-    public Image getUserImage(int userId){
+    public Image getUserImage(String userId){
         return customerRepo.findCustomerImage(userId);
     }
 
-    public void deleteDevice(int deviceId){
+    public void deleteDevice(Long deviceId){
         deviceRepo.deleteById(deviceId);
     }
 
-    public Customer validateCustomer(Integer userName,String psw){
+    public Customer validateCustomer(String userName,String psw){
         Customer customer = customerRepo.findById(userName).orElse(null);
         if(customer == null) throw new NoSuchElementException(Constantes.getUSER_NOT_FOUND());
         if(passwordEncoder.matches(psw,customer.getPassword())) {
@@ -284,7 +283,7 @@ public class CustomerService {
         throw new InvalidParameterException("Password not matching");
     }
 
-    public Customer validateCustomerWithDevice(Integer username,String psw,Device device){
+    public Customer validateCustomerWithDevice(String username,String psw,Device device){
         Customer customer = validateCustomer(username,psw);
         device.setCustomer(customer);
         createDevice(customer.getId(),device);

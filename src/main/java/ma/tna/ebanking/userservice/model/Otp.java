@@ -16,7 +16,7 @@ public class Otp {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "CUSTOMER_ID")
-    private int id;
+    private String id;
 
     @Column(name = "CUSTOMER_OTP")
     private String otpStr;

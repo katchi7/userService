@@ -21,7 +21,7 @@ import java.util.List;
 public class Customer extends Auditable<Customer> {
     @Id
     @Column(name = "CUSTOMER_ID")
-    private int id;
+    private String id;
     @Column(name = "CUSTOMER_PASSWORD")
     private String password;
     @Column(name = "CUSTOMER_PHONE")

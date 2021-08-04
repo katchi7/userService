@@ -19,7 +19,7 @@ public class Benef extends Auditable<Benef> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "BENEF_ID")
-    private int id;
+    private Long id;
     @Column(name = "BENEF_FIRST_NAME")
     private String firstName;
     @Column(name = "BENEF_LAST_NAME")
@@ -33,6 +33,6 @@ public class Benef extends Auditable<Benef> {
     @Column(name = "BENEF_PROFILE_ID")
     private String profileId;
     @Column(name = "BENEF_CUSTOMER_ID")
-    private int customerId;
+    private String customerId;
 
 }

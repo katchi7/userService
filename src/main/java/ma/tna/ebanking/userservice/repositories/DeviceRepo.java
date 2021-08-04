@@ -12,7 +12,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
-public interface DeviceRepo extends CrudRepository<Device, Integer>, RevisionRepository<Device,Integer,Integer> {
+public interface DeviceRepo extends CrudRepository<Device, Long>, RevisionRepository<Device,Long,Long> {
     List<Device> findDeviceByKey(String key);
     //@Query("SELECT d from Device as d where d.id = ?1 and d.customer = ?2")
     Device findDeviceByIdAndAndCustomer(int id, Customer customer);
@@ -21,10 +21,10 @@ public interface DeviceRepo extends CrudRepository<Device, Integer>, RevisionRep
     List<Device> getDeviceByCustomer(Customer customer);
 
     @Query("SELECT d FROM Device as d where d.key = ?1 and  d.customer.id = ?2")
-    Device findDeviceByKeyAndCustomerId(String deviceKey,Integer customerId);
+    Device findDeviceByKeyAndCustomerId(String deviceKey,String customerId);
 
     @Modifying
     @Transactional
     @Query("UPDATE Device as d set d.fingerprintActivated = ?1 where d.key = ?2 and d.customer.id = ?3")
-    int updateDeviceFingerprint(boolean fingerprintActivated,String key, int id);
+    int updateDeviceFingerprint(boolean fingerprintActivated,String key, String id);
 }

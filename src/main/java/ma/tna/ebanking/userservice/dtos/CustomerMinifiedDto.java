@@ -17,7 +17,7 @@ public class CustomerMinifiedDto {
         );
     }
 
-    private Integer id;
+    private String id;
     private String phone;
     private String email;
     private boolean active = true;

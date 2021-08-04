@@ -16,7 +16,7 @@ public class DeviceDto {
     public DeviceDto(Device device){
         this(device.getId(),device.getKey(),device.getName(),device.getModel(),device.isFingerprintActivated(),device.getManufacturer(),device.getOs(),device.getRef(),device.getLastConnection());
     }
-    private int id;
+    private Long id;
     @NotNull
     @Size(min = 4,message = "Key size must be bigger than 4")
     private String key;

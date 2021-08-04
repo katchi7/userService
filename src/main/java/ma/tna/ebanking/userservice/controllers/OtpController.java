@@ -29,7 +29,7 @@ public class OtpController {
     @PostMapping("/otp")
     public HttpEntity<OperationResponse> createOtp(@RequestBody @Valid OtpDto otpDto, Errors errors,HttpServletRequest request) {
         if(errors.hasFieldErrors("id")) throw new InvalidParameterException("Id is not valid");
-        int userId = otpDto.getId();
+        String userId = otpDto.getId();
         otpService.createOtp(userId);
         return ResponseEntity.ok(new OperationResponse(HttpStatus.OK.value(), null, "Otp created", request.getServletPath()));
     }
@@ -43,7 +43,7 @@ public class OtpController {
         return ResponseEntity.ok(new OtpDto(otpService.validateOtp(otpDto.getId(),otpDto.getOtp())));
     }
     @GetMapping("/otp")
-    public HttpEntity<OtpDto> getCustomerOtp(@RequestParam("customerId") int userId){
+    public HttpEntity<OtpDto> getCustomerOtp(@RequestParam("customerId") String userId){
         return ResponseEntity.ok(new OtpDto(otpService.getUserOtp(userId)));
     }
 

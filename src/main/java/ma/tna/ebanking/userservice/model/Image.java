@@ -15,7 +15,7 @@ public class Image {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "CUSTOMER_ID")
-    private int id;
+    private String id;
     @Column(name = "CUSTOMER_IMAGE")
     private String imageBase64;
 }

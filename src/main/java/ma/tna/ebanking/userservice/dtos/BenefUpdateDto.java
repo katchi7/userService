@@ -18,7 +18,7 @@ public class BenefUpdateDto {
         this(benef.getId(),benef.getFirstName(),benef.getLastName(),benef.getRib(),benef.getPhone(),benef.getEmail());
     }
 
-    private Integer id;
+    private Long id;
     @NotNull
     @Size(min = 4)
     private String firstName;
@@ -35,7 +35,7 @@ public class BenefUpdateDto {
     @Pattern(regexp = "(?!.*\\.\\.)(^[^\\.][^@\\s]+@[^@\\s]+\\.[^@\\s\\.]+$)",message = "Rejected email value")
     private String email;
     public Benef asBenef(){
-        return new Benef(id,firstName,lastName,rib,phone,email,null,0);
+        return new Benef(id,firstName,lastName,rib,phone,email,null,null);
     }
     public void validate(Errors errors){
         firstName = errors.hasFieldErrors("firstName")?"":firstName;

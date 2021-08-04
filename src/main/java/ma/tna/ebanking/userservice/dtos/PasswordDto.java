@@ -18,5 +18,5 @@ public class PasswordDto {
     @Size(min=5,message = "newPassword must be >5")
     private String newPassword;
     @NotNull
-    private Integer id;
+    private String id;
 }

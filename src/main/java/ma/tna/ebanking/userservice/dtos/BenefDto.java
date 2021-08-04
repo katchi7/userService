@@ -17,7 +17,7 @@ public class BenefDto {
         this(benef.getId(),benef.getFirstName(),benef.getLastName(),benef.getRib(),benef.getPhone(),benef.getEmail(),benef.getProfileId(),benef.getCustomerId());
     }
 
-    private int id;
+    private Long id;
     @NotNull(message = "firstName must not be null")
     @Size(min = 4)
     private String firstName;
@@ -36,7 +36,7 @@ public class BenefDto {
     @NotNull
     private String profileId;
     @NotNull(message = "customerId must not be null")
-    private Integer customerId;
+    private String customerId;
 
     public Benef asBenef(){
         return new Benef(id,firstName,lastName,rib,phone,email,profileId,customerId);

@@ -10,10 +10,10 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CustomerInfoDto {
-    public CustomerInfoDto(Integer id){
+    public CustomerInfoDto(String id){
         this.id = id;
     }
-    private Integer id;
+    private String id;
     private String fullName;
 
     private String shortName;

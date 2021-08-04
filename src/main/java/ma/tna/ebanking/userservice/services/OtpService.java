@@ -27,7 +27,7 @@ public class OtpService {
      * @return Otp : an object containing informations about the created OTP
      * @throws NoSuchElementException if the user does not exist
      */
-    public Otp createOtp(int userId){
+    public Otp createOtp(String userId){
         int otpInt = 100000 + random.nextInt(800000);
         LocalDateTime localDateTime = LocalDateTime.now().plusMinutes(Constantes.getOTP_EXPIRATION_TIME());
         Otp otp = new Otp(userId,""+otpInt,localDateTime);
@@ -42,7 +42,7 @@ public class OtpService {
      * @return Otp object containing customer's otp data
      * @throws NoSuchElementException if the customer does not exist
      */
-    public Otp getUserOtp(int userId){
+    public Otp getUserOtp(String userId){
         Otp otp = customerRepo.findCustomerOtp(userId);
         if(otp!=null) return otp;
         throw new NoSuchElementException(Constantes.getUSER_NOT_FOUND());
@@ -58,7 +58,7 @@ public class OtpService {
      * @throws InvalidParameterException if the otp is not matching
      * @throws  NoSuchElementException if the customer does not exist
      */
-    public Otp validateOtp(int id,String otpStr){
+    public Otp validateOtp(String id,String otpStr){
         Otp otp = customerRepo.findCustomerOtp(id);
         if(otp!=null){
             if(otpStr.equals(otp.getOtpStr())){

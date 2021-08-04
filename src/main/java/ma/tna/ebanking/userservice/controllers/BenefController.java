@@ -31,7 +31,7 @@ public class BenefController {
      * @return HttpResponseEntity containing benef data
      */
     @GetMapping(value = "")
-    public HttpEntity<List<BenefDto>> getCustomerBenef(@RequestParam("customerId") Integer customerId,@RequestParam(value = "profileId",defaultValue = "") String profileId){
+    public HttpEntity<List<BenefDto>> getCustomerBenef(@RequestParam("customerId") String  customerId,@RequestParam(value = "profileId",defaultValue = "") String profileId){
         log.info(profileId);
         List<Benef> benefs = benefService.getCustomerBenef(customerId,profileId);
         return ResponseEntity.ok(benefs.stream().map(BenefDto::new).collect(Collectors.toList()));
@@ -56,7 +56,7 @@ public class BenefController {
     }
 
     @PutMapping("/{benef_id}")
-    public HttpEntity<BenefDto> updateBenef(@PathVariable("benef_id") Integer benefId,
+    public HttpEntity<BenefDto> updateBenef(@PathVariable("benef_id") Long benefId,
                                             @RequestBody @Valid BenefUpdateDto benefDto, Errors errors){
         benefDto.validate(errors);
         benefDto.setId(benefId);
@@ -64,7 +64,7 @@ public class BenefController {
     }
 
     @DeleteMapping("/{benef_id}")
-    public HttpEntity<String> deleteBenef(@PathVariable("benef_id") Integer benefId){
+    public HttpEntity<String> deleteBenef(@PathVariable("benef_id") Long benefId){
         benefService.deleteBenef(benefId);
         return ResponseEntity.ok("Benef deleted");
     }

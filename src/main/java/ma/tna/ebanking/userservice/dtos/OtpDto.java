@@ -16,7 +16,7 @@ public class OtpDto {
         this(otp.getId(),otp.getOtpStr(),otp.getOtpExp());
     }
     @NotNull
-    private Integer id;
+    private String id;
     @NotNull
     @Size(min = 6,max = 6)
     private String otp;

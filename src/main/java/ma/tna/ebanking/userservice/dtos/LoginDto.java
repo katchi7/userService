@@ -14,7 +14,7 @@ import javax.validation.constraints.Size;
 public class LoginDto {
     @NotNull
     @Min(1)
-    private Integer userName;
+    private String userName;
     @NotNull
     @Size(min = 3)
     private String password;
