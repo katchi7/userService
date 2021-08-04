@@ -14,11 +14,11 @@ public class CustomerInfoDto {
         this.id = id;
     }
     private String id;
+    private String mnemonic;
     private String fullName;
-
     private String shortName;
-
     private String adress;
+    private String adress2;
     private String town;
     private String postCode;
     private String nationality;
@@ -28,5 +28,6 @@ public class CustomerInfoDto {
     private String agency;
     private String residence;
     private String restrictionValue;
+    private String primaryProfil;
     private List<T24ProfileDto> profils;
 }

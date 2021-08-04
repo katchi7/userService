@@ -24,7 +24,9 @@ public class CustomerDto {
                 customer.getId(),customer.getPhone(),customer.getEmail(),customer.isActive(),
                 customer.getDisponibilityStart(),customer.getDisponibilityEnd(),customer.isAllowEmails(),new LanguageDto(customer.getLanguage()),null,
                 customer.getFullName(),customer.getShortName(),customer.getAddress(),customer.getTown(),customer.getPostCode(),customer.getNationality(),
-                customer.getRestriction(),customer.getTitle(),customer.getGender(),customer.getAgency(),customer.getResidence(),customer.getRestrictionValue(),customer.getProfiles()
+                customer.getRestriction(),customer.getTitle(),customer.getGender(),customer.getAgency(),
+                customer.getResidence(),customer.getRestrictionValue(),
+                customer.getMnemonic(),customer.getAdress2(),customer.getPrimaryProfil(),customer.getProfiles()
         );
         if(customer.getDevices()!=null){
             List<DeviceDto> deviceDtos = new ArrayList<>();
@@ -61,7 +63,6 @@ public class CustomerDto {
     private String address;
 
     private String town;
-
     private String postCode;
     private String nationality;
     private String restriction;
@@ -70,10 +71,13 @@ public class CustomerDto {
     private String agency;
     private String residence;
     private String restrictionValue;
+    private String mnemonic;
+    private String adress2;
+    private String primaryProfil;
     private List<Profile> profiles;
     public Customer asCustomer(){
         List<Device> devices1 = (devices!=null)?(devices.stream().map(DeviceDto::asDevice).collect(Collectors.toList())):null;
-        return new Customer(id,null,phone,email,active,disponibilityStart,disponibilityEnd,allowEmails,language.asLanguage(),devices1,fullName,shortName,address,town,postCode,nationality,restriction,title
-        ,gender,agency,residence,restrictionValue,profiles);
+        return new Customer(id,null,phone,email,active,disponibilityStart,disponibilityEnd,allowEmails,language.asLanguage(),devices1,mnemonic,fullName,shortName,address,adress2,town,postCode,nationality,restriction,title
+        ,gender,agency,residence,restrictionValue,primaryProfil,profiles);
     }
 }

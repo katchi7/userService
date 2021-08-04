@@ -12,4 +12,8 @@ import java.io.Serializable;
 public class Profile implements Serializable {
     String id;
     String name;
+    private String adresse;
+    private String pays;
+    private String postCode;
+    private String sector;
 }

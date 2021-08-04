@@ -44,13 +44,16 @@ public class Customer extends Auditable<Customer> {
     @OnDelete(action = OnDeleteAction.CASCADE)
     @NotAudited
     private List<Device> devices;
-
+    @Transient
+    private String mnemonic;
     @Transient
     private String fullName;
     @Transient
     private String shortName;
     @Transient
     private String address;
+    @Transient
+    private String adress2;
     @Transient
     private String town;
     @Transient
@@ -69,6 +72,8 @@ public class Customer extends Auditable<Customer> {
     private String residence;
     @Transient
     private String restrictionValue;
+    @Transient
+    private String primaryProfil;
     @Transient
     private List<Profile> profiles;
 

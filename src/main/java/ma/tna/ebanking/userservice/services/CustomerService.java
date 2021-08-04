@@ -97,6 +97,9 @@ public class CustomerService {
                     customerInfoResponse.getProfils().stream()
                             .map(T24ProfileDto::asProfile).collect(Collectors.toList())
                     :null);
+            customer.setMnemonic(customerInfoResponse.getMnemonic());
+            customer.setPrimaryProfil(customerInfoResponse.getPrimaryProfil());
+            customer.setAdress2(customerInfoResponse.getAdress2());
         }
         else throw new HystrixBadRequestException("Cannot get Customer Info! Code Retour :'"+ (retour!=null?retour.getCodeRetour():"NULL") +"' Message: '" +(retour!=null?retour.getMsgRetour():"NULL")+"'");
         long timeMillis = DateTime.now().getMillis() - dateTime.getMillis();
