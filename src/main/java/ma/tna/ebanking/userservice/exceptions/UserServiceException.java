@@ -9,6 +9,6 @@ public class UserServiceException extends RuntimeException {
         this.message = message;
         this.status = status;
     }
-    private String message;
-    private int status;
+    private final String message;
+    private final int status;
 }

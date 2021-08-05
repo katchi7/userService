@@ -1,5 +1,6 @@
 package ma.tna.ebanking.userservice.dtos;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,7 +15,9 @@ public class AgencyInfo {
     public String getiD() {
         return iD;
     }
-    public String getId(){
-        return iD;
+
+    @JsonGetter("id")
+    public String idGetter(){
+        return getiD();
     }
 }

@@ -23,7 +23,7 @@ public class ExceptionController {
         return ResponseEntity.badRequest().body(new OperationResponse(HttpStatus.BAD_REQUEST.value(),e.getClass().getSimpleName(),e.getMessage(), servletRequest.getServletPath()));
     }
     @ExceptionHandler(value = UserServiceException.class)
-    public HttpEntity<OperationResponse> UserServiceExceptionHandler(UserServiceException e,HttpServletRequest request){
+    public HttpEntity<OperationResponse> userServiceExceptionHandler(UserServiceException e,HttpServletRequest request){
         return ResponseEntity.status(e.getStatus()).body(new OperationResponse(e.getStatus(),e.getClass().getSimpleName(),e.getMessage(), request.getServletPath()));
     }
 }

@@ -56,7 +56,7 @@ public class AgencyService {
             body.put("agence",agencyInfo);
             T24AgencyResponse response = agencyInfoApi.getAgencyInfo(body);
             if(response==null) throw new AgencyServiceException("T24 response body is empty",HttpStatus.NOT_FOUND);
-            if(response.getAgence() == null || response.getAgence().size()<=0) throw new AgencyServiceException("Agency with id "+agency.getId() +" Not found",HttpStatus.NOT_FOUND);
+            if(response.getAgence() == null || response.getAgence().isEmpty()) throw new AgencyServiceException("Agency with id "+agency.getId() +" Not found",HttpStatus.NOT_FOUND);
         }
         return agencyRepo.save(agency);
     }

@@ -1,9 +1,7 @@
 package ma.tna.ebanking.userservice.controllers;
 
-import ma.tna.audit.controller.AuditController;
 import ma.tna.audit.controller.GenericAuditController;
 import ma.tna.audit.service.GenericHistoryService;
-import ma.tna.audit.service.HistoryService;
 import ma.tna.ebanking.userservice.model.Benef;
 import ma.tna.ebanking.userservice.repositories.BenefRepo;
 import org.springframework.web.bind.annotation.RequestMapping;
