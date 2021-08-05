@@ -75,11 +75,13 @@ public class AgencyService {
             T24AgencyResponse response = agencyInfoApi.getAgencyInfo(body);
             if(response==null) throw new AgencyServiceException("T24 response body is empty",HttpStatus.NOT_FOUND);
             if(response.EmptyAgency()) throw new AgencyServiceException("Agency with id "+agency.getId() +" Not found",HttpStatus.NOT_FOUND);
-
             agency =  agencyRepo.save(agency);
             addT24Info(agency,agencyInfo);
-        };
-        return agency;
+            return agency;
+        }
+        agency1.setLatitude(agency.getLatitude());
+        agency1.setLongitude(agency.getLongitude());
+        return agencyRepo.save(agency1);
     }
     private void addT24Info(Agency agency,AgencyInfo agencyInfo){
         agency.setName(agencyInfo.getNomAgence());
