@@ -1,5 +1,8 @@
 package ma.tna.ebanking.userservice.services;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
+import com.netflix.hystrix.exception.HystrixBadRequestException;
 import lombok.extern.log4j.Log4j2;
 import ma.tna.ebanking.userservice.api.TRestApi;
 import ma.tna.ebanking.userservice.dtos.AgencyInfo;
@@ -7,6 +10,7 @@ import ma.tna.ebanking.userservice.dtos.T24AgencyResponse;
 import ma.tna.ebanking.userservice.exceptions.AgencyServiceException;
 import ma.tna.ebanking.userservice.model.Agency;
 import ma.tna.ebanking.userservice.repositories.AgencyRepo;
+import ma.tna.ebanking.userservice.tools.Constantes;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -25,19 +29,29 @@ public class AgencyService {
         return agencyRepo.findAll();
     }
 
+    @HystrixCommand(ignoreExceptions = { HystrixBadRequestException.class,AgencyServiceException.class }, commandProperties = {
+            @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds",value = Constantes.AGENCY_INFO_HYSTRIX_TIMEOUT)
+    })
     public List<Agency> getAllAgenciesInfos(){
         T24AgencyResponse agencyResponse = agencyInfoApi.getAgencyInfo(new HashMap<>());
         List<Agency> agencies = getAllAgencies();
         if(agencyResponse==null || agencyResponse.getAgence() == null || agencies == null) throw new AgencyServiceException("Agency response is empty", HttpStatus.NOT_FOUND);
         List<Agency> finalAgencyList = new ArrayList<>();
         for (AgencyInfo agencyInfo : agencyResponse.getAgence()) {
+            boolean hasPosition = false;
             for (Agency agency : agencies) {
-                log.info(agency);
-                log.info(agencyInfo);
                 if(agencyInfo.getiD().equals(agency.getId())){
-                    agency.setName(agencyInfo.getNomAgence());
+                    hasPosition = true;
+                    addT24Info(agency,agencyInfo);
                     finalAgencyList.add(agency);
+                    break;
                 }
+            }
+            if(!hasPosition){
+                Agency agency = new Agency();
+                agency.setId(agencyInfo.getiD());
+                addT24Info(agency,agencyInfo);
+                finalAgencyList.add(agency);
             }
         }
         return finalAgencyList;
@@ -47,6 +61,10 @@ public class AgencyService {
         if(agencyOp.isPresent()) return agencyOp.get();
         throw new NoSuchElementException("Agency does not exist");
     }
+
+    @HystrixCommand(ignoreExceptions = { HystrixBadRequestException.class,AgencyServiceException.class },commandProperties = {
+            @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds",value = Constantes.AGENCY_INFO_HYSTRIX_TIMEOUT)
+    })
     public Agency updateAgency(Agency agency) {
         Agency agency1 = agencyRepo.findById(agency.getId()).orElse(null);
         if(agency1 == null){
@@ -56,8 +74,14 @@ public class AgencyService {
             body.put("agence",agencyInfo);
             T24AgencyResponse response = agencyInfoApi.getAgencyInfo(body);
             if(response==null) throw new AgencyServiceException("T24 response body is empty",HttpStatus.NOT_FOUND);
-            if(response.getAgence() == null || response.getAgence().isEmpty()) throw new AgencyServiceException("Agency with id "+agency.getId() +" Not found",HttpStatus.NOT_FOUND);
-        }
-        return agencyRepo.save(agency);
+            if(response.EmptyAgency()) throw new AgencyServiceException("Agency with id "+agency.getId() +" Not found",HttpStatus.NOT_FOUND);
+
+            agency =  agencyRepo.save(agency);
+            addT24Info(agency,agencyInfo);
+        };
+        return agency;
+    }
+    private void addT24Info(Agency agency,AgencyInfo agencyInfo){
+        agency.setName(agencyInfo.getNomAgence());
     }
 }

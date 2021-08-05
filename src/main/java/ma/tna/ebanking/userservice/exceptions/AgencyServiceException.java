@@ -1,12 +1,16 @@
 package ma.tna.ebanking.userservice.exceptions;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import com.netflix.hystrix.exception.HystrixBadRequestException;
+
+import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
-@Data
-@AllArgsConstructor
-public class AgencyServiceException extends RuntimeException {
-    private final String message;
+public class AgencyServiceException extends HystrixBadRequestException {
+    @Getter
     private final HttpStatus status;
+
+    public AgencyServiceException(String message, HttpStatus status) {
+        super(message);
+        this.status = status;
+    }
 }

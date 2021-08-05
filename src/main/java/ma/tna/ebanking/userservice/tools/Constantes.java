@@ -25,6 +25,8 @@ public class Constantes {
        @Getter
        public static final String CUSTOMER_INFO_HYSTRIX_TIMEOUT="6000";
        @Getter
+       public static final String AGENCY_INFO_HYSTRIX_TIMEOUT="6000";
+       @Getter
        protected static final String T24_RETOUR_ATTR="Retour";
        @Getter
        protected static final String T24_SUCCESS_CODE="000";

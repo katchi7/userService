@@ -11,4 +11,12 @@ import java.util.List;
 @NoArgsConstructor
 public class T24AgencyResponse {
     private List<AgencyInfo> agence;
+    public boolean EmptyAgency(){
+        if(agence!=null && !agence.isEmpty()){
+            for (AgencyInfo agencyInfo : agence) {
+                if(!"".equals(agencyInfo.getiD())) return false;
+            }
+        }
+        return true;
+    }
 }
