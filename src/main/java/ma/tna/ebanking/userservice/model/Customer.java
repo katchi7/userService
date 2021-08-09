@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ma.tna.audit.model.Auditable;
+import ma.tna.ebanking.userservice.dtos.AccountDto;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.envers.Audited;
@@ -78,5 +79,7 @@ public class Customer extends Auditable<Customer> {
     private String primaryProfil;
     @Transient
     private List<Profile> profiles;
+    @Transient
+    private List<Account> primaryProfileAccounts;
 
 }

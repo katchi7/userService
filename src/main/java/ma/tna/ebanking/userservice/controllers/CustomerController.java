@@ -50,7 +50,9 @@ public class CustomerController {
     @GetMapping("/{id}")
     public HttpEntity<CustomerDto> getUserById(@PathVariable(value = "id") String id ){
         Customer customer = customerService.getCustomerById(id);
-        CustomerDto dto = new CustomerDto(customerService.getCustomerInfo(customer));
+        CustomerDto dto = new CustomerDto(customerService.loadCustomerAccounts(
+                customerService.getCustomerInfo(customer))
+        );
         return ResponseEntity.ok(dto);
     }
 
@@ -228,12 +230,26 @@ public class CustomerController {
     @PostMapping(value = "/login",consumes = {"application/json"})
     public HttpEntity<CustomerDto> validateCustomer(@RequestBody @Valid LoginDto loginDto,Errors errors){
         if(errors.hasErrors()) throw new InvalidParameterException("Invalid username and password");
-        return ResponseEntity.ok(new CustomerDto(customerService.getCustomerInfo(customerService.validateCustomer(loginDto.getUserName(),loginDto.getPassword()))));
+        return ResponseEntity.ok(new CustomerDto(
+                customerService.loadCustomerAccounts(
+                        customerService.getCustomerInfo(
+                                customerService.validateCustomer(loginDto.getUserName(),loginDto.getPassword())
+                        )
+                )
+        )
+        );
     }
     @PostMapping(value = "/deviceLogin",consumes = {"application/json"})
     public HttpEntity<CustomerDto> validateCustomerWithDevice(@RequestBody @Valid DeviceLoginDto loginDto,Errors errors){
         if(errors.hasErrors()) throw new InvalidParameterException("Invalid data");
-        return ResponseEntity.ok(new CustomerDto(customerService.getCustomerInfo(customerService.validateCustomerWithDevice(loginDto.getUserName(),loginDto.getPassword(),loginDto.getDevice().asDevice()))));
+        return ResponseEntity.ok(
+                new CustomerDto(
+                        customerService.loadCustomerAccounts(
+                            customerService.getCustomerInfo(
+                                customerService.validateCustomerWithDevice(loginDto.getUserName(),loginDto.getPassword(),loginDto.getDevice().asDevice()
+                        )
+                )
+        )));
     }
 
 

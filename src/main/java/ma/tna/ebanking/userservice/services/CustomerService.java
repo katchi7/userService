@@ -4,11 +4,9 @@ import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import com.netflix.hystrix.exception.HystrixBadRequestException;
 import lombok.extern.log4j.Log4j2;
+import ma.tna.ebanking.userservice.api.AccountService;
 import ma.tna.ebanking.userservice.api.TRestApi;
-import ma.tna.ebanking.userservice.dtos.CustomerInfoDto;
-import ma.tna.ebanking.userservice.dtos.Retour;
-import ma.tna.ebanking.userservice.dtos.T24CustomerResponse;
-import ma.tna.ebanking.userservice.dtos.T24ProfileDto;
+import ma.tna.ebanking.userservice.dtos.*;
 import ma.tna.ebanking.userservice.exceptions.UserServiceException;
 import ma.tna.ebanking.userservice.model.Image;
 import ma.tna.ebanking.userservice.repositories.CustomerRepo;
@@ -18,6 +16,7 @@ import ma.tna.ebanking.userservice.model.Device;
 import ma.tna.ebanking.userservice.model.Language;
 import ma.tna.ebanking.userservice.tools.Constantes;
 import org.joda.time.DateTime;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -33,11 +32,13 @@ public class CustomerService {
     private final CustomerRepo customerRepo;
     private final BCryptPasswordEncoder passwordEncoder;
     private final DeviceRepo deviceRepo;
-    public CustomerService(TRestApi customerInfo, CustomerRepo customerRepo, BCryptPasswordEncoder passwordEncoder, DeviceRepo deviceRepo) {
+    private final AccountService accountService;
+    public CustomerService(TRestApi customerInfo, CustomerRepo customerRepo, BCryptPasswordEncoder passwordEncoder, DeviceRepo deviceRepo, AccountService accountService) {
         this.customerInfo = customerInfo;
         this.customerRepo = customerRepo;
         this.passwordEncoder = passwordEncoder;
         this.deviceRepo = deviceRepo;
+        this.accountService = accountService;
     }
 
     /**
@@ -191,6 +192,17 @@ public class CustomerService {
         }
         throw new UserServiceException(Constantes.getUSER_NOT_FOUND(),Constantes.getUSER_NOT_FOUND_STATUS().value());
 
+    }
+
+
+
+    public Customer loadCustomerAccounts(Customer customer){
+        CustomerAccountRequest customerAccountRequest = new CustomerAccountRequest();
+        customerAccountRequest.setCustomer(new AccountReq(customer.getId(),customer.getPrimaryProfil()));
+        CustomerAccountServiceResp response = accountService.getCustomerAccounts(customerAccountRequest);
+        if(response == null || response.getDataRet() == null ||response.getDataRet().getAccounts() == null) throw new UserServiceException("Invalid response", HttpStatus.BAD_REQUEST.value());
+        customer.setPrimaryProfileAccounts(response.getDataRet().getAccounts().stream().map(AccountDto::asAccount).collect(Collectors.toList()));
+        return customer;
     }
 
     /**
