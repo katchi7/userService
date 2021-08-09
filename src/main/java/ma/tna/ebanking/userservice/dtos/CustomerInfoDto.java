@@ -26,6 +26,7 @@ public class CustomerInfoDto {
     private String title;
     private String gender;
     private String agency;
+    private String agencyName;
     private String residence;
     private String restrictionValue;
     private String primaryProfil;

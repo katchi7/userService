@@ -69,6 +69,8 @@ public class Customer extends Auditable<Customer> {
     @Transient
     private String agency;
     @Transient
+    private String agencyName;
+    @Transient
     private String residence;
     @Transient
     private String restrictionValue;
