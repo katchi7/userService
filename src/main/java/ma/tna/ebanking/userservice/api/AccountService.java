@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-@FeignClient(name = "EBANKING-ACCOUNT",url = "${ebanking.account-service.url:}")
+@FeignClient(name = "EBANKING-ACCOUNT")
 public interface AccountService {
     @PostMapping("/ebanking/eAccount/Accounts")
     @ResponseBody CustomerAccountServiceResp getCustomerAccounts(@RequestBody CustomerAccountRequest body);

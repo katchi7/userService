@@ -4,13 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Map;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class T24CustomerResponse {
-    private CustomerInfoDto customer;
-
-    private Map<String,Retour> data;
+public class ConseilleInfo {
+    private String name;
+    private String tel;
 }

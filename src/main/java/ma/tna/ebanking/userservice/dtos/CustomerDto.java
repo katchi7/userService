@@ -26,7 +26,8 @@ public class CustomerDto {
                 customer.getFullName(),customer.getShortName(),customer.getAddress(),customer.getTown(),customer.getPostCode(),customer.getNationality(),
                 customer.getRestriction(),customer.getTitle(),customer.getGender(),customer.getAgency(),customer.getAgencyName(),
                 customer.getResidence(),customer.getRestrictionValue(),
-                customer.getMnemonic(),customer.getAdress2(),customer.getPrimaryProfil(),customer.getProfiles(),customer.getPrimaryProfileAccounts().stream().map(AccountDto::new).collect(Collectors.toList())
+                customer.getMnemonic(),customer.getAdress2(),customer.getPrimaryProfil(),customer.getProfiles(),customer.getPrimaryProfileAccounts().stream().map(AccountDto::new).collect(Collectors.toList()),
+                customer.getConseille()
         );
         if(customer.getDevices()!=null){
             List<DeviceDto> deviceDtos = new ArrayList<>();
@@ -78,9 +79,10 @@ public class CustomerDto {
     private String primaryProfil;
     private List<Profile> profiles;
     private List<AccountDto> primaryProfileAccounts;
+    private ConseilleInfo conseille;
     public Customer asCustomer(){
         List<Device> devices1 = (devices!=null)?(devices.stream().map(DeviceDto::asDevice).collect(Collectors.toList())):null;
         return new Customer(id,null,phone,email,active,disponibilityStart,disponibilityEnd,allowEmails,language.asLanguage(),devices1,mnemonic,fullName,shortName,address,adress2,town,postCode,nationality,restriction,title
-        ,gender,agency,agencyName,residence,restrictionValue,primaryProfil,profiles,primaryProfileAccounts.stream().map(AccountDto::asAccount).collect(Collectors.toList()));
+        ,gender,agency,agencyName,residence,restrictionValue,primaryProfil,profiles,primaryProfileAccounts.stream().map(AccountDto::asAccount).collect(Collectors.toList()),conseille);
     }
 }

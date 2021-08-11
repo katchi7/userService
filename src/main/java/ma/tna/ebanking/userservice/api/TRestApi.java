@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Map;
-@FeignClient(value = "T-REST",url = "${ebanking.customerInfo.url:}")
+@FeignClient(value = "T-REST")
 public interface TRestApi {
     @PostMapping(value = "/RestEndPoint/ebanking/customer/getCustomerInfo",produces = "application/json")
     @Headers("Content-Type : application/json")

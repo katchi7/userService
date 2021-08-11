@@ -58,7 +58,17 @@ public class AgencyService {
     }
     public Agency getAgencyById(String agencyId){
         Optional<Agency> agencyOp = agencyRepo.findById(agencyId);
-        if(agencyOp.isPresent()) return agencyOp.get();
+        if(agencyOp.isPresent()){
+            Agency agency = agencyOp.get();
+            Map<String,Object> body = new HashMap<>();
+            AgencyInfo agencyInfo = new AgencyInfo();
+            agencyInfo.setID(agency.getId());
+            body.put("agence",agencyInfo);
+            T24AgencyResponse response = agencyInfoApi.getAgencyInfo(body);
+            if(response.EmptyAgency()) throw new AgencyServiceException("T24 response is empty",HttpStatus.BAD_REQUEST);
+            addT24Info(agency,response.getAgence().get(0));
+            return agency;
+        }
         throw new NoSuchElementException("Agency does not exist");
     }
 
@@ -76,7 +86,7 @@ public class AgencyService {
             if(response==null) throw new AgencyServiceException("T24 response body is empty",HttpStatus.NOT_FOUND);
             if(response.EmptyAgency()) throw new AgencyServiceException("Agency with id "+agency.getId() +" Not found",HttpStatus.NOT_FOUND);
             agency =  agencyRepo.save(agency);
-            addT24Info(agency,agencyInfo);
+            addT24Info(agency,response.getAgence().get(0));
             return agency;
         }
         agency1.setLatitude(agency.getLatitude());
@@ -85,5 +95,21 @@ public class AgencyService {
     }
     private void addT24Info(Agency agency,AgencyInfo agencyInfo){
         agency.setName(agencyInfo.getNomAgence());
+        agency.setAgencyCode(agencyInfo.getCodeLocalite());
+        agency.setAddress(agencyInfo.getAdresse());
+        agency.setPhone(agencyInfo.getnTelephone());
+        agency.setVille(agencyInfo.getVille());
+
+    }
+    public void updateSchedule(String id,String days,String hours){
+        Optional<Agency> agencyOp = agencyRepo.findById(id);
+        if (agencyOp.isPresent()){
+            Agency agency = agencyOp.get();
+            agency.setDays(days==null||"".equals(days.trim())?agency.getDays():days);
+            agency.setHours(hours==null||"".equals(hours.trim())?agency.getHours():hours);
+            agencyRepo.save(agency);
+            return;
+        }
+        throw new AgencyServiceException("Agency not found",HttpStatus.NOT_FOUND);
     }
 }

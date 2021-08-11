@@ -23,22 +23,18 @@ public class Agency extends Auditable<Agency> {
     @Column(name = "AGENCE_LONGITUDE")
     private String longitude;
     @Transient
-    private String type;
-    @Transient
     private String name;
     @Transient
-    private String description;
+    private String ville;
     @Transient
     private String address;
     @Transient
     private String agencyCode;
     @Transient
     private String phone;
-    @Transient
-    private String email;
-    @Transient
+    @Column(name = "AGENCY_DAYS")
     private String days;
-    @Transient
+    @Column(name = "AGENCY_HOURS")
     private String hours;
 
 }

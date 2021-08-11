@@ -2,13 +2,17 @@ package ma.tna.ebanking.userservice.controllers;
 
 import lombok.extern.log4j.Log4j2;
 import ma.tna.ebanking.userservice.dtos.AgencyDto;
+import ma.tna.ebanking.userservice.dtos.OperationResponse;
+import ma.tna.ebanking.userservice.dtos.Schedule;
 import ma.tna.ebanking.userservice.services.AgencyService;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.security.InvalidParameterException;
 import java.util.List;
@@ -37,4 +41,10 @@ public class AgencyController {
         if(errors.hasErrors()) throw new InvalidParameterException("Body is not valid");
         return ResponseEntity.ok(new AgencyDto(agencyService.updateAgency(agencyDto.asAgency())));
     }
+    @PutMapping("/{id}")
+    public HttpEntity<OperationResponse> updateAgencySchedule(@PathVariable("id") String agencyId, @RequestBody Schedule schedule, HttpServletRequest request){
+        agencyService.updateSchedule(agencyId,schedule.getDays(),schedule.getHours());
+        return ResponseEntity.ok(new OperationResponse(HttpStatus.OK.value(),null,"Schedule updated",request.getServletPath()));
+    }
+
 }

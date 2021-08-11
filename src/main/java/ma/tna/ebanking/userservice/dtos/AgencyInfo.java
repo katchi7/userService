@@ -11,9 +11,17 @@ import lombok.NoArgsConstructor;
 public class AgencyInfo {
     private String iD;
     private String nomAgence;
+    private String ville;
+    private String adresse;
+    private String codeLocalite;
+    private String nTelephone;
 
     public String getiD() {
         return iD;
+    }
+
+    public String getnTelephone() {
+        return nTelephone;
     }
 
     @JsonGetter("id")

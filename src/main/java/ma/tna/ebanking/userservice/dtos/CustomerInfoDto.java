@@ -31,4 +31,5 @@ public class CustomerInfoDto {
     private String restrictionValue;
     private String primaryProfil;
     private List<T24ProfileDto> profils;
+    private ConseilleInfo coneille;
 }
