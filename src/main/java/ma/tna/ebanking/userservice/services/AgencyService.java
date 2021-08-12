@@ -38,6 +38,7 @@ public class AgencyService {
         if(agencyResponse==null || agencyResponse.getAgence() == null || agencies == null) throw new AgencyServiceException("Agency response is empty", HttpStatus.NOT_FOUND);
         List<Agency> finalAgencyList = new ArrayList<>();
         for (AgencyInfo agencyInfo : agencyResponse.getAgence()) {
+            log.info(agencyInfo);
             boolean hasPosition = false;
             for (Agency agency : agencies) {
                 if(agencyInfo.getiD().equals(agency.getId())){
