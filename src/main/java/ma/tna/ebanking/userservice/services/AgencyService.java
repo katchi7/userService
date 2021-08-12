@@ -63,7 +63,7 @@ public class AgencyService {
             Agency agency = agencyOp.get();
             Map<String,Object> body = new HashMap<>();
             AgencyInfo agencyInfo = new AgencyInfo();
-            agencyInfo.setID(agency.getId());
+            agencyInfo.setiD(agency.getId());
             body.put("agence",agencyInfo);
             T24AgencyResponse response = agencyInfoApi.getAgencyInfo(body);
             if(response.EmptyAgency()) throw new AgencyServiceException("T24 response is empty",HttpStatus.BAD_REQUEST);
@@ -81,7 +81,7 @@ public class AgencyService {
         if(agency1 == null){
             Map<String,Object> body = new HashMap<>();
             AgencyInfo agencyInfo = new AgencyInfo();
-            agencyInfo.setID(agency.getId());
+            agencyInfo.setiD(agency.getId());
             body.put("agence",agencyInfo);
             T24AgencyResponse response = agencyInfoApi.getAgencyInfo(body);
             if(response==null) throw new AgencyServiceException("T24 response body is empty",HttpStatus.NOT_FOUND);

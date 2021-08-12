@@ -24,6 +24,14 @@ public class AgencyInfo {
         return nTelephone;
     }
 
+    public void setiD(String iD) {
+        this.iD = iD;
+    }
+
+    public void setnTelephone(String nTelephone) {
+        this.nTelephone = nTelephone;
+    }
+
     @JsonGetter("id")
     public String idGetter(){
         return getiD();
