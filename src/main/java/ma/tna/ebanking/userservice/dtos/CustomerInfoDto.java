@@ -1,35 +1,38 @@
 package ma.tna.ebanking.userservice.dtos;
 
-import lombok.AllArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ma.tna.ebanking.userservice.model.Profile;
 
 import java.util.List;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class CustomerInfoDto {
-    public CustomerInfoDto(String id){
-        this.id = id;
-    }
-    private String id;
-    private String mnemonic;
-    private String fullName;
-    private String shortName;
-    private String adress;
-    private String adress2;
-    private String town;
-    private String postCode;
-    private String nationality;
-    private String restriction;
-    private String title;
-    private String gender;
-    private String agency;
-    private String agencyName;
-    private String residence;
-    private String restrictionValue;
-    private String primaryProfil;
+public class CustomerInfoDto extends  CustomerDto {
     private List<T24ProfileDto> profils;
-    private ConseilleInfo coneille;
+    public CustomerInfoDto(String id){
+        super.setId(id);
+    }
+    @JsonGetter("adress")
+    public String getAdress(){
+        return super.getAddress();
+    }
+
+
+    @JsonSetter("adress")
+    public void setAdress(String address) {
+        super.setAddress(address);
+    }
+
+    @JsonSetter("coneille")
+    public void setConeille(ConseilleInfo conseille) {
+        super.setConseille(conseille);
+    }
+
+    @JsonGetter("coneille")
+    public ConseilleInfo getConeille() {
+        return super.getConseille();
+    }
 }

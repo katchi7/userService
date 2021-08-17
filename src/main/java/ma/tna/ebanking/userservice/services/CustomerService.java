@@ -197,7 +197,9 @@ public class CustomerService {
     }
 
 
-
+    @HystrixCommand(ignoreExceptions = { HystrixBadRequestException.class },fallbackMethod = "defaultLoadCustomerAccounts", commandProperties = {
+            @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds",value = Constantes.CUSTOMER_INFO_HYSTRIX_TIMEOUT)
+    })
     public Customer loadCustomerAccounts(Customer customer){
         CustomerAccountRequest customerAccountRequest = new CustomerAccountRequest();
         customerAccountRequest.setCustomer(new AccountReq(customer.getId(),customer.getPrimaryProfil()));
@@ -205,6 +207,11 @@ public class CustomerService {
         if(response == null || response.getDataRet() == null ||response.getDataRet().getAccounts() == null) throw new UserServiceException("Invalid response", HttpStatus.BAD_REQUEST.value());
         customer.setPrimaryProfileAccounts(response.getDataRet().getAccounts().stream().map(AccountDto::asAccount).collect(Collectors.toList()));
         return customer;
+    }
+
+
+    public Customer defaultLoadCustomerAccounts(Customer customer){
+        throw new UserServiceException("Cannot load user accounts: timeout exceeded",HttpStatus.INTERNAL_SERVER_ERROR.value());
     }
 
     /**

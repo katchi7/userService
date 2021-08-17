@@ -1,14 +1,15 @@
 package ma.tna.ebanking.userservice.exceptions;
 
-import lombok.Data;
+import com.netflix.hystrix.exception.HystrixBadRequestException;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
-public class UserServiceException extends RuntimeException {
+@Getter
+@Setter
+public class UserServiceException extends HystrixBadRequestException {
     public UserServiceException(String message,int status){
         super(message);
-        this.message = message;
         this.status = status;
     }
-    private final String message;
     private final int status;
 }

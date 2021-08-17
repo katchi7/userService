@@ -57,6 +57,10 @@ public class AgencyService {
         }
         return finalAgencyList;
     }
+
+    @HystrixCommand(ignoreExceptions = { HystrixBadRequestException.class,AgencyServiceException.class }, commandProperties = {
+            @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds",value = Constantes.AGENCY_INFO_HYSTRIX_TIMEOUT)
+    })
     public Agency getAgencyById(String agencyId){
         Optional<Agency> agencyOp = agencyRepo.findById(agencyId);
         if(agencyOp.isPresent()){
@@ -70,7 +74,7 @@ public class AgencyService {
             addT24Info(agency,response.getAgence().get(0));
             return agency;
         }
-        throw new NoSuchElementException("Agency does not exist");
+        throw new AgencyServiceException("Agency does not exist",HttpStatus.NOT_FOUND);
     }
 
     @HystrixCommand(ignoreExceptions = { HystrixBadRequestException.class,AgencyServiceException.class },commandProperties = {
@@ -100,7 +104,6 @@ public class AgencyService {
         agency.setAddress(agencyInfo.getAdresse());
         agency.setPhone(agencyInfo.getnTelephone());
         agency.setVille(agencyInfo.getVille());
-
     }
     public void updateSchedule(String id,String days,String hours){
         Optional<Agency> agencyOp = agencyRepo.findById(id);
