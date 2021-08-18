@@ -29,7 +29,7 @@ public class Agency extends Auditable<Agency> {
     @Transient
     private String address;
     @Transient
-    private String codeVille;
+    private String description;
     @Transient
     private String phone;
     @Column(name = "AGENCY_DAYS")

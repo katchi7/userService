@@ -16,7 +16,7 @@ public class AgencyDto {
         this(
                 agency.getId(),new Position(agency.getLatitude(),
                 agency.getLongitude()),agency.getName(),
-                agency.getVille(),agency.getAddress(),agency.getCodeVille(),
+                agency.getVille(),agency.getAddress(),agency.getDescription(),
                 agency.getPhone(),new Schedule(agency.getDays(),agency.getHours())
         );
     }
@@ -28,12 +28,12 @@ public class AgencyDto {
     private String name;
     private String ville;
     private String address;
-    private String codeVille;
+    private String description;
     private String phone;
     private Schedule schedule;
 
 
     public Agency asAgency(){
-        return new Agency(id,position.getLatitude(),position.getLongitude(),name,ville,address,codeVille,phone,schedule==null?null:schedule.getDays(),schedule==null?null:schedule.getHours());
+        return new Agency(id,position.getLatitude(),position.getLongitude(),name,ville,address,description,phone,schedule==null?null:schedule.getDays(),schedule==null?null:schedule.getHours());
     }
 }
