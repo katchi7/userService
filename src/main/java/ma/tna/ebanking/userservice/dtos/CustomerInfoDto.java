@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ma.tna.ebanking.userservice.model.Profile;
 
 import java.util.List;
 

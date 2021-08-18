@@ -100,7 +100,7 @@ public class AgencyService {
     }
     private void addT24Info(Agency agency,AgencyInfo agencyInfo){
         agency.setName(agencyInfo.getNomAgence());
-        agency.setAgencyCode(agencyInfo.getCodeLocalite());
+        agency.setCodeVille(agencyInfo.getCodeLocalite());
         agency.setAddress(agencyInfo.getAdresse());
         agency.setPhone(agencyInfo.getnTelephone());
         agency.setVille(agencyInfo.getVille());
