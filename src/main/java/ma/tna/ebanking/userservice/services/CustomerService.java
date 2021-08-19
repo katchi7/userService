@@ -103,6 +103,7 @@ public class CustomerService {
             customer.setAdress2(customerInfoResponse.getAdress2());
             customer.setAgencyName(customerInfoResponse.getAgencyName());
             customer.setConseille(customerInfoResponse.getConeille());
+            customer.setSector(customerInfoResponse.getSector());
 
         }
         else throw new HystrixBadRequestException("Cannot get Customer Info! Code Retour :'"+ (retour!=null?retour.getCodeRetour():"NULL") +"' Message: '" +(retour!=null?retour.getMsgRetour():"NULL")+"'");

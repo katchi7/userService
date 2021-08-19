@@ -83,5 +83,7 @@ public class Customer extends Auditable<Customer> {
     private List<Account> primaryProfileAccounts;
     @Transient
     private ConseilleInfo conseille;
+    @Transient
+    private String sector;
 
 }
