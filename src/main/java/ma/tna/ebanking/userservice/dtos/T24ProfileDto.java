@@ -14,9 +14,10 @@ public class T24ProfileDto {
     private String name;
     private String adresse;
     private String pays;
+    private String ville;
     private String postCode;
     private String sector;
     public Profile asProfile(){
-        return new Profile(id,name,adresse,pays,postCode,sector);
+        return new Profile(id,name,adresse,pays,ville,postCode,sector);
     }
 }

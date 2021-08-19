@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ma.tna.audit.model.Auditable;
-import ma.tna.ebanking.userservice.dtos.AccountDto;
 import ma.tna.ebanking.userservice.dtos.ConseilleInfo;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;

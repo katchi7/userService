@@ -5,10 +5,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ma.tna.ebanking.userservice.model.Account;
 
+import java.io.Serializable;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AccountDto {
+public class AccountDto implements Serializable {
     public AccountDto(Account account){
         this(
                 account.getCompte(),account.getCategory(),account.getOpenDate(),

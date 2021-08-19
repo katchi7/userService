@@ -4,4 +4,4 @@ import ma.tna.audit.model.Auditable;
 import ma.tna.audit.service.GenericHistoryService;
 import org.springframework.stereotype.Service;
 @Service
-public class BasicHistoryService<T extends Auditable<T>,ID,AUDID extends Number & Comparable<AUDID>> extends GenericHistoryService<T,ID,AUDID> {}
+public class BasicHistoryService<T extends Auditable<T>,I,A extends Number & Comparable<A>> extends GenericHistoryService<T,I,A> {}

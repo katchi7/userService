@@ -14,6 +14,7 @@ public class Profile implements Serializable {
     String name;
     private String adresse;
     private String pays;
+    private String ville;
     private String postCode;
     private String sector;
 }
