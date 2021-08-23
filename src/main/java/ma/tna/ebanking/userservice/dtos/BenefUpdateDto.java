@@ -35,7 +35,7 @@ public class BenefUpdateDto {
     @Pattern(regexp = "(?!.*\\.\\.)(^[^\\.][^@\\s]+@[^@\\s]+\\.[^@\\s\\.]+$)",message = "Rejected email value")
     private String email;
     public Benef asBenef(){
-        return new Benef(id,firstName,lastName,rib,phone,email,null,null);
+        return new Benef(id,firstName,lastName,rib,phone,email,null,null,null,null,null);
     }
     public void validate(Errors errors){
         firstName = errors.hasFieldErrors("firstName")?"":firstName;

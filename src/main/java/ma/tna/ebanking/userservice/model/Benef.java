@@ -35,4 +35,8 @@ public class Benef extends Auditable<Benef> {
     @Column(name = "BENEF_CUSTOMER_ID")
     private String customerId;
 
+    private String category; // catégorie du comptre si il est interne
+    private String currency; // devise du comptre si il est interne
+    private Boolean internal; // true si compte inetrene, false si rib confrére valide
+
 }

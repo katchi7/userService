@@ -14,7 +14,7 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 public class BenefDto {
     public BenefDto(Benef benef){
-        this(benef.getId(),benef.getFirstName(),benef.getLastName(),benef.getRib(),benef.getPhone(),benef.getEmail(),benef.getProfileId(),benef.getCustomerId());
+        this(benef.getId(),benef.getFirstName(),benef.getLastName(),benef.getRib(),benef.getPhone(),benef.getEmail(),benef.getProfileId(),benef.getCustomerId(),benef.getCategory(),benef.getCurrency(),benef.getInternal());
     }
 
     private Long id;
@@ -25,7 +25,6 @@ public class BenefDto {
     @Size(min = 4)
     private String lastName;
     @NotNull(message = "rib must not be null")
-    @Size(min = 20,max = 40)
     private String rib;
     @NotNull(message = "phone must not be null")
     @Pattern(regexp = "^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\\s\\./0-9]*$",message = "Rejected phone value")
@@ -37,8 +36,10 @@ public class BenefDto {
     private String profileId;
     @NotNull(message = "customerId must not be null")
     private String customerId;
-
+    private String category; // catégorie du comptre si il est interne
+    private String currency; // devise du comptre si il est interne
+    private Boolean internal; // true si compte inetrene, false si rib confrére valide
     public Benef asBenef(){
-        return new Benef(id,firstName,lastName,rib,phone,email,profileId,customerId);
+        return new Benef(id,firstName,lastName,rib,phone,email,profileId,customerId,category,currency,internal);
     }
 }
